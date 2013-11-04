@@ -73,7 +73,6 @@ class PadWebSocket(PadBaseSocket, asyncore.dispatcher_with_send):
         PadBaseSocket.__init__(self, baseServer, sock=sock, mp=mp)
         self.handshaken = False
         self.header = ""
-        PadBaseSocket.handle_read = self.handle_read()
 
     def handle_read(self):
         data = self.recv(self.DATA_CHUNK_SIZE)
