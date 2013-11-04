@@ -15,10 +15,10 @@ class PadBaseSocket(asyncore.dispatcher_with_send):
     DATA_CHUNK_SIZE = 1024
 
     def __init__(self, baseServer, sock=None, mp=None):
+        asyncore.dispatcher_with_send.__init__(self, sock=sock, map=mp)
         self.baseServer = baseServer
         self.buffer = ""
         self.pad = None
-        asyncore.dispatcher_with_send.__init__(self, sock=sock, map=mp)
 
     def set_server(self, server):
         self.server = server
