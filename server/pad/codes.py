@@ -13,12 +13,10 @@ CODES = {
 
 
 def label(code):
-    print "Unfortunate code: " + str(code)
     for label, c in CODES.items():
         if c == code:
             return label
     return None
-
 
 def code(label):
     return CODES[label]
