@@ -9,28 +9,32 @@ import re
 import asyncore
 from pad.endec import decode
 import logging
+from hashlib import sha1
 
 
 class PadBaseSocket(asyncore.dispatcher_with_send):
     DATA_CHUNK_SIZE = 1024
+    
+    COMMUNICATION_CHANNEL = ""
 
-    def __init__(self, baseServer, sock=None, mp=None):
-        asyncore.dispatcher_with_send.__init__(self, sock=sock, map=mp)
-        self.baseServer = baseServer
+    def __init__(self, sock=None, map=None):
+        asyncore.dispatcher_with_send.__init__(self, sock=sock, map=map)
+        sock.setblocking(0)
         self.buffer = ""
         self.pad = None
+        self.server = None
 
     def set_server(self, server):
+        logging.debug(self.COMMUNICATION_CHANNEL + " connection status: " + str(self.connected))
         self.server = server
 
     def handle_close(self):
-        logging.info(self.COMMUNICATION_CHANNEL + ": " + str(self.socket.getpeername()) + " disconnected")
+        logging.debug(self.COMMUNICATION_CHANNEL + ": " + str(self.socket.getpeername()) + " disconnected")
 
     def handle_message(self, message):
         data = decode(message)
-        logging.info(self.COMMUNICATION_CHANNEL + " received data: " + str(data))
         if "purpose" in data:
-            self.baseServer.process_data(data)
+            self.server.process_data(data)
 
 
 class PadStandardSocket(PadBaseSocket, asyncore.dispatcher_with_send):
@@ -47,7 +51,6 @@ class PadStandardSocket(PadBaseSocket, asyncore.dispatcher_with_send):
                 records = self.buffer.split(self.DELIMITER)
                 self.buffer = records.pop()
                 for record in records:
-                    logging.info(self.COMMUNICATION_CHANNEL + " received " + str(record))
                     self.handle_message(record)
         else:
             self.close()
@@ -63,30 +66,30 @@ class PadWebSocket(PadBaseSocket, asyncore.dispatcher_with_send):
         "WebSocket-Location: ws://%(bind)s:%(port)s/\r\n"
         "Sec-Websocket-Origin: %(origin)s\r\n"
         "Sec-Websocket-Location: ws://%(bind)s:%(port)s/\r\n"
-        "\r\n"
     )
+    HANDSHAKE_ACCEPT_UUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
+    HANDSHAKE_SEC_WEBSOCKET_ACCEPT_HEADER = "Sec-WebSocket-Accept: %s\r\n"
 
     DELIMITER = "\xff"
     COMMUNICATION_CHANNEL = "WebSocket"
 
-    def __init__(self, baseServer, sock=None, mp=None):
-        PadBaseSocket.__init__(self, baseServer, sock=sock, mp=mp)
+    def __init__(self, sock=None, map=None):
+        PadBaseSocket.__init__(self, sock=sock, map=map)
         self.handshaken = False
         self.header = ""
 
     def handle_read(self):
         data = self.recv(self.DATA_CHUNK_SIZE)
-        logging.debug(self.COMMUNICATION_CHANNEL + " received data: " + data)
         if (data):
             if not self.handshaken:
                 self.header += data
-                if self.header.find('\r\n\r\n') != -1:
+                if self.header.find('\r\n\r\n') != -1: # TODO: check if "GET"
                     parts = self.header.split('\r\n\r\n', 1)
-                    self.buffer = parts.pop()
                     self.header = parts[0]
                     if self.dohandshake(self.header, parts[1]):
                         logging.info("Handshake successful")
                         self.handshaken = True
+                    else: self.close()
             else:
                 self.buffer += data
                 messages = self.buffer.split(self.DELIMITER)
@@ -94,17 +97,19 @@ class PadWebSocket(PadBaseSocket, asyncore.dispatcher_with_send):
                 for msg in messages:
                     if msg[0] == '\x00':
                         self.handle_message(msg[1:])
-        else:
-            self.close()
 
     def dohandshake(self, header, key=None):
         logging.debug("Begin handshake: %s" % header)
         digitRe = re.compile(r'[^0-9]')
         spacesRe = re.compile(r'\s')
-        part_1 = part_2 = origin = None
+        part_1 = part_2 = origin = accept = None
         for line in header.split('\r\n')[1:]:
             name, value = line.split(': ', 1)
-            if name.lower() == "sec-websocket-key1":
+            if name.lower() == "sec-websocket-key":
+                accept = sha1(value + self.HANDSHAKE_ACCEPT_UUID).digest().encode("base64")
+#                 logging.error("Unsupported Sec-Websocket-Key")
+#                 return False;
+            elif name.lower() == "sec-websocket-key1":
                 key_number_1 = int(digitRe.sub('', value))
                 spaces_1 = len(spacesRe.findall(value))
                 if spaces_1 == 0:
@@ -122,16 +127,18 @@ class PadWebSocket(PadBaseSocket, asyncore.dispatcher_with_send):
                 part_2 = key_number_2 / spaces_2
             elif name.lower() == "origin":
                 origin = value
-        if part_1 and part_2:
+        if accept:
+            handshake = PadWebSocket.HANDSHAKE + self.HANDSHAKE_SEC_WEBSOCKET_ACCEPT_HEADER % accept
+        elif part_1 and part_2:
             logging.debug("Using challenge + response")
             challenge = struct.pack('!I', part_1) + struct.pack('!I', part_2) + key
             response = hashlib.md5(challenge).digest()
             handshake = PadWebSocket.HANDSHAKE + response
         else:
-            logging.warning("Not using challenge + response")
+            logging.debug("Not using challenge + response")
             handshake = PadWebSocket.HANDSHAKE
         handshake = handshake % {'origin': origin, 'port': self.server.port,
-                                    'bind': self.server.socketbind}
+                                    'bind': self.server.socket.bind} + "\r\n"
         logging.debug("Sending handshake %s" % handshake)
         self.out_buffer = handshake
         return True

@@ -30,6 +30,7 @@ class PadSocketServer(asyncore.dispatcher):
             logging.info(self.cls.COMMUNICATION_CHANNEL + " client: " + str(address))
             fileno = newSocket.fileno()
             self.connections[fileno] = self.cls(newSocket)
+            #self.connections[fileno].init()
             self.connections[fileno].set_server(self)
 
     def broadcast(self, data, pad, broadcaster):
