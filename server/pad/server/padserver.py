@@ -20,14 +20,14 @@ class PadSocketServer(asyncore.dispatcher):
         self.bind((hostname, port))
         self.connections = {}
         self.listen(100)
-        logging.info(self.cls.COMMUNICATION_CHANNEL + " listening on " + str(self.hostname) + ':' + str(self.port))
+        logging.info("%s listening on %s:%s" % (self.cls.CHNL, str(self.hostname), str(self.port)))
         self.running = True
 
     def handle_accept(self):
         accept_pair = self.accept()
         if accept_pair is not None:
             newSocket, address = accept_pair
-            logging.info(self.cls.COMMUNICATION_CHANNEL + " client: " + str(address))
+            logging.info("%s client: %s" % (self.cls.CHNL, str(address)))
             fileno = newSocket.fileno()
             self.connections[fileno] = self.cls(newSocket)
             #self.connections[fileno].init()
@@ -40,5 +40,4 @@ class PadSocketServer(asyncore.dispatcher):
         pass
 
     def process_data(self, data):
-        logging.info(self.cls.COMMUNICATION_CHANNEL + " received: " + data["message"])
-
+        logging.info("%s received: %s" % (self.cls.CHNL, data["message"]))

@@ -14,8 +14,8 @@ from hashlib import sha1
 
 class PadBaseSocket(asyncore.dispatcher_with_send):
     DATA_CHUNK_SIZE = 1024
-    
-    COMMUNICATION_CHANNEL = ""
+
+    CHNL = ""
 
     def __init__(self, sock=None, map=None):
         asyncore.dispatcher_with_send.__init__(self, sock=sock, map=map)
@@ -25,11 +25,10 @@ class PadBaseSocket(asyncore.dispatcher_with_send):
         self.server = None
 
     def set_server(self, server):
-        logging.debug(self.COMMUNICATION_CHANNEL + " connection status: " + str(self.connected))
         self.server = server
 
     def handle_close(self):
-        logging.debug(self.COMMUNICATION_CHANNEL + ": " + str(self.socket.getpeername()) + " disconnected")
+        logging.debug("%s : %s disconnected" % (self.CHNL, str(self.socket.getpeername())))
 
     def handle_message(self, message):
         data = decode(message)
@@ -40,10 +39,9 @@ class PadBaseSocket(asyncore.dispatcher_with_send):
 class PadStandardSocket(PadBaseSocket, asyncore.dispatcher_with_send):
 
     DELIMITER = u"\u001E"
-    COMMUNICATION_CHANNEL = "StandardSocket"
-    
+    CHNL = "StandardSocket"
+
     def handle_read(self):
-        logging.debug(self.COMMUNICATION_CHANNEL + " handle_read event ")
         data = self.recv(self.DATA_CHUNK_SIZE)
         if (data):
             self.buffer += data
@@ -71,7 +69,7 @@ class PadWebSocket(PadBaseSocket, asyncore.dispatcher_with_send):
     HANDSHAKE_SEC_WEBSOCKET_ACCEPT_HEADER = "Sec-WebSocket-Accept: %s\r\n"
 
     DELIMITER = "\xff"
-    COMMUNICATION_CHANNEL = "WebSocket"
+    CHNL = "WebSocket"
 
     def __init__(self, sock=None, map=None):
         PadBaseSocket.__init__(self, sock=sock, map=map)
