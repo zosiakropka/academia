@@ -32,7 +32,7 @@ class PadBaseSocket(asyncore.dispatcher_with_send):
 
     def handle_message(self, message):
         data = decode(message)
-        if "purpose" in data:
+        if data and "purpose" in data:
             self.server.process_data(data)
 
 
