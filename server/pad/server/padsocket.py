@@ -137,7 +137,7 @@ class PadWebSocket(PadBaseSocket, asyncore.dispatcher_with_send):
             handshake = PadWebSocket.HANDSHAKE
         handshake = handshake % {'origin': origin, 'port': self.server.port,
                                     'bind': self.server.socket.bind} + "\r\n"
-        logging.debug("Sending handshake %s" % handshake)
+        logging.debug("%s sending handshake: %s" % (self.CHNL, handshake))
         self.out_buffer = handshake
         return True
 
