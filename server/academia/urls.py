@@ -8,10 +8,8 @@ urlpatterns = patterns('')
 urlpatterns += patterns('',
     # Examples:
     url(r'^$', "channels", name="channels"),
-    url(r'^polls/', include('polls.urls')),
     url(r'^channels/', include('channels.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url("", include('django_socketio.urls')),
 
     # \url(r'^$', 'academia.views.home', name='home'),
     # url(r'^academia/', include('academia.foo.urls')),
