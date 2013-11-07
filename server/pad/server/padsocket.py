@@ -141,9 +141,6 @@ class PadWebSocket(PadBaseSocket, asyncore.dispatcher_with_send):
         self.out_buffer = handshake
         return True
 
-    def handle_message(self, data):
-        logging.info("Got message: %s" % data)
-
     def send(self, data):
         logging.info("Sent message: %s" % data)
         self.out_buffer = "\x00%s\xff" % data
