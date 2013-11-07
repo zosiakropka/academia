@@ -1,0 +1,54 @@
+package pl.killerapps.academia;
+
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+public class MessageCodes {
+
+	private static MessageCodes mc = null;
+	private HashMap<String, Integer> CODES = new HashMap<String, Integer>();
+	
+	private MessageCodes() {
+		CODES.put("purpose", 1);
+		CODES.put("pad", 2);
+		CODES.put("login", 3);
+		CODES.put("password", 4);
+		CODES.put("message", 5);
+	}
+
+	public String label (Integer code) {
+	     for (Entry<String, Integer> entry : CODES.entrySet()) {
+	         if (code.equals(entry.getValue())) {
+	             return entry.getKey();
+	         }
+	     }
+	     return null;
+	}
+	public String labelByChar(Character code) {
+		return label(Character.getNumericValue(code));
+	}
+	// @returns code of the msg label; null for absent label 
+	public Integer code (String label) {
+		return CODES.get(label);
+	}
+	public Character charCode (String label) {
+		Integer code = CODES.get(label);
+		return code != null ? Character.toChars(code)[0] : null;
+	}
+	public String stringCode(String label) {
+		Integer code = CODES.get(label);
+		return code != null ? charCode(label).toString() : label;
+	}
+	
+	public static MessageCodes instance() {
+		if (mc == null) {
+			synchronized (mc) {
+				if (mc == null) {
+					mc = new MessageCodes();
+				}
+			}
+		}
+		return mc != null? mc : instance();
+	}
+
+}
