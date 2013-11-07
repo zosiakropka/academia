@@ -18,5 +18,6 @@ def label(code):
             return label
     return None
 
+
 def code(label):
     return CODES[label]

@@ -15,7 +15,7 @@ class PadServerThread (Thread):
         args=(), kwargs=None, verbose=None):
         self.hostname = hostname
         self.port = port
-        self.cls  = cls
+        self.cls = cls
         self.server = None
         Thread.__init__(self, group=group, target=target, name=name, args=args, kwargs=kwargs, verbose=verbose)
 

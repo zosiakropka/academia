@@ -92,7 +92,8 @@ class PadWebSocket(PadBaseSocket, asyncore.dispatcher_with_send):
                     if self.dohandshake(self.header, parts[1]):
                         logging.info("Handshake successful")
                         self.handshaken = True
-                    else: self.close()
+                    else:
+                        self.close()
             else:
                 self.buffer += data
                 messages = self.buffer.split(self.DELIMITER)
