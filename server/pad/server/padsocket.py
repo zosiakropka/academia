@@ -42,8 +42,13 @@ class PadStandardSocket(PadBaseSocket, asyncore.dispatcher_with_send):
     CHNL = "StandardSocket"
 
     def handle_read(self):
-        data = self.recv(self.DATA_CHUNK_SIZE)
+        data = None
+        try:
+            data = self.recv(self.DATA_CHUNK_SIZE)
+        except Exception:
+            pass
         if (data):
+            logging.debug("%s has data onboard: %s", self.CHNL, data)
             self.buffer += data
             if self.DELIMITER in self.buffer:
                 records = self.buffer.split(self.DELIMITER)
