@@ -41,7 +41,10 @@ proceeded, but may not be understood and handled by server.
 """
 from pad import codes
 
+## two instances of 'INFORMATION SEPARATOR ONE' (U+001F)
 UNIT_DELIMTR = 2 * u"\u001F"
+
+## 'INFORMATION SEPARATOR ONE' (U+001F)
 INNER_DELIMTR = u"\u001F"
 
 ## The only (unstable) version supported for the moment of writing
