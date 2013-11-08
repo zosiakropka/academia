@@ -68,9 +68,7 @@ public class TCPClient {
                 //send the message to the server
                 out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
  
-                Log.e("TCP Client", "C: Sent.");
- 
-                Log.e("TCP Client", "C: Done.");
+                Log.e("TCP Client", "Connected");
  
                 //receive the message which the server sends back
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
