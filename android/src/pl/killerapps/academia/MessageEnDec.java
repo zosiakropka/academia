@@ -12,6 +12,7 @@ import android.text.TextUtils;
 public class MessageEnDec {
 	
 	static MessageCodes CODES = MessageCodes.instance();
+	static MessageCodes CODES;
 
 	static final char INNER_DELIMITER = '\u001F';
 	static final String UNIT_DELIMITER = "\u001F\u001F";
