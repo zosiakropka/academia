@@ -13,6 +13,8 @@ public class TCPClient {
     public static final int SERVERPORT = 5000;
     private OnMessageReceived mMessageListener = null;
     private boolean mRun = false;
+    
+    private static final String DELIMITER = "\u001E";
  
     PrintWriter out;
     BufferedReader in;
