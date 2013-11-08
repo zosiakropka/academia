@@ -42,11 +42,11 @@ public class MessageCodes {
 	
 	public static MessageCodes instance() {
 		if (mc == null) {
-			synchronized (mc) {
-				if (mc == null) {
+//			synchronized (mc) {
+//				if (mc == null) {
 					mc = new MessageCodes();
-				}
-			}
+//				}
+//			}
 		}
 		return mc != null? mc : instance();
 	}
