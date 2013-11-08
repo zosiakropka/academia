@@ -19,8 +19,13 @@ public class MessageEnDec {
 	
 	static final int VERSION = 1;
 	
-	private HashMap<String, String> data = new HashMap<String, String>();
-	private Set<String> flags = new HashSet<String>();
+	private HashMap<String, String> data;
+	private Set<String> flags;
+	
+	public MessageEnDec() {
+		data = new HashMap<String, String>();
+		flags = new HashSet<String>();
+	}
 	
 	public void set(String key, String value) {
 		data.put(key, value);
@@ -36,10 +41,6 @@ public class MessageEnDec {
 	}
 	public boolean test(Collection<String> keys) {
 		return flags.containsAll(keys);
-	}
-	
-	public MessageEnDec() {
-		System.out.println("Creating message endec");
 	}
 	
 	public String encode() {
