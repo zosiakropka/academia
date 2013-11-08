@@ -55,8 +55,6 @@ class PadStandardSocket(PadBaseSocket, asyncore.dispatcher_with_send):
                 self.buffer = records.pop()
                 for record in records:
                     self.handle_message(record)
-        else:
-            self.close()
 
 
 class PadWebSocket(PadBaseSocket, asyncore.dispatcher_with_send):
