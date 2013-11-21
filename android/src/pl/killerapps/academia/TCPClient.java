@@ -32,16 +32,19 @@ public class TCPClient {
      */
     public void sendMessage(String message){
         if (out != null && !out.checkError()) {
-//        	MessageEnDec endec = new MessageEnDec();
-//        	endec.set("purpose", "message");
-//        	endec.set("message", message);
-//          out.println(endec.encode());
-        	
-        	// Sending hardcoded 'a' message
-        	out.println("YQ==");
-			out.println("dHlsa28gdGVzdHVqZQ==");
-			out.println("bWVzc2FnZQ==");
-			out.println("");
+        	/*
+        	MessageEnDec endec = new MessageEnDec();
+        	endec.set("purpose", "message");
+        	endec.set("message", message);
+            out.print(endec.encode());
+            */        	
+
+        	// hardcoded "zosia"
+        	out.println("d2lhZG9tb3Nj");
+        	out.println("bmllaXN0bmllamFjeQ==");
+        	out.println("bWVzc2FnZQ==");
+        	out.print("");
+            out.println(DELIMITER);
             out.flush();
         }
     }
@@ -68,7 +71,7 @@ public class TCPClient {
                 //send the message to the server
                 out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
  
-                Log.e("TCP Client", "Connected");
+                Log.i("TCP Client", "C: Connected");
  
                 //receive the message which the server sends back
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
