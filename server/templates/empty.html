@@ -1,0 +1,14 @@
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" />
+    <title>{% block title %}Academia{% endblock %}</title>
+</head>
+
+<body>
+	<script>academia = {}; window.academia = academia;</script>
+    {% block body %}
+	{% endblock %}
+    {% block scripts %}
+	{% endblock %}
+</body>
+</html>
