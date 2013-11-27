@@ -46,20 +46,18 @@ class PadBaseServer(Thread):
         pass
 
 
-class PadTCPServer(asyncore.dispatcher, PadBaseServer, Thread):
+class PadTCPServer(asyncore.dispatcher, PadBaseServer):
 
     CHNL = "TCP"
     PadConnection = PadTCPConnection
 
     def __init__(self, hostname, port):
-        Thread.__init__(self)
         PadBaseServer.__init__(self, hostname, port)
         asyncore.dispatcher.__init__(self)
         self.create_socket(AF_INET, SOCK_STREAM)
-        self.bind((hostname, port))
         self.socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+        self.socket.settimeout(30)
         self.connections = {}
-        self.listen(100)
 
     def handle_accept(self):
         accept_pair = self.accept()
@@ -70,7 +68,10 @@ class PadTCPServer(asyncore.dispatcher, PadBaseServer, Thread):
             self.new_connection(connection)
 
     def run(self):
+        self.bind((self.hostname, self.port))
+        self.listen(100)
         asyncore.loop()
+
 
 class PadWSServer(WSGIServer, PadBaseServer):
 
@@ -78,7 +79,6 @@ class PadWSServer(WSGIServer, PadBaseServer):
     PadConnection = PadWSConnection
 
     def __init__(self, hostname, port):
-        Thread.__init__(self)
         PadBaseServer.__init__(self, hostname, port)
         pad_server = self
 
