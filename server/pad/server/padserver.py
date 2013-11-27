@@ -29,7 +29,6 @@ class PadBaseServer(Thread):
         self.hostname = hostname
 
     def pad_broadcast(self, rawdata, pad, broadcaster_id):
-        logging.info("Gotta send")
         for conn_id in self.connections:
             #if conn_id != broadcaster_id:
             if conn_id != broadcaster_id and self.connections[conn_id].pad == pad:
