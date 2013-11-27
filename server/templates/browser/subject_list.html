@@ -1,0 +1,20 @@
+{% extends "browser/base.html" %}
+
+{% block content %}
+	{% if subject_list %}
+	<p>
+		There are subjects...
+	</p>
+	<ul>
+		{% for subject in subject_list %}
+		<li>
+			<a href="/subject/{{ subject.id }}/">{{ subject }}</a>
+		</li>
+		{% endfor %}
+	</ul>
+	{% else %}
+	<p>
+		No subjects are available.
+	</p>
+	{% endif %}
+{% endblock %}
