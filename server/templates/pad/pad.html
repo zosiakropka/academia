@@ -1,0 +1,15 @@
+{% extends "empty.html" %}
+
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/pad/jquery-2.0.3.js"></script>
+<script src="{{ STATIC_URL }}js/libs/base64v1_0.js"></script>
+<script src="{{ STATIC_URL }}js/libs/diff-match-patch/diff_match_patch_uncompressed.js"></script>
+<script src="{{ STATIC_URL }}js/pad/sync.js"></script>
+{% endblock %}
+
+{% block body %}
+	<script>academia.pad_id = {{ note_id }};</script>
+	<div contenteditable="true" id="pad-content">
+		{{ content }}
+	</div>
+{% endblock %}

@@ -1,4 +1,4 @@
-"""@package pad.endec
+"""@package pad.server.endec
 @author: Zosia Sobocinska
 @date Nov 3, 2013
 
@@ -39,7 +39,8 @@ rejected in further processing. Those are indicated in pad.codes.CODES docs.
 Key ought to be one of keys listed in pad.codes.CODES. Custom keys are also
 proceeded, but may not be understood and handled by server.
 """
-from pad import codes
+from pad.server import codes
+import logging
 
 ## two instances of 'INFORMATION SEPARATOR ONE' (U+001F)
 UNIT_DELIMTR = 2 * u"\u001F"
@@ -63,7 +64,8 @@ def decode(record):
     """
     try:
         version = ord(record[0])
-    except Exception:
+    except TypeError:
+        logging.error(TypeError.message)
         return None
     if version == VERSION:
         data = {}
@@ -72,13 +74,18 @@ def decode(record):
             pair = unit.split(INNER_DELIMTR)
             key = None
             try:
-                key = ord(pair[0])
+                key = ord(pair[0][0])
                 key = codes.label(key)
             except Exception:  # handeled in the following if
                 pass
             if not key:
-                key = str(pair())
-            data[key] = len(pair) == 1 or pair[1].decode('base64')
+                key = str(pair[0])
+            try:
+                #data[key] = (len(pair) == 1) or pair[1].decode('base64')
+                data[key] = (len(pair) == 1) or pair[1]
+            except UnicodeError:
+                logging.error("Exception: %s" % UnicodeError)
+            #data[key] = len(pair) == 1 or pair[1]
         return data
     else:
         return None
@@ -90,5 +97,8 @@ def encode(data):
     @param{data,dict(string,string|data|boolean)} dictionary where:
     - for <b>key-value pair</b> value is string or data
     - for <b>flag key</b> value is boolean True
+    @returns string encoded according to guidelines listed in pad.endec
+    docstring.
     """
-    return chr(VERSION) + (UNIT_DELIMTR).join("%s%s%s" % (chr(codes.code(key)), "" if data[key] == True else INNER_DELIMTR, data[key].encode('base64') if data[key] != True  else "") for key in data)
+    #return chr(VERSION) + (UNIT_DELIMTR).join("%s%s%s" % (chr(codes.code(key)), "" if data[key] == True else INNER_DELIMTR, data[key].encode('base64') if data[key] != True  else "") for key in data)
+    return chr(VERSION) + (UNIT_DELIMTR).join("%s%s%s" % (chr(codes.code(key)), "" if data[key] == True else INNER_DELIMTR, data[key] if data[key] != True  else "") for key in data)
