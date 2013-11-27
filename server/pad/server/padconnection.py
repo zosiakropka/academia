@@ -6,9 +6,7 @@
 import asyncore
 from pad.server.endec import encode, decode
 import logging
-from pad.server.ws4py.server.geventserver import WebSocketWSGIHandler
 from pad.server.ws4py.websocket import WebSocket
-from asyncore import dispatcher_with_send
 
 
 class PadBaseConnection():
