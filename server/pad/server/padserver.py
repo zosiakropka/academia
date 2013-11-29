@@ -1,7 +1,8 @@
-"""@package pad.server.server
+"""@package pad.server.padserver
 @author: Zosia Sobocinska
 @date Nov 2, 2013
 """
+
 from IN import AF_INET
 from socket import SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 import asyncore
@@ -10,9 +11,10 @@ from pad.server.ws4py.server.geventserver import WSGIServer, GEventWebSocketPool
 from pad.server.ws4py.server.wsgiutils import WebSocketWSGIApplication
 from pad.server.padconnection import PadTCPConnection, PadWSConnection
 from threading import Thread
-from gevent import monkey;
-from pad.server.ws4py.websocket import WebSocket
+from gevent import monkey
+
 monkey.patch_all()
+logger = logging.getLogger('main')
 
 
 class PadBaseServer(Thread):
