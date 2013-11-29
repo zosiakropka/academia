@@ -43,7 +43,7 @@ class PadBaseConnection():
 class PadTCPConnection(asyncore.dispatcher_with_send, PadBaseConnection):
 
     #DELIMITER = u"\u001E"
-    DELIMITER = u"\u2424"
+    DELIMITER = "\n"
     CHNL = "TCPConnection"
 
     def __init__(self, sock=None, map=None):
@@ -67,9 +67,8 @@ class PadTCPConnection(asyncore.dispatcher_with_send, PadBaseConnection):
                 for record in records:
                     self.handle_message(record)
 
-    def send(self, message):
-        asyncore.dispatcher_with_send.send(message + self.DELIMITER)
-        pass
+    def send_data(self, message):
+        asyncore.dispatcher_with_send.send(self, message + self.DELIMITER)
 
 
 class PadWSConnection(WebSocket, PadBaseConnection):
