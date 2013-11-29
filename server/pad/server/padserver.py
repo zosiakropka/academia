@@ -36,8 +36,8 @@ class PadBaseServer(Thread):
 
     def start_server(self):
         logging.info("%s listening on %s:%s" % (self.CHNL, str(self.hostname), str(self.port)))
-        Thread.start(self)
         self.running = True
+        Thread.start(self)
 
     def new_connection(self, connection):
         self.connections[connection.conn_id] = connection
