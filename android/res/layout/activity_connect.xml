@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".ConnectActivity" >
+
+    <TextView
+        android:id="@+id/label_server_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/label_server_ip"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/conn_server_ip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/label_server_ip"
+        android:ems="10"
+        android:inputType="text"
+        android:text="@string/conn_server_ip" />
+
+    <TextView
+        android:id="@+id/label_server_port"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/conn_server_ip"
+        android:layout_below="@+id/conn_server_ip"
+        android:layout_marginTop="51dp"
+        android:text="@string/label_server_port"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/conn_server_port"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/conn_server_ip"
+        android:layout_below="@+id/label_server_port"
+        android:ems="10"
+        android:inputType="text"
+        android:text="@integer/conn_socketserver_port" />
+
+    <Button
+        android:id="@+id/button_connect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/conn_server_port"
+        android:layout_below="@+id/conn_server_port"
+        android:layout_marginTop="61dp"
+        android:text="@string/label_connect" />
+
+</RelativeLayout>

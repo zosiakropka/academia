@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="conn_server_ip"></string>
+    <integer name="conn_server_port">80</integer>
+    <integer name="conn_socketserver_port">5001</integer>
+</resources>

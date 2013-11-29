@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="label_server_ip">Server IP</string>
+    <string name="label_server_port">Port Number</string>
+    <string name="label_connect">Connect</string>
+
+</resources>
