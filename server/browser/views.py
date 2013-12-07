@@ -31,5 +31,5 @@ def subject_list(user, request):
 
     subjects = Subject.objects.all()
 
-    return render(request, 'browser/subject.html',
+    return render(request, 'browser/subject_list.html',
                   {'subject_list': subjects})
