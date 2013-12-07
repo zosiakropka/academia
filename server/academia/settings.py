@@ -5,11 +5,13 @@
 Django settings for Academia project.
 """
 
-from os import path
-PROJECT_DIR = path.dirname(__file__)
-print (PROJECT_DIR)
-
 DEBUG = True
+
+if DEBUG:
+    from os import path
+    PROJECT_DIR = path.dirname(__file__)
+    print (PROJECT_DIR)
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -77,10 +79,10 @@ STATIC_URL = '/static/'
 
 ## Additional locations of static files
 STATICFILES_DIRS = (
-    path.join(PROJECT_DIR, "../static"),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    path.join(PROJECT_DIR, "../static") if DEBUG else None,
 )
 
 ## List of finder classes that know how to find static files in
@@ -117,7 +119,7 @@ ROOT_URLCONF = 'academia.urls'
 WSGI_APPLICATION = 'academia.wsgi.application'
 
 TEMPLATE_DIRS = (
-    path.join(PROJECT_DIR, "../templates"),
+    path.join(PROJECT_DIR, "../templates") if DEBUG else None,
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
