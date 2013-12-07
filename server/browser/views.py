@@ -24,3 +24,12 @@ def subject_detail(user, request, subject_id):
 
     return render(request, 'browser/subject.html',
                   {'subject': subject, 'activities': activities, 'editable': ['open', 'private']})
+
+
+@authenticate
+def subject_list(user, request):
+
+    subjects = Subject.objects.all()
+
+    return render(request, 'browser/subject.html',
+                  {'subject_list': subjects})

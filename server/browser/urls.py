@@ -12,10 +12,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('')
 urlpatterns += patterns('browser.views',
-    url(r'^$',
-        ListView.as_view(
-            queryset=Subject.objects.all(),
-            context_object_name='subject_list',
-            template_name='browser/subject_list.html')),
+    url(r'^$', 'subject_list'),
     url(r'^subject/(?P<subject_id>\d+)/$', 'subject_detail'),
 )
