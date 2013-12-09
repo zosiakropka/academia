@@ -15,10 +15,14 @@ admin.autodiscover()
 urlpatterns = patterns('')
 urlpatterns += patterns('',
 
+    (r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
     url(r'^', include('browser.urls')),
     url(r'^account/', include('account.urls')),
     url(r'^pad/', include('pad.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
-    (r'^favicon\.ico$', RedirectView.as_view(url=settings.MEDIA_URL + 'static/images/favicon.ico')),
 )
+if settings.DEBUG:
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+    urlpatterns += staticfiles_urlpatterns()
+
