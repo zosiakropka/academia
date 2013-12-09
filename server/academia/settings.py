@@ -195,3 +195,5 @@ LOGGING = {
 
 ## Where to redirect unauthorized
 LOGIN_URL = "/account/signin"
+
+AUTH_PROFILE_MODULE = "account.UserProfile"
