@@ -16,12 +16,14 @@ urlpatterns = patterns('')
 urlpatterns += patterns('',
 
     (r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
-    url(r'^', include('browser.urls')),
+
     url(r'^account/', include('account.urls')),
-    url(r'^pad/', include('pad.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^', include('browser.urls')),
+    url(r'^pad/', include('pad.urls')),
 )
+
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     urlpatterns += staticfiles_urlpatterns()
