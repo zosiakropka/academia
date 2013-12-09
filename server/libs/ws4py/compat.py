@@ -15,7 +15,6 @@ import sys
 
 if sys.version_info >= (3, 0):
     py3k = True
-    from urllib.parse import urlsplit
     range = range
     unicode = str
     basestring = (bytes, str)

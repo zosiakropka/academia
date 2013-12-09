@@ -37,8 +37,8 @@ Simple usage example:
     :linenos:
 
     import cherrypy
-    from pad.server.ws4py.server.cherrypyserver import WebSocketPlugin, WebSocketTool
-    from pad.server.ws4py.websocket import EchoWebSocket
+    from ws4py.server.cherrypyserver import WebSocketPlugin, WebSocketTool
+    from ws4py.websocket import EchoWebSocket
 
     cherrypy.config.update({'server.socket_port': 9000})
     WebSocketPlugin(cherrypy.engine).subscribe()
@@ -71,13 +71,14 @@ from cherrypy import Tool
 from cherrypy.process import plugins
 from cherrypy.wsgiserver import HTTPConnection, HTTPRequest
 
-from pad.server.ws4py import WS_KEY, WS_VERSION
-from pad.server.ws4py.exc import HandshakeError
-from pad.server.ws4py.websocket import WebSocket
-from pad.server.ws4py.compat import py3k, get_connection, detach_connection
-from pad.server.ws4py.manager import WebSocketManager
+from ws4py import WS_KEY, WS_VERSION
+from ws4py.exc import HandshakeError
+from ws4py.websocket import WebSocket
+from ws4py.compat import py3k, get_connection, detach_connection
+from ws4py.manager import WebSocketManager
 
 __all__ = ['WebSocketTool', 'WebSocketPlugin']
+
 
 class WebSocketTool(Tool):
     def __init__(self):

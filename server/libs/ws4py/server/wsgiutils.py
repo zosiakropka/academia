@@ -51,10 +51,10 @@ from hashlib import sha1
 import logging
 import sys
 
-from pad.server.ws4py.websocket import WebSocket
-from pad.server.ws4py.exc import HandshakeError
-from pad.server.ws4py.compat import unicode, py3k
-from pad.server.ws4py import WS_VERSION, WS_KEY, format_addresses
+from ws4py.websocket import WebSocket
+from ws4py.exc import HandshakeError
+from ws4py.compat import unicode, py3k
+from ws4py import WS_VERSION, WS_KEY, format_addresses
 
 logger = logging.getLogger('ws4py')
 

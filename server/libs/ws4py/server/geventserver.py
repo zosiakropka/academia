@@ -7,9 +7,9 @@ Its usage is rather simple:
 .. code-block: python
 
     from gevent import monkey; monkey.patch_all()
-    from pad.server.ws4py.websocket import EchoWebSocket
-    from pad.server.ws4py.server.geventserver import WSGIServer
-    from pad.server.ws4py.server.wsgiutils import WebSocketWSGIApplication
+    from ws4py.websocket import EchoWebSocket
+    from ws4py.server.geventserver import WSGIServer
+    from ws4py.server.wsgiutils import WebSocketWSGIApplication
 
     server = WSGIServer(('localhost', 9000), WebSocketWSGIApplication(handler_cls=EchoWebSocket))
     server.serve_forever()
@@ -22,8 +22,8 @@ import gevent
 from gevent.pywsgi import WSGIHandler, WSGIServer as _WSGIServer
 from gevent.pool import Group
 
-from pad.server.ws4py import format_addresses
-from pad.server.ws4py.server.wsgiutils import WebSocketWSGIApplication
+from ws4py import format_addresses
+from ws4py.server.wsgiutils import WebSocketWSGIApplication
 
 logger = logging.getLogger('ws4py')
 
@@ -110,10 +110,10 @@ class WSGIServer(_WSGIServer):
 if __name__ == '__main__':
     import os
 
-    from pad.server.ws4py import configure_logger
+    from ws4py import configure_logger
     configure_logger()
 
-    from pad.server.ws4py.websocket import EchoWebSocket
+    from ws4py.websocket import EchoWebSocket
     server = WSGIServer(('127.0.0.1', 9000),
                         WebSocketWSGIApplication(handler_cls=EchoWebSocket))
     server.serve_forever()
