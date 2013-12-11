@@ -8,6 +8,9 @@ from django.shortcuts import get_object_or_404, render
 #from itertools import chain
 from django.db.models import Q
 from utils.decorators import authenticate
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @authenticate

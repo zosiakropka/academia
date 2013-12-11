@@ -6,6 +6,9 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.http.response import HttpResponseRedirect
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def signin(request):

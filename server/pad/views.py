@@ -7,6 +7,9 @@ from browser.models import Note, Activity
 from django.http.response import Http404
 from django.utils.timezone import now
 from utils.decorators import authenticate
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @authenticate
