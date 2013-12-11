@@ -6,8 +6,8 @@
 from browser.models import Subject
 from django.shortcuts import get_object_or_404, render
 #from itertools import chain
-from account.decorators import authenticate
 from django.db.models import Q
+from utils.decorators import authenticate
 
 
 @authenticate

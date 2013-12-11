@@ -2,11 +2,11 @@
 @author: Zosia Sobocinska
 @date Nov 2, 2013
 """
-from account.decorators import authenticate
 from django.shortcuts import get_object_or_404, render
 from browser.models import Note, Activity
 from django.http.response import Http404
 from django.utils.timezone import now
+from utils.decorators import authenticate
 
 
 @authenticate
