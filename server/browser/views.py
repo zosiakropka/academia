@@ -11,6 +11,15 @@ from django.db.models import Q
 
 
 @authenticate
+def subject_list(user, request):
+
+    subjects = Subject.objects.all()
+
+    return render(request, 'browser/subject_list.html',
+                  {'subject_list': subjects})
+
+
+@authenticate
 def subject_detail(user, request, subject_id):
 
     subject = get_object_or_404(Subject, pk=subject_id)
@@ -24,12 +33,3 @@ def subject_detail(user, request, subject_id):
 
     return render(request, 'browser/subject.html',
                   {'subject': subject, 'activities': activities, 'editable': ['open', 'private']})
-
-
-@authenticate
-def subject_list(user, request):
-
-    subjects = Subject.objects.all()
-
-    return render(request, 'browser/subject_list.html',
-                  {'subject_list': subjects})
