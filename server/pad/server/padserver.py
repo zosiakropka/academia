@@ -7,8 +7,8 @@ from IN import AF_INET
 from socket import SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 import asyncore
 import logging
-from libs.ws4py.server.geventserver import WSGIServer, GEventWebSocketPool
-from libs.ws4py.server.wsgiutils import WebSocketWSGIApplication
+from ws4py.server.geventserver import WSGIServer, GEventWebSocketPool
+from ws4py.server.wsgiutils import WebSocketWSGIApplication
 from pad.server.padconnection import PadTCPConnection, PadWSConnection
 from threading import Thread
 from gevent import monkey
@@ -95,4 +95,3 @@ class PadWSServer(WSGIServer, PadBaseServer):
 
     def run(self):
         self.serve_forever()
-

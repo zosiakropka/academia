@@ -6,7 +6,8 @@
 import asyncore
 from pad.server.endec import encode, decode
 import logging
-from libs.ws4py.websocket import WebSocket
+from ws4py.websocket import WebSocket
+
 
 class PadBaseConnection():
     CHUNK_SIZE = 1024
