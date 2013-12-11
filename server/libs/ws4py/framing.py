@@ -14,6 +14,7 @@ OPCODE_PONG = 0xa
 
 __all__ = ['Frame']
 
+
 class Frame(object):
     def __init__(self, opcode=None, body=b'', masking_key=None, fin=0, rsv1=0, rsv2=0, rsv3=0):
         """
