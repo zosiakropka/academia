@@ -11,7 +11,7 @@ class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
 
     def handle(self, *args, **options):
-        from pad.server.padserver import PadWSServer
+        from pad.server.ws.server import PadWSServer
 
         wsserver = PadWSServer("0.0.0.0", 5002)  # @todo: shouldn't be hardcoded
         wsserver.run()
