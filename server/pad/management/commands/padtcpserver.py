@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 """@package pad.management.commands.padtcpserver
 @author: Zosia Sobocinska
 @date Nov 27, 2013

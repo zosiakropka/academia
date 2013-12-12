@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 """@package pad.server.thread
 @author: Zosia Sobocinska
 @date Nov 3, 2013
