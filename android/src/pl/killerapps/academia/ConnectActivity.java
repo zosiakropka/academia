@@ -26,11 +26,9 @@ public class ConnectActivity extends Activity {
 				Intent padActivityIntent = new Intent(getApplicationContext(), PadActivity.class);
 				Bundle extras = new Bundle();
 				EditText ipEdit = (EditText)findViewById(R.id.conn_server_ip);
-				EditText portEdit = (EditText)findViewById(R.id.conn_server_port);
-				extras.putString("ip", ipEdit.toString());
-				//TODO: that weirdo produces me enormously long integers...
-				//extras.putInt("port", Integer.parseInt(portEdit.toString().replaceAll("\\D+","")));
-				extras.putInt("port", 5001);
+				EditText appPortEdit = (EditText)findViewById(R.id.conn_server_port);
+				extras.putString("ip", ipEdit.getText().toString());
+				extras.putInt("port", Integer.parseInt(appPortEdit.getText().toString()));
 				padActivityIntent.putExtras(extras);
 				startActivity(padActivityIntent);
 			}
