@@ -34,15 +34,16 @@
 	var VERSION = "\u0001";
 	
 	function decode(message) {
-		version = message[0];
-		if (version == VERSION) {
-			data = {};
-			units = message.substring(1, message.length).split(UNIT_DELIMTR);
-			for (var i in units) {
-				pair = units[i].split(INNER_DELIMTR);
-				var key = getKey(codes, pair[0]) || pair[0];
-				data[key] = (pair.length == 1) || pair[1];
-				//data[key] = (pair.length == 1) || B64.decode(pair[1]);
+		data = {};
+		units = message.split(UNIT_DELIMTR);
+		for (var i in units) {
+			pair = units[i].split(INNER_DELIMTR);
+			var key = getKey(codes, pair[0]) || pair[0];
+			//data[key] = (pair.length == 1) || pair[1];
+			try {
+				data[key] = (pair.length == 1) || B64.decode(pair[1].replace(/\n/g, ''));
+			} catch (err) {
+				console.error(err);
 			}
 		}
 		return data;
@@ -50,9 +51,9 @@
 	function encode(data) {
 		units = [];
 		for (var key in data) {
-			units.push(codes[key] + ((data[key] == true)?"":(INNER_DELIMTR + data[key])));
+			units.push(codes[key] + ((data[key] == true)?"":(INNER_DELIMTR + B64.encode(data[key]))));
 		}
-		return VERSION + units.join(UNIT_DELIMTR);
+		return units.join(UNIT_DELIMTR);
 	}
 	padContentElement = document.getElementById('pad-content');
 	var dmp = new diff_match_patch();

@@ -1,5 +1,6 @@
 package pl.killerapps.academia.pad;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,43 +23,60 @@ public class PadMessage {
 
 	public static final char VERSION = '\u0001';
 
-	private HashMap<String, String> data;
+	private HashMap<String, String> strings;
 	private Set<String> flags;
+	private HashMap<String, byte[]> data;
 
 	public PadMessage() {
-	        data = new HashMap<String, String>();
-	        flags = new HashSet<String>();
+        strings = new HashMap<String, String>();
+        data = new HashMap<String, byte[]>();
+        flags = new HashSet<String>();
 	}
 	public PadMessage(char[] raw) {
 		decode (new String(raw));
 	}
 
-	public void set(String key, String value) {
-	        data.put(key, value);
+	public void set_string(String key, String value) {
+        strings.put(key, value);
 	}
-	public void set(String key) {
+	public void set_data(String key, byte[] bytes) {
+        data.put(key, bytes);
+	}
+	public void set_flag(String key) {
 	        flags.add(key);
 	}
-	public String get(String key) {
-	        return data.get(key);
-	}
-	public boolean test(String key) {
+	public String get_string(String key) {
+        return strings.get(key);
+}
+	public byte[] get_data(String key) {
+        return data.get(key);
+}
+	public boolean has_flag(String key) {
 	        return flags.contains(key);
 	}
-	public boolean test(Collection<String> keys) {
+	public boolean has_flags(Collection<String> keys) {
 	        return flags.containsAll(keys);
+	}
+	public boolean contains(String key) {
+		return strings.containsKey(key) || data.containsKey(key) || flags.contains(key);
 	}
 
 	public String encode() {
-        Character ver = Character.toChars(VERSION)[0];
         Set<String> msgs = new HashSet<String>();
 	
-	    for (Iterator<Entry<String, String>> i = data.entrySet().iterator(); i.hasNext();) {
+	    for (Iterator<Entry<String, String>> i = strings.entrySet().iterator(); i.hasNext();) {
 	        HashMap.Entry<String, String> entry = (HashMap.Entry<String, String>)i.next();
 	
 	        String code = CODES.stringCode((entry.getKey()));
-	        String value = entry.getValue();
-	        //String value = Base64.encodeToString(entry.getValue().getBytes(), Base64.DEFAULT);
+	        String value = Base64.encodeToString(entry.getValue().getBytes(), Base64.DEFAULT);
+	        msgs.add(code + INNER_DELIMITER + value);
+	        i.remove();
+	    }
+	    for (Iterator<Entry<String, byte[]>> i = data.entrySet().iterator(); i.hasNext();) {
+	        HashMap.Entry<String, byte[]> entry = (HashMap.Entry<String, byte[]>)i.next();
+	
+	        String code = CODES.stringCode((entry.getKey()));
+	        String value = Base64.encodeToString(entry.getValue(), Base64.DEFAULT);
 	        msgs.add(code + INNER_DELIMITER + value);
 	        i.remove();
 	    }
@@ -67,35 +85,35 @@ public class PadMessage {
 	        msgs.add(flag);
 	        i.remove();
 	    }
-	    return ver.toString() + TextUtils.join(UNIT_DELIMITER, msgs).toString();
+	    //return Base64.encodeToString(TextUtils.join(UNIT_DELIMITER, msgs).toString().getBytes(), Base64.DEFAULT);
+	    return TextUtils.join(UNIT_DELIMITER, msgs).toString();
 	}
 	
 	
 	
 	public void decode(String message) { // It works!
 		//message = Base64.encodeToString(message.getBytes(), Base64.DEFAULT); /* Decode all Base64 */
-		Log.i("PadSocket", message);
-        int ver = message.charAt(0);
-        if (ver == VERSION) {
-                String[] units = TextUtils.split(message.substring(1), UNIT_DELIMITER);
-                message.replace(UNIT_DELIMITER, "---");
-                for (String unit: units) {
-                        String[] pair = TextUtils.split(unit, INNER_DELIMITER);
-                        String key = pair[0];
-                        String keyLabel = null;
-                        if (key.length() == 1) {
-                                keyLabel = CODES.label((int) key.charAt(0));
-                        } else {
-                            keyLabel = key;
-                            // keyLabel = Base64.decode(key, Base64.DEFAULT).toString();
-                        }
-                        if (pair.length == 1) {
-                                set(keyLabel);
-                        } else {
-                            String value = pair[1];
-                            //String value = Base64.decode(pair[1], Base64.DEFAULT).toString(); /* Decode each value Base64 */
-                            set(keyLabel, value);
-                        }
+        String[] units = TextUtils.split(message, UNIT_DELIMITER);
+        message.replace(UNIT_DELIMITER, "---");
+        for (String unit: units) {
+                String[] pair = TextUtils.split(unit, INNER_DELIMITER);
+                String key = pair[0];
+                String keyLabel = null;
+                keyLabel = CODES.label((int) key.charAt(0));
+                if (pair.length == 1) {
+                        set_flag(keyLabel);
+                } else {
+                    //String value = pair[1];
+                	byte[] bytes = Base64.decode(pair[1], Base64.DEFAULT);
+                    String value;
+					try {
+						value = new String(bytes, "UTF-8");
+						set_string(keyLabel, value);
+					} catch (UnsupportedEncodingException e) {
+						Log.i("PadSocket", "Processing bytes.");
+						set_data(keyLabel, bytes);
+					}
+                    
                 }
         }
 	}

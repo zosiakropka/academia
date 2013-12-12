@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 """@package pad.server.tcp.connection
 @author: Zosia Sobocinska
 @date Dec 11, 2013
@@ -10,9 +11,7 @@ from pad.server.endec import encode
 
 class PadTCPConnection(asyncore.dispatcher_with_send, PadBaseConnection):
 
-    #DELIMITER = u"\u001E"
-    #DELIMITER = u"\u2424"
-    DELIMITER = "\n"
+    DELIMITER = u"\u001E"
     CHNL = "TCPConnection"
 
     def __init__(self, sock=None, map=None):
@@ -20,7 +19,7 @@ class PadTCPConnection(asyncore.dispatcher_with_send, PadBaseConnection):
         asyncore.dispatcher_with_send.__init__(self, sock=sock, map=map)
         sock.setblocking(0)
         self.buffer = ""
-        self.send_data(encode({"purpose": "tak sobie", "message": "tresciwa"}))
+        self.send_data(encode({"purpose": u"test", "message": u"ęółąśłżźćń"}))
 
     def handle_read(self):
         data = None
@@ -38,4 +37,4 @@ class PadTCPConnection(asyncore.dispatcher_with_send, PadBaseConnection):
                     self.handle_message(record)
 
     def send_data(self, message):
-        asyncore.dispatcher_with_send.send(self, message + self.DELIMITER)
+        asyncore.dispatcher_with_send.send(self, "%s%s%s" % (message, self.DELIMITER, '\n'))

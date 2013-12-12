@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 """@package pad.server.endec
 @author: Zosia Sobocinska
 @date Nov 3, 2013
@@ -62,33 +64,26 @@ def decode(record):
     - for <b>flag key</b> value is boolean True.
     @return{None} if decode fails (eg. unsupported version provided)
     """
-    try:
-        version = ord(record[0])
-    except TypeError:
-        logging.error(TypeError.message)
-        return None
-    if version == VERSION:
-        data = {}
-        units = {unit for unit in record[1:-1].split(UNIT_DELIMTR)}
-        for unit in units:
-            pair = unit.split(INNER_DELIMTR)
-            key = None
-            try:
-                key = ord(pair[0][0])
-                key = codes.label(key)
-            except Exception:  # handeled in the following if
-                pass
-            if not key:
-                key = str(pair[0])
-            try:
-                #data[key] = (len(pair) == 1) or pair[1].decode('base64')
-                data[key] = (len(pair) == 1) or pair[1]
-            except UnicodeError:
-                logging.error("Exception: %s" % UnicodeError)
-            #data[key] = len(pair) == 1 or pair[1]
-        return data
-    else:
-        return None
+    data = {}
+    units = {unit for unit in record.split(UNIT_DELIMTR)}
+    for unit in units:
+        print "my unit: %s" % unit
+        pair = unit.split(INNER_DELIMTR)
+        key = None
+        try:
+            key = ord(pair[0][0])
+            key = codes.label(key)
+        except Exception:  # handeled in the following if
+            pass
+        if not key:
+            key = str(pair[0])
+        try:
+            data[key] = (len(pair) == 1) or pair[1].decode('base64')
+            #data[key] = (len(pair) == 1) or pair[1]
+        except UnicodeError:
+            logging.error("Exception: %s" % UnicodeError)
+        #data[key] = len(pair) == 1 or pair[1]
+    return data
 
 
 def encode(data):
@@ -97,8 +92,7 @@ def encode(data):
     @param{data,dict(string,string|data|boolean)} dictionary where:
     - for <b>key-value pair</b> value is string or data
     - for <b>flag key</b> value is boolean True
-    @returns string encoded according to guidelines listed in pad.endec
+    @returns{string} string encoded according to guidelines listed in pad.endec
     docstring.
     """
-    #return chr(VERSION) + (UNIT_DELIMTR).join("%s%s%s" % (chr(codes.code(key)), "" if data[key] == True else INNER_DELIMTR, data[key].encode('base64') if data[key] != True  else "") for key in data)
-    return chr(VERSION) + (UNIT_DELIMTR).join("%s%s%s" % (chr(codes.code(key)), "" if data[key] == True else INNER_DELIMTR, data[key] if data[key] != True  else "") for key in data)
+    return (UNIT_DELIMTR).join("%s%s%s" % (unichr(codes.code(key)), u"" if data[key] == True else INNER_DELIMTR, unicode(data[key]).encode('utf-8').encode('base64') if data[key] != True  else u"") for key in data)

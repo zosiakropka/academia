@@ -27,7 +27,11 @@ public class PadMessageCodes {
 	public String labelByChar(Character code) {
 	        return label(Character.getNumericValue(code));
 	}
-	// @returns code of the msg label; null for absent label 
+	/**
+	 * 
+	 * @param label
+	 * @return code of the msg label; null for absent label
+	 */
 	public Integer code (String label) {
 	        return CODES.get(label);
 	}
