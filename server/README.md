@@ -10,6 +10,7 @@ Requirements
 
 ### Python packages
 
+- python-django
 - python-gevent
 - python-cherrypy
 
