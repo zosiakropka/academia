@@ -12,34 +12,35 @@ message encoded by pad.endec.encode() may require further encapsulation
 processing before sending and, analogically, before decoding received message
 it may be required to decapsulate it first.
 
-Data record string sent/received via pad socket mechanism consists of single-
-character version number (version number encoded by chr(key_int) and decoded
-by ord(key_char)) followed by sequence of logical <i>units</i> joined by
-UNIT_DELIMTR characters sequence. <i>Unit</i> may be:
-- either <b>key-value</b> pair,
-- or <b>flag key</b>.
+Data record string sent/received via pad socket mechanism consists of sequence
+of logical <i>units</i> joined by UNIT_DELIMTR characters sequence.
+
+<i>Unit</i> may be:
+
+    - either <b>key-value</b> pair (value might be either string or binary data),
+    - or <b>flag key</b>.
 
 \par Key-value pair unit
-If INNER_DELIMTR char sequence is present in unit content, then we handle
+
+If INNER_DELIMTR unichr sequence is present in unit content, then we handle
 <b>key-value</b> pair. Key and value are separated by UNIT_DELIMTR. Key is
-represented as described in "Keys" paragraph. Key character/string is
-transmitted as-is, whereas value string is transmitted base64-encoded.
+represented as described in "Keys" paragraph. Key character is transmitted
+as-is, whereas value string/byte array is transmitted base64-encoded.
 
 \par Flag key unit
-If INNER_DELIMTR char sequence isn't present in unit content, then we handle
-<b>flag key</b>. Flat is interpreted by server as boolean True.
+If INNER_DELIMTR unichr sequence isn't present in unit content, then we handle
+<b>flag key</b>. Flag is interpreted by server as boolean True. Flag's
+absence should be considered boolean False.
 
 \par Keys
-Standard keys understood by server are predefined in pad.codes.CODES dict.
-It's recommended for key part to be a single code in char representation
-(key's code encoded by chr(key_int) and decoded by ord(key_char)). String
-codes may also proceeded, though.
+Keys understood by server are predefined in pad.codes.CODES dict. Key part
+needs to be a single code in UTF-8 char representation (key's code encoded
+by unichr(key_int) and decoded by ord(key_char)).
 
 There are some keys required to be present in message so that it won't be
 rejected in further processing. Those are indicated in pad.codes.CODES docs.
 
-Key ought to be one of keys listed in pad.codes.CODES. Custom keys are also
-proceeded, but may not be understood and handled by server.
+Key ought to be one of keys listed in pad.codes.CODES.
 """
 from pad.server import codes
 import logging
