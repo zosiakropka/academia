@@ -63,7 +63,7 @@ def decode(record):
     @returns{dict(string,string|data|boolean)} key-value pairs of received data;
     - for <b>key-value</b> pair value is string,
     - for <b>flag key</b> value is boolean True.
-    @return{None} if decode fails (eg. unsupported version provided)
+    @returns{None} if decode fails (eg. unsupported version provided)
     """
     data = {}
     units = {unit for unit in record.split(UNIT_DELIMTR)}
@@ -90,10 +90,10 @@ def decode(record):
 def encode(data):
     """
     Encodes dictionary to string record.
-    @param{data,dict(string,string|data|boolean)} dictionary where:
-    - for <b>key-value pair</b> value is string or data
+    @param{data,dict(string,string|byte[]|boolean)} dictionary where:
+    - for <b>key-value pair</b> value is string or byte[]
     - for <b>flag key</b> value is boolean True
-    @returns{string} string encoded according to guidelines listed in pad.endec
-    docstring.
+    @returns{string} string encoded according to specufication proposed in
+    pad.endec docstring.
     """
     return (UNIT_DELIMTR).join("%s%s%s" % (unichr(codes.code(key)), u"" if data[key] == True else INNER_DELIMTR, unicode(data[key]).encode('utf-8').encode('base64') if data[key] != True  else u"") for key in data)
