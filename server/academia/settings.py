@@ -147,15 +147,33 @@ INSTALLED_APPS = (
 #  the site admins on every HTTP 500 error when DEBUG=False.
 #  See http://docs.djangoproject.com/en/dev/topics/logging for
 #  more details on how to customize your logging configuration.
-LOGS_PATH = path.join(PROJECT_DIR, "logs/%s.log") if DEBUG else None
+LOGS_PATH = path.join(PROJECT_DIR, "../logs/%s.log") if DEBUG else None
+
+LOGS_FORMAT_JSON = """{
+  "time": "%(asctime)s",
+  "lvl": "%(levelname)s",
+  "module": "%(module)s",
+  "line": "%(lineno)s",
+  "thread": "%(thread)d",
+  "msg": "%(message)s"
+}"""
+LOGS_FORMAT_STANDARD = """[%(asctime)s] [%(levelname)s:%(module)s:%(lineno)s] %(message)s"""
+
+LOGS_DATEFORMAT = "%d/%b/%Y %H:%M:%S"
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
     'formatters': {
         'standard': {
-            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt': "%d/%b/%Y %H:%M:%S"
+            '()': 'djangocolors_formatter.DjangoColorsFormatter',
+            'format': LOGS_FORMAT_STANDARD,
+            'datefmt': LOGS_DATEFORMAT
+        },
+        'json': {
+            '()': 'djangocolors_formatter.DjangoColorsFormatter',
+            'format': LOGS_FORMAT_JSON,
+            'datefmt': LOGS_DATEFORMAT
         },
     },
     'handlers': {
@@ -169,7 +187,7 @@ LOGGING = {
             'filename': LOGS_PATH % "log",
             'maxBytes': 50000,
             'backupCount': 2,
-            'formatter': 'standard',
+            'formatter': 'json',
         },
         'console': {
             'level': 'INFO',
@@ -179,9 +197,9 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
+            'handlers': ['console', 'logfile'],
             'propagate': True,
-            'level': 'WARN',
+            'level': 'INFO',
         },
         'django.db.backends': {
             'handlers': ['console'],
