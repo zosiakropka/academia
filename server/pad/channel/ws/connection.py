@@ -1,11 +1,11 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package pad.server.ws.connection
+"""@package pad.channel.ws.connection
 @author: Zosia Sobocinska
 @date Dec 11, 2013
 """
 from ws4py.websocket import WebSocket
-from pad.server.base.connection import PadBaseConnection
+from pad.channel.base.connection import PadBaseConnection
 
 
 class PadWSConnection(WebSocket, PadBaseConnection):

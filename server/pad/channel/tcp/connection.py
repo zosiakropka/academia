@@ -1,12 +1,12 @@
 # -*- coding: UTF-8 -*-
-"""@package pad.server.tcp.connection
+"""@package pad.channel.tcp.connection
 @author: Zosia Sobocinska
 @date Dec 11, 2013
 """
 import asyncore
-from pad.server.base.connection import PadBaseConnection
+from pad.channel.base.connection import PadBaseConnection
 import logging
-from pad.server.endec import encode
+from pad.channel.endec import encode
 
 
 class PadTCPConnection(asyncore.dispatcher_with_send, PadBaseConnection):

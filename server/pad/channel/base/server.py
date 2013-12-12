@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package pad.server.base.server
+"""@package pad.channel.base.server
 @author: Zosia Sobocinska
 @date Dec 11, 2013
 """

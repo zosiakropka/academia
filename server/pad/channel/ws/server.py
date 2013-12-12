@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package pad.server.ws.server
+"""@package pad.channel.ws.server
 @author: Zosia Sobocinska
 @date Dec 11, 2013
 """
 from ws4py.server.geventserver import WSGIServer, GEventWebSocketPool
 
 from gevent import monkey
-from pad.server.base.server import PadBaseServer
-from pad.server.ws.connection import PadWSConnection
+from pad.channel.base.server import PadBaseServer
+from pad.channel.ws.connection import PadWSConnection
 from ws4py.server.wsgiutils import WebSocketWSGIApplication
 monkey.patch_all()
 

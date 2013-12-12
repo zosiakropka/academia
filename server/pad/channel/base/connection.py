@@ -1,11 +1,11 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package pad.server.base.connection
+"""@package pad.channel.base.connection
 @author: Zosia Sobocinska
 @date Dec 11, 2013
 """
 import logging
-from pad.server.endec import encode, decode
+from pad.channel.endec import encode, decode
 
 
 class PadBaseConnection():

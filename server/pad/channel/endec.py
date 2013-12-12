@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package pad.server.endec
+"""@package pad.channel.endec
 @author: Zosia Sobocinska
 @date Nov 3, 2013
 
@@ -42,7 +42,7 @@ rejected in further processing. Those are indicated in pad.codes.CODES docs.
 
 Key ought to be one of keys listed in pad.codes.CODES.
 """
-from pad.server import codes
+from pad.channel import codes
 import logging
 
 ## two instances of 'INFORMATION SEPARATOR ONE' (U+001F)

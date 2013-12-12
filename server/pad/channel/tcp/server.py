@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package pad.server.tcp.server
+"""@package pad.channel.tcp.server
 @author: Zosia Sobocinska
 @date Dec 11, 2013
 """
 import asyncore
 from IN import AF_INET
 from socket import SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
-from pad.server.base.server import PadBaseServer
-from pad.server.tcp.connection import PadTCPConnection
+from pad.channel.base.server import PadBaseServer
+from pad.channel.tcp.connection import PadTCPConnection
 
 
 class PadTCPServer(asyncore.dispatcher, PadBaseServer):
