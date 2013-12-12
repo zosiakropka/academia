@@ -3,6 +3,14 @@ Academia
 
 Academia is work-in-progress project supposed to be collaborative writing tool for students.
 
+Two major parts of the software are intended to be implemented:
+
+- [Academia server](server/README.md)
+
+- Academia Android client
+
+Implementation of non-Android clients is not entirely excluded.
+
 Credits
 --------
 
