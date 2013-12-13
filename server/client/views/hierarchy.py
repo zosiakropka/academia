@@ -33,7 +33,7 @@ def subject_detail(user, request, subject_id):
     for activity in subject.activities.all():
         activities.append({
             "activity": activity,
-            "notes": activity.notes.filter(Q(owner=request.user) | Q(access="open"))
+            "notes": activity.notes.filter(Q(owner=user) | Q(access="open"))
         })
 
     return render(request, 'client/subject.html',
