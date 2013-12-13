@@ -135,6 +135,7 @@ INSTALLED_APPS = (
     'backbone',
     'api',
     'client',
+    'pad',
 )
 
 ## A sample logging configuration. The only tangible logging
