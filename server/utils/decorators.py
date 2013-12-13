@@ -2,7 +2,7 @@
 @author Zosia Sobocinska
 @date Dec 11, 2013
 """
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from academia.settings import LOGIN_URL
 from functools import wraps
 import logging
@@ -16,6 +16,17 @@ def authenticate(fun):
             return redirect('%s/?next=%s' % (LOGIN_URL, request.path))
         else:
             return fun(user, request, *args, **kwargs)
+    return _wrapper
+
+
+def abstractor(fun):
+    @wraps(fun)
+    def _wrapper(user, request, **kwargs):
+        parameters = request.POST if request.method == 'POST' else request.GET
+        for key, val in parameters:
+            kwargs[key] = val
+        template, data = fun(user, **kwargs)
+        return render(request, template, data)
     return _wrapper
 
 
