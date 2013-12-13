@@ -4,5 +4,5 @@
 @author: Zosia Sobocinska
 @date Nov 26, 2013
 """
-from hierarchy import *
-from pad import *
+from subject import *
+from note import *
