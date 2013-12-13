@@ -1,12 +1,13 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package browser.models
+"""@package backbone.models
 @author: Zosia Sobocinska
 @date Nov 26, 2013
 """
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.fields.related import ForeignKey
 
 
 class Subject(models.Model):
@@ -19,14 +20,22 @@ class Subject(models.Model):
 
 class Activity(models.Model):
 
+    LECTURE = 'lect'
+    LABORATORIUM = 'lab'
+    PROJECT = 'proj'
+    CONVERSATORY = 'conv'
+    FOREIGN_LANGUAGE = 'lang'
+    EXERCISE = 'exer'
+
     ACTIVITY_TYPES = [
-        ('lect', "Lecture"),
-        ('lab', "Laboratorium"),
-        ('proj', "Project"),
-        ('conv', "Conversatory"),
-        ('lang', "Foreign language"),
-        ('exer', "Exercise")
+        (LECTURE, "Lecture"),
+        (LABORATORIUM, "Laboratorium"),
+        (PROJECT, "Project"),
+        (CONVERSATORY, "Conversatory"),
+        (FOREIGN_LANGUAGE, "Foreign language"),
+        (EXERCISE, "Exercise")
     ]
+
     type = models.CharField(max_length=200, choices=ACTIVITY_TYPES)
     subject = models.ForeignKey(Subject, related_name="activities")
     supervisor = models.CharField(max_length=200)
@@ -37,11 +46,16 @@ class Activity(models.Model):
 
 class Note(models.Model):
 
+    OPEN = 'open'
+    PUBLIC = 'public'
+    PRIVATE = 'private'
+
     NOTE_ACCESS = [
-        ('open', "Open"),
-        ('public', "Public"),
-        ('private', "Private"),
+        (OPEN, "Open"),
+        (PUBLIC, "Public"),
+        (PRIVATE, "Private"),
     ]
+
     access = models.CharField(max_length=10, choices=NOTE_ACCESS)
     owner = models.ForeignKey(User, related_name="notes")
     activity = models.ForeignKey(Activity, related_name="%(class)ss")
@@ -52,8 +66,15 @@ class Note(models.Model):
     content = models.TextField()
 
     class Meta:
-        #abstract = True
         ordering = ["date"]
 
     def __unicode__(self):
         return self.title or self.content[:40] + (self.content[40:] and "..")
+
+
+class Pad(models.Model):
+
+    note = ForeignKey(Note)
+
+    def __unicode__(self):
+        return "Pad"

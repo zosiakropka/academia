@@ -1,15 +1,18 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package browser.views
+"""@package backbone.views.hierarchy
 @author: Zosia Sobocinska
 @date Nov 26, 2013
 """
 
-from browser.models import Subject
+from backbone.models import Subject
 from django.shortcuts import get_object_or_404, render
 #from itertools import chain
 from django.db.models import Q
 from utils.decorators import authenticate
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @authenticate
@@ -17,7 +20,7 @@ def subject_list(user, request):
 
     subjects = Subject.objects.all()
 
-    return render(request, 'browser/subject_list.html',
+    return render(request, 'client/subject_list.html',
                   {'subject_list': subjects})
 
 
@@ -33,5 +36,5 @@ def subject_detail(user, request, subject_id):
             "notes": activity.notes.filter(Q(owner=request.user) | Q(access="open"))
         })
 
-    return render(request, 'browser/subject.html',
+    return render(request, 'client/subject.html',
                   {'subject': subject, 'activities': activities, 'editable': ['open', 'private']})
