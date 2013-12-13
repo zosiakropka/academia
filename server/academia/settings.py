@@ -162,12 +162,12 @@ LOGGING = {
     'disable_existing_loggers': True,
     'formatters': {
         'standard': {
-            '()': 'djangocolors_formatter.DjangoColorsFormatter',
+            #'()': 'djangocolors_formatter.DjangoColorsFormatter',
             'format': LOGS_FORMAT_STANDARD,
             'datefmt': LOGS_DATEFORMAT
         },
         'json': {
-            '()': 'djangocolors_formatter.DjangoColorsFormatter',
+            #'()': 'djangocolors_formatter.DjangoColorsFormatter',
             'format': LOGS_FORMAT_JSON,
             'datefmt': LOGS_DATEFORMAT
         },
