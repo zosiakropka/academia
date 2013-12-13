@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package backbone.tests
+"""@package client.tests
 @author: Zosia Sobocinska
 @date Nov 26, 2013
 
