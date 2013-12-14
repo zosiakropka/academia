@@ -27,7 +27,7 @@ def note_edit(user, note_id):
     if note.access != "open" and note.owner != user:
         raise HttpResponseUnauthorized
     else:
-        return ('pad/pad.html', {"note_id": note.id, "content": note.content})
+        return ('note/pad.html', {"note_id": note.id, "content": note.content})
 
 
 @authenticate(user=True)
@@ -38,4 +38,4 @@ def note_create(user, access_type, activity_id):
     date = now()
     note = Note(activity=activity, owner=user, date=date, access=access_type, title=str(date))
     note.save()
-    return ('pad/pad.html', {"note_id": note.id, "content": "Editable pad"})
+    return ('note/pad.html', {"note_id": note.id, "content": "Editable pad"})
