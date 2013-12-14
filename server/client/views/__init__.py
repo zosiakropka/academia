@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package backbone.views
+"""@package client.views
 @author: Zosia Sobocinska
 @date Nov 26, 2013
 """
