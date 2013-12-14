@@ -8,7 +8,8 @@ from django.shortcuts import render
 from academia.settings import LOGIN_URL
 from functools import wraps
 import logging
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseRedirect
+from django.utils import simplejson
 from utils.exceptions.response import HttpResponseUnauthorized
 
 
@@ -38,6 +39,18 @@ def abstractor(fun):
             kwargs[key] = val
         template, data = fun(user, **kwargs)
         return render(request, template, data)
+    return _wrapper
+
+
+def api(fun):
+    @wraps(fun)
+    def _wrapper(user, request, **kwargs):
+        if request.method == 'POST':
+            parameters = request.POST
+            for key, val in parameters:
+                kwargs[key] = val
+        data = fun(user, **kwargs)
+        return HttpResponse(simplejson.dumps(data), mimetype='application/json')
     return _wrapper
 
 
