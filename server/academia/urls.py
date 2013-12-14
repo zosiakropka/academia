@@ -15,13 +15,13 @@ admin.autodiscover()
 urlpatterns = patterns('')
 urlpatterns += patterns('',
 
-    (r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
-
-    url(r'^api/', include('api.urls')),
     url(r'^account/', include('account.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^api/', include('api.urls')),
+
     url(r'^', include('client.urls')),
+    (r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
 )
 
 if settings.DEBUG:

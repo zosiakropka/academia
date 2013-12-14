@@ -8,7 +8,7 @@
 	<ul>
 		{% for subject in subject_list %}
 		<li>
-			<a href="/subject/{{ subject.id }}/">{{ subject }}</a>
+			<a href="{% url "client.views.subject_browse" subject_abbr=subject.abbr %}">{{ subject }}</a>
 		</li>
 		{% endfor %}
 	</ul>
