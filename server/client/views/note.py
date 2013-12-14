@@ -17,7 +17,7 @@ from django.http.response import HttpResponseNotFound
 logger = logging.getLogger(__name__)
 
 
-@authenticate
+@authenticate(user=True)
 @abstractor
 def note_edit(user, note_id):
 
@@ -30,7 +30,7 @@ def note_edit(user, note_id):
         return ('pad/pad.html', {"note_id": note.id, "content": note.content})
 
 
-@authenticate
+@authenticate(user=True)
 @abstractor
 def note_create(user, access_type, activity_id):
 

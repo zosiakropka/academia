@@ -15,7 +15,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-@authenticate
+@authenticate(user=True)
 @abstractor
 def subject_list(user):
 
@@ -25,7 +25,7 @@ def subject_list(user):
                   {'subject_list': subjects})
 
 
-@authenticate
+@authenticate(user=True)
 @abstractor
 def subject_browse(user, subject_id):
 

@@ -9,17 +9,25 @@ from academia.settings import LOGIN_URL
 from functools import wraps
 import logging
 from django.http.response import HttpResponseRedirect
+from utils.exceptions.response import HttpResponseUnauthorized
 
 
-def authenticate(fun):
-    @wraps(fun)
-    def _wrapper(request, *args, **kwargs):
-        user = request.user
-        if not (user and user.is_authenticated()):
-            return HttpResponseRedirect('%s/?next=%s' % (LOGIN_URL, request.path))
-        else:
-            return fun(user, request, *args, **kwargs)
-    return _wrapper
+def authenticate(user=False, admin=False):
+    def _decorator(fun):
+        allowed = {'user': user, 'admin': admin}
+
+        @wraps(fun)
+        def _wrapper(request, *args, **kwargs):
+            user = request.user
+            if not (user and user.is_authenticated()):
+                return HttpResponseRedirect('%s/?next=%s' % (LOGIN_URL, request.path))
+            else:
+                if (allowed['user']) or (allowed['admin'] and user.is_superuser):
+                    return fun(user, request, *args, **kwargs)
+                else:
+                    raise HttpResponseUnauthorized()
+        return _wrapper
+    return _decorator
 
 
 def abstractor(fun):
