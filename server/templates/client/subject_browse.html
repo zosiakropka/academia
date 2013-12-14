@@ -12,10 +12,12 @@
 			<h2>{{ activity.activity }}</h2>
 			<ul>
 				{% for note in activity.notes %}
-				{{note.date}} {{note}} {% if note.access in editable %}
-				[<a href="{% url "client.views.note_edit" note_id=note.pk %}">edit</a>]
-				{% endif %}<br/>
+				{{note.date}} {{note}}
 				[<a href="{% url "client.views.note_open" note_id=note.pk %}">open</a>]
+				{% if note.access in editable %}
+				[<a href="{% url "client.views.note_edit" note_id=note.pk %}">edit</a>]
+				{% endif %}
+				<br/>
 				{% endfor %}
 			</ul>
 		</li>
