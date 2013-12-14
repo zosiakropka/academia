@@ -14,4 +14,5 @@ admin.autodiscover()
 urlpatterns = patterns('')
 urlpatterns += patterns('account.views',
     url(r'^signin/$', 'signin'),
+    url(r'^signout/$', 'signout'),
 )

@@ -6,7 +6,7 @@
 """
 
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http.response import HttpResponseRedirect
 
 
@@ -30,3 +30,7 @@ def signin(request):
             failure = True
 
     return render(request, 'account/signin.html', {"nxt": nxt, "failure": failure})
+def signout(request):
+
+    logout(request)
+    return HttpResponseRedirect("/")
