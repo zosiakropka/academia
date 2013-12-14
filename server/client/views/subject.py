@@ -6,9 +6,7 @@
 """
 
 from backbone.models import Subject
-from django.shortcuts import get_object_or_404, render
-#from itertools import chain
-from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from utils.decorators import authenticate, abstractor
 import logging
 
@@ -27,15 +25,15 @@ def subject_list(user):
 
 @authenticate(user=True)
 @abstractor
-def subject_browse(user, subject_id):
+def subject_browse(user, subject_abbr):
 
-    subject = get_object_or_404(Subject, pk=subject_id)
+    subject = get_object_or_404(Subject, abbr=subject_abbr)
 
     activities = []
     for activity in subject.activities.all():
         activities.append({
             "activity": activity,
-            "notes": activity.get_accessible_notes()
+            "notes": activity.get_accessible_notes(user)
         })
 
     return ('client/subject_browse.html',
