@@ -15,6 +15,7 @@
 				{{note.date}} {{note}} {% if note.access in editable %}
 				[<a href="{% url "client.views.note_edit" note_id=note.pk %}">edit</a>]
 				{% endif %}<br/>
+				[<a href="{% url "client.views.note_open" note_id=note.pk %}">open</a>]
 				{% endfor %}
 			</ul>
 		</li>

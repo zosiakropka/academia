@@ -39,3 +39,16 @@ def note_create(user, access_type, subject_abbr, activity_type):
     note = Note(activity=activity, owner=user, date=date, access=access_type, title=str(date))
     note.save()
     return ('note/pad.html', {"note_id": note.id, "content": "Editable pad"})
+
+
+@authenticate(user=True)
+@abstractor
+def note_open(user, note_id):
+
+    note = Note.objects.get(pk=note_id)
+    if not note:
+        raise HttpResponseNotFound
+    if note.access not in ["open", "public"] and note.owner != user:
+        raise HttpResponseUnauthorized
+    else:
+        return ('note/open.html', {"note_id": note.id, "content": note.content})
