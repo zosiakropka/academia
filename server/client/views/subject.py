@@ -33,7 +33,7 @@ def subject_browse(user, subject_abbr):
     for activity in subject.activities.all():
         activities.append({
             "activity": activity,
-            "notes": activity.get_accessible_notes(user)
+            "notes": activity.get_accessible_notes(user=user)
         })
 
     return ('client/subject_browse.html',
