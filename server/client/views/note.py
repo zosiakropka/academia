@@ -5,12 +5,11 @@
 @date Nov 2, 2013
 """
 from django.shortcuts import get_object_or_404
-from backbone.models import Note, Activity
+from backbone.models import Note, Activity, Subject
 from django.utils.timezone import now
 from utils.decorators import authenticate, abstractor
 import logging
 from utils.exceptions.response import HttpResponseUnauthorized
-from django.db.models import Q
 from django.http.response import HttpResponseNotFound
 
 
@@ -32,9 +31,10 @@ def note_edit(user, note_id):
 
 @authenticate(user=True)
 @abstractor
-def note_create(user, access_type, activity_id):
+def note_create(user, access_type, subject_abbr, activity_type):
 
-    activity = get_object_or_404(Activity, pk=activity_id)
+    subject = Subject.objects.get(abbr=subject_abbr)
+    activity = get_object_or_404(Activity, type=activity_type, subject=subject)
     date = now()
     note = Note(activity=activity, owner=user, date=date, access=access_type, title=str(date))
     note.save()
