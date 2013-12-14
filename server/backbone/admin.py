@@ -6,9 +6,8 @@
 """
 
 from django.contrib import admin
-from backbone.models import Subject, Activity, Note, Pad
+from backbone.models import Subject, Activity, Note
 
 admin.site.register(Activity)
 admin.site.register(Subject)
 admin.site.register(Note)
-admin.site.register(Pad)

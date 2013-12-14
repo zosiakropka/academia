@@ -4,10 +4,8 @@
 @author: Zosia Sobocinska
 @date Nov 26, 2013
 """
-
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.fields.related import ForeignKey
 from django.db.models import Q
 
 
@@ -74,11 +72,3 @@ class Note(models.Model):
 
     def __unicode__(self):
         return self.title or self.content[:40] + (self.content[40:] and "..")
-
-
-class Pad(models.Model):
-
-    note = ForeignKey(Note)
-
-    def __unicode__(self):
-        return "Pad"
