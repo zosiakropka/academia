@@ -10,6 +10,8 @@ from django.utils.timezone import now
 from utils.decorators import authenticate, abstractor
 import logging
 from utils.exceptions.response import HttpResponseUnauthorized
+from django.db.models import Q
+from django.http.response import HttpResponseNotFound
 
 
 logger = logging.getLogger(__name__)
@@ -19,11 +21,13 @@ logger = logging.getLogger(__name__)
 @abstractor
 def note_edit(user, note_id):
 
-    note = get_object_or_404(Note, pk=note_id)
-    if note.access == "open" or note.owner == user:
-        return ('pad/pad.html', {"note_id": note.id, "content": note.content})
-    else:
+    note = Note.objects.get(Q(owner=user) | Q(access="open") | Q(access="public") & Q(pk=note_id))
+    if not note:
+        raise HttpResponseNotFound
+    if note.access != "open" and note.owner != user:
         raise HttpResponseUnauthorized
+    else:
+        return ('pad/pad.html', {"note_id": note.id, "content": note.content})
 
 
 @authenticate
@@ -31,6 +35,7 @@ def note_edit(user, note_id):
 def note_create(user, access_type, activity_id):
 
     activity = get_object_or_404(Activity, pk=activity_id)
-    note = Note(activity=activity, owner=user, date=now(), access=access_type, title="new")
+    date = now()
+    note = Note(activity=activity, owner=user, date=date, access=access_type, title=str(date))
     note.save()
     return ('pad/pad.html', {"note_id": note.id, "content": "Editable pad"})
