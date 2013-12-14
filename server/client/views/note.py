@@ -9,8 +9,7 @@ from backbone.models import Note, Activity, Subject
 from django.utils.timezone import now
 from utils.decorators import authenticate, abstractor
 import logging
-from utils.exceptions.response import HttpResponseUnauthorized
-from django.http.response import HttpResponseNotFound
+from django.core.exceptions import PermissionDenied
 
 
 logger = logging.getLogger(__name__)
@@ -24,7 +23,7 @@ def note_edit(user, note_id):
     if not note:
         raise HttpResponseNotFound
     if note.access != "open" and note.owner != user:
-        raise HttpResponseUnauthorized
+        raise PermissionDenied()
     else:
         return ('note/pad.html', {"note_id": note.id, "content": note.content})
 
@@ -49,6 +48,6 @@ def note_open(user, note_id):
     if not note:
         raise HttpResponseNotFound
     if note.access not in ["open", "public"] and note.owner != user:
-        raise HttpResponseUnauthorized
+        raise PermissionDenied()
     else:
         return ('note/open.html', {"note_id": note.id, "content": note.content})

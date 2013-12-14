@@ -10,7 +10,7 @@ from functools import wraps
 import logging
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson
-from utils.exceptions.response import HttpResponseUnauthorized
+from django.core.exceptions import PermissionDenied
 
 
 def authenticate(user=False, admin=False):
@@ -26,7 +26,7 @@ def authenticate(user=False, admin=False):
                 if (allowed['user']) or (allowed['admin'] and user.is_superuser):
                     return fun(user, request, *args, **kwargs)
                 else:
-                    raise HttpResponseUnauthorized()
+                    raise PermissionDenied()
         return _wrapper
     return _decorator
 
