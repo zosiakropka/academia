@@ -68,7 +68,6 @@ def decode(record):
     data = {}
     units = {unit for unit in record.split(UNIT_DELIMTR)}
     for unit in units:
-        print "my unit: %s" % unit
         pair = unit.split(INNER_DELIMTR)
         key = None
         try:
