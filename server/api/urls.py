@@ -12,6 +12,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('')
 urlpatterns += patterns('api.views',
-    url(r'^note/get/(?P<note_id>\d+)/$', 'note_open'),
-    url(r'^note/create/(?P<access_type>[-\w]+)/activity/(?P<activity_id>\d+)/$', 'note_create'),
+    url(r'^note/list/$', 'note_list'),
+    url(r'^note/get/$', 'note_get'),
+    url(r'^note/create/$', 'note_create'),
 )
