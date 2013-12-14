@@ -37,7 +37,11 @@ def abstractor(fun):
         parameters = request.POST if request.method == 'POST' else request.GET
         for key, val in parameters:
             kwargs[key] = val
-        template, data = fun(user, **kwargs)
+        result = fun(user, **kwargs)
+        try:
+            template, data = result
+        except:
+            return result
         return render(request, template, data)
     return _wrapper
 
