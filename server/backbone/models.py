@@ -7,14 +7,23 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Q
+import re
 
 
 class Subject(models.Model):
     name = models.CharField(max_length=200)
-    abbr = models.CharField(max_length=10)
+    abbr = models.SlugField(max_length=10, blank=True, null=False)
 
     def __unicode__(self):
         return self.name
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.abbr:
+            self.abbr = ''.join(map(lambda x: '' if len(x) == 0 else x[0],
+                                    re.split('\W', self.name, flags=re.UNICODE)))
+
+        return models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using,
+                                 update_fields=update_fields)
 
 
 class Activity(models.Model):
