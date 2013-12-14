@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 @abstractor
 def note_edit(user, note_id):
 
-    note = Note.objects.get(Q(owner=user) | Q(access="open") | Q(access="public") & Q(pk=note_id))
+    note = Note.objects.get(pk=note_id)
     if not note:
         raise HttpResponseNotFound
     if note.access != "open" and note.owner != user:
