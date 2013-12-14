@@ -4,10 +4,11 @@
 @author Zosia Sobocinska
 @date Dec 11, 2013
 """
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from academia.settings import LOGIN_URL
 from functools import wraps
 import logging
+from django.http.response import HttpResponseRedirect
 
 
 def authenticate(fun):
@@ -15,7 +16,7 @@ def authenticate(fun):
     def _wrapper(request, *args, **kwargs):
         user = request.user
         if not (user and user.is_authenticated()):
-            return redirect('%s/?next=%s' % (LOGIN_URL, request.path))
+            return HttpResponseRedirect('%s/?next=%s' % (LOGIN_URL, request.path))
         else:
             return fun(user, request, *args, **kwargs)
     return _wrapper
