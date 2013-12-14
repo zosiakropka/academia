@@ -19,9 +19,7 @@ logger = logging.getLogger(__name__)
 @abstractor
 def note_edit(user, note_id):
 
-    note = Note.objects.get(pk=note_id)
-    if not note:
-        raise HttpResponseNotFound
+    note = get_object_or_404(Note, pk=note_id)
     if note.access != "open" and note.owner != user:
         raise PermissionDenied()
     else:
@@ -44,9 +42,7 @@ def note_create(user, access_type, subject_abbr, activity_type):
 @abstractor
 def note_open(user, note_id):
 
-    note = Note.objects.get(pk=note_id)
-    if not note:
-        raise HttpResponseNotFound
+    note = get_object_or_404(Note, pk=note_id)
     if note.access not in ["open", "public"] and note.owner != user:
         raise PermissionDenied()
     else:
