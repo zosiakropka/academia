@@ -13,7 +13,6 @@ Requirements
 - python-django
 - python-gevent
 - python-cherrypy
-```
 
 ### Academia server settings
 
@@ -42,7 +41,7 @@ To create required tables in database:
 - navigate to academia/server directory:
 
 ```bash
-    cd academia/server
+cd academia/server
 ```
 
 - run:
@@ -70,7 +69,7 @@ Currently only launching Django-build-in development server is described. In the
 - navigate to academia/server directory:
 
 ```bash
-    cd academia/server
+cd academia/server
 ```
 
 - add current dir to `$PYTHONPATH`:
