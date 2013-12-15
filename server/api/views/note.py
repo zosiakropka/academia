@@ -19,8 +19,7 @@ def note_create(user):
 def note_list(user, subject_abbr=None, activity_type=None):
 
     subjects = Subject.objects.all()
-    subjects = query_to_dict(subjects)
-    print subjects
+    subjects = query_to_dict(subjects, exclude_relations={'activities': {'notes': {'content': None}}})
     return JsonEncoder().encode(subjects)
 
 
