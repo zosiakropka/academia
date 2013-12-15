@@ -28,6 +28,26 @@ class Subject(models.Model):
                                  update_fields=update_fields)
 
 
+class Supervisor(models.Model):
+
+    firstnames = models.CharField(max_length=50)
+    lastname = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=30, unique=True, blank=False)
+
+    def save(self, force_insert=False, force_update=False, using=None,
+        update_fields=None):
+        if not self.slug:
+            slug = slugify(''.join(name[0] for name in self.firstnames.split(' ') + self.lastname))
+            try:  # in case such a slug already exists
+                Supervisor.objects.get(slug=slug)
+                slug += utimestamp()
+            except:
+                pass
+            self.slug = slug
+        return models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using,
+                                 update_fields=update_fields)
+
+
 class Activity(models.Model):
 
     LECTURE = 'lect'
@@ -48,7 +68,7 @@ class Activity(models.Model):
 
     type = models.CharField(max_length=200, choices=ACTIVITY_TYPES)
     subject = models.ForeignKey(Subject, related_name="activities")
-    supervisor = models.CharField(max_length=200)
+    supervisor = models.ForeignKey(Supervisor, related_name="acitivities")
 
     def __unicode__(self):
         return '[' + self.subject.abbr + '] ' + dict(self.ACTIVITY_TYPES)[self.type] + ' (' + self.supervisor + ')'
