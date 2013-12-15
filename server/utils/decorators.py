@@ -49,11 +49,8 @@ def abstractor(fun):
 def api(fun):
     @wraps(fun)
     def _wrapper(user, request, **kwargs):
-        if request.method == 'POST':
-            parameters = request.POST
-            for key, val in parameters:
-                kwargs[key] = val
-        data = fun(user, **kwargs)
+        parameters = request.POST if request.method == 'POST' else request.GET
+        data = fun(user, **dict(parameters))
         return HttpResponse(simplejson.dumps(data), mimetype='application/json')
     return _wrapper
 
