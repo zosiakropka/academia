@@ -95,4 +95,5 @@ def encode(data):
     @returns{string} string encoded according to specufication proposed in
     pad.endec docstring.
     """
-    return (UNIT_DELIMTR).join("%s%s%s" % (unichr(codes.code(key)), u"" if data[key] == True else INNER_DELIMTR, unicode(data[key]).encode('utf-8').encode('base64') if data[key] != True  else u"") for key in data)
+    return (UNIT_DELIMTR).join("%s%s%s" % (unichr(codes.code(key)), u"" if data[key] == True else INNER_DELIMTR,
+                unicode(data[key]).encode('utf-8').encode('base64') if data[key] != True  else u"") for key in data)
