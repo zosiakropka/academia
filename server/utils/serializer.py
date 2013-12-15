@@ -60,7 +60,7 @@ def model_to_dict(obj, exclude_types=['AutoField', 'ForeignKey', 'OneToOneField'
     return tree
 
 
-def query_to_dict(query, exclude_types=None, exclude_relations={}):
+def query_to_list(query, exclude_types=None, exclude_relations=None):
     tree = []
     for entity in query:
         tree.append(model_to_dict(entity, exclude_relations=exclude_relations))
