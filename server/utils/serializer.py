@@ -18,7 +18,6 @@ def model_to_dict(obj, exclude_types=['AutoField', 'ForeignKey', 'OneToOneField'
     tree = {}
     tree['pk'] = obj.pk
     for field_name in obj._meta.get_all_field_names():
-        print "%s: %s" % (field_name, exclude_relations)
         if (field_name not in exclude_relations or exclude_relations[field_name]):
             if field_name in exclude_relations:
                 exclude_subrelations = exclude_relations[field_name]
