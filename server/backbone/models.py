@@ -87,7 +87,7 @@ class Note(models.Model):
         if not self.title:
             self.title = u"no title"
         if not self.slug:
-            slug = slugify(self.title) + self.pk
+            slug = slugify(self.title + utimestamp())
             self.slug = slug
         return models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using,
                                  update_fields=update_fields)
