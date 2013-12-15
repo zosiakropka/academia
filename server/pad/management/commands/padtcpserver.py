@@ -9,8 +9,8 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    args = '<poll_id poll_id ...>'
-    help = 'Closes the specified poll for voting'
+    args = ''
+    help = 'Runs TCP server to enable real time collaboration via TCP sockets'
 
     def handle(self, *args, **options):
         from pad.channel.tcp.server import PadTCPServer
