@@ -72,7 +72,7 @@ class Note(models.Model):
     owner = models.ForeignKey(User, related_name="notes")
     activity = models.ForeignKey(Activity, related_name="notes")
 
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True, editable=False)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=100, unique=True)
     content = models.TextField()
