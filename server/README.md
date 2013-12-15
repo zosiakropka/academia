@@ -13,6 +13,17 @@ Requirements
 - python-django
 - python-gevent
 - python-cherrypy
+```
+
+### Academia server settings
+
+Adjust settings in academia/server/settings.py
+
+Especially `DATABASES`, `SECRET_KEY` and `LOGS_PATH` vars should concern you.
+
+**Database** You need to provide configuration of the academia database you created / are willing to create.
+**Secret key** Unique key for a specific app installation for cryptographic signing.
+**Logs** By default Academia development server will try to store logs in `academia/logs` directory, which doesn't exist. You should either create that directory, or provide more adequate (existing) path.
 
 ### Database
 
@@ -24,17 +35,27 @@ needs to be created, eg.:
 CREATE USER 'academia'@'localhost' IDENTIFIED BY 'password';
 CREATE DATABASE academia DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 GRANT ALL ON academia.* TO 'academia'@'localhost';
+
+To create required tables in database:
+
+- navigate to academia/server directory:
+
+```bash
+    cd academia/server
 ```
 
-### Academia server settings
+- run:
 
-Adjust settings in academia/server/settings.py
+```bash
+python manage.py syncdb
+```
 
-Especially `DATABASES`, `SECRET_KEY` and `LOGS_PATH` vars should concern you.
+- if you need example data, run:
 
-**Database** You need to provide configuration of the academia database you created.
-**Secret key** Unique key for a specific app installation for cryptographic signing.
-**Logs** By default Academia development server will try to store logs in `academia/logs` directory, which doesn't exist. You should either create that directory, or provide more adequate (existing) path.
+
+```bash
+python manage.py exampledb
+```
 
 Launch app
 ----------
@@ -47,7 +68,9 @@ Currently only launching Django-build-in development server is described. In the
 
 - navigate to academia/server directory:
 
+```bash
     cd academia/server
+```
 
 - add current dir to `$PYTHONPATH`:
 
