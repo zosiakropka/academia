@@ -21,8 +21,8 @@ class Subject(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if not self.abbr:
-            self.abbr = ''.join(map(lambda x: '' if len(x) == 0 else x[0],
-                                    re.split('\W', self.name, flags=re.UNICODE)))
+            self.abbr = (''.join(map(lambda x: '' if len(x) == 0 else x[0],
+                                    re.split('\W', self.name, flags=re.UNICODE))))[0:10]
 
         return models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using,
                                  update_fields=update_fields)
@@ -30,14 +30,14 @@ class Subject(models.Model):
 
 class Supervisor(models.Model):
 
-    firstnames = models.CharField(max_length=50)
+    firstname = models.CharField(max_length=50)
     lastname = models.CharField(max_length=50)
     slug = models.SlugField(max_length=30, unique=True, blank=False)
 
     def save(self, force_insert=False, force_update=False, using=None,
         update_fields=None):
         if not self.slug:
-            slug = slugify(''.join(name[0] for name in self.firstnames.split(' ') + self.lastname))
+            slug = slugify(self.firstname[0] + self.lastname)
             try:  # in case such a slug already exists
                 Supervisor.objects.get(slug=slug)
                 slug += utimestamp()
@@ -46,6 +46,9 @@ class Supervisor(models.Model):
             self.slug = slug
         return models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using,
                                  update_fields=update_fields)
+
+    def __unicode__(self):
+        return "%s %s" % (self.firstname, self.lastname)
 
 
 class Activity(models.Model):
@@ -71,7 +74,7 @@ class Activity(models.Model):
     supervisor = models.ForeignKey(Supervisor, related_name="acitivities")
 
     def __unicode__(self):
-        return '[' + self.subject.abbr + '] ' + dict(self.ACTIVITY_TYPES)[self.type] + ' (' + self.supervisor + ')'
+        return '[' + self.subject.abbr + '] ' + dict(self.ACTIVITY_TYPES)[self.type] + ' (' + unicode(self.supervisor) + ')'
 
     def get_accessible_notes(self, user):
         return self.notes.filter(Q(owner=user) | Q(access="open") | Q(access="public"))
@@ -108,8 +111,7 @@ class Note(models.Model):
         if not self.title:
             self.title = u"no title"
         if not self.slug:
-            slug = slugify(self.title + utimestamp())
-            self.slug = slug
+            self.slug = slugify(self.title + utimestamp())[0:100]
         return models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using,
                                  update_fields=update_fields)
 
