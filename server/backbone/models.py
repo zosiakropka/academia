@@ -12,8 +12,8 @@ from django.utils.text import slugify
 
 
 class Subject(models.Model):
-    name = models.CharField(max_length=200)
-    abbr = models.SlugField(max_length=10, blank=True, null=False)
+    name = models.CharField(max_length=200, unique=True)
+    abbr = models.SlugField(max_length=10, blank=True, null=False, unique=True)
 
     def __unicode__(self):
         return self.name
