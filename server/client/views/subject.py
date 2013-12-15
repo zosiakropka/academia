@@ -19,7 +19,7 @@ def subject_list(user):
 
     subjects = Subject.objects.all()
 
-    return ('client/subject_list.html',
+    return ('client/subject/list.html',
                   {'subject_list': subjects})
 
 
@@ -36,5 +36,5 @@ def subject_browse(user, subject_abbr):
             "notes": activity.get_accessible_notes(user=user)
         })
 
-    return ('client/subject_browse.html',
+    return ('client/subject/browse.html',
                   {'subject': subject, 'activities': activities, 'user': user})

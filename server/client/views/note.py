@@ -23,7 +23,7 @@ def note_edit(user, note_id):
     if note.access != "open" and note.owner != user:
         raise PermissionDenied()
     else:
-        return ('note/pad.html', {"note_id": note.id, "content": note.content})
+        return ('client/note/pad.html', {"note_id": note.id, "content": note.content})
 
 
 @authenticate(user=True)
@@ -35,7 +35,7 @@ def note_create(user, access_type, subject_abbr, activity_type):
     date = now()
     note = Note(activity=activity, owner=user, date=date, access=access_type)
     note.save()
-    return ('note/pad.html', {"note_id": note.id, "content": "Editable pad"})
+    return ('client/note/pad.html', {"note_id": note.id, "content": "Editable pad"})
 
 
 @authenticate(user=True)
@@ -46,4 +46,4 @@ def note_open(user, note_id):
     if note.access not in ["open", "public"] and note.owner != user:
         raise PermissionDenied()
     else:
-        return ('note/open.html', {"note_id": note.id, "content": note.content})
+        return ('client/note/open.html', {"note_id": note.id, "content": note.content})
