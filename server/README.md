@@ -35,6 +35,7 @@ needs to be created, eg.:
 CREATE USER 'academia'@'localhost' IDENTIFIED BY 'password';
 CREATE DATABASE academia DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 GRANT ALL ON academia.* TO 'academia'@'localhost';
+```
 
 To create required tables in database:
 
