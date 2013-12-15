@@ -8,6 +8,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Q
 import re
+from django.utils.text import slugify
 
 
 class Subject(models.Model):
@@ -73,7 +74,7 @@ class Note(models.Model):
 
     date = models.DateField()
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True)
     content = models.TextField()
 
     class Meta:
@@ -81,3 +82,12 @@ class Note(models.Model):
 
     def __unicode__(self):
         return self.title or self.content[:40] + (self.content[40:] and "..")
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.title:
+            self.title = u"no title"
+        if not self.slug:
+            slug = slugify(self.title) + self.pk
+            self.slug = slug
+        return models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using,
+                                 update_fields=update_fields)
