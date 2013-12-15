@@ -18,3 +18,5 @@ Academia utilizes [WebSocket for Python](https://github.com/Lawouach/WebSocket-f
 
 To calculate diffs between notes versions it uses [DiffMatchPatch portable library](http://code.google.com/p/google-diff-match-patch/) 
 
+Random data for development phase is generated via [Nonsense](http://freecode.com/projects/nonsense) random text generator.
+
