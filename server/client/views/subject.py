@@ -37,4 +37,4 @@ def subject_browse(user, subject_abbr):
         })
 
     return ('client/subject_browse.html',
-                  {'subject': subject, 'activities': activities, 'editable': ['open', 'private']})
+                  {'subject': subject, 'activities': activities, 'user': user})

@@ -14,7 +14,7 @@
 				{% for note in activity.notes %}
 				{{note.date}} {{note}}
 				[<a href="{% url "client.views.note_open" note_id=note.pk %}">open</a>]
-				{% if note.access in editable %}
+				{% if note.owner == user or note.access == 'open' %}
 				[<a href="{% url "client.views.note_edit" note_id=note.pk %}">edit</a>]
 				{% endif %}
 				<br/>
