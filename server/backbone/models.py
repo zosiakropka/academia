@@ -37,12 +37,12 @@ class Activity(models.Model):
     EXERCISE = 'exer'
 
     ACTIVITY_TYPES = [
-        (LECTURE, "Lecture"),
-        (LABORATORIUM, "Laboratorium"),
-        (PROJECT, "Project"),
-        (CONVERSATORY, "Conversatory"),
-        (FOREIGN_LANGUAGE, "Foreign language"),
-        (EXERCISE, "Exercise")
+        (LECTURE, u"Lecture"),
+        (LABORATORIUM, u"Laboratorium"),
+        (PROJECT, u"Project"),
+        (CONVERSATORY, u"Conversatory"),
+        (FOREIGN_LANGUAGE, u"Foreign language"),
+        (EXERCISE, u"Exercise")
     ]
 
     type = models.CharField(max_length=200, choices=ACTIVITY_TYPES)
@@ -63,9 +63,9 @@ class Note(models.Model):
     PRIVATE = 'private'
 
     NOTE_ACCESS = [
-        (OPEN, "Open"),
-        (PUBLIC, "Public"),
-        (PRIVATE, "Private"),
+        (OPEN, u"Open"),
+        (PUBLIC, u"Public"),
+        (PRIVATE, u"Private"),
     ]
 
     access = models.CharField(max_length=10, choices=NOTE_ACCESS)
