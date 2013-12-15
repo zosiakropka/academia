@@ -20,15 +20,21 @@ Adjust settings in academia/server/settings.py
 
 Especially `DATABASES`, `SECRET_KEY` and `LOGS_PATH` vars should concern you.
 
-**Database** You need to provide configuration of the academia database you created / are willing to create.
-**Secret key** Unique key for a specific app installation for cryptographic signing.
-**Logs** By default Academia development server will try to store logs in `academia/logs` directory, which doesn't exist. You should either create that directory, or provide more adequate (existing) path.
+**Database** You need to provide configuration of the academia database you
+created / are willing to create.
+
+**Secret key** Unique key for a specific app installation for cryptographic
+signing.
+
+**Logs** By default Academia development server will try to store logs in
+`academia/logs` directory, which doesn't exist. You should either create that
+directory, or provide more adequate (existing) path.
 
 ### Database
 
 Django-supported database server needs to be installed.
-Next proper database (with settings consistent with those listed in settings.py file)
-needs to be created, eg.:
+Next proper database (with settings consistent with those listed in settings.py
+file) needs to be created, eg.:
 
 ```mysql
 CREATE USER 'academia'@'localhost' IDENTIFIED BY 'password';
@@ -60,7 +66,9 @@ python manage.py exampledb
 Launch app
 ----------
 
-Currently only launching Django-build-in development server is described. In the future (as project evolves enough for production use) docs on running proper production Apache WSGI server ought to appear.
+Currently only launching Django-build-in development server is described. In
+the future (as project evolves enough for production use) docs on running
+proper production Apache WSGI based server ought to appear.
 
 ### Development server
 
