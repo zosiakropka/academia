@@ -127,7 +127,7 @@ class Note(models.Model):
                                  update_fields=update_fields)
 
     def for_edit(self, user):
-        return self if self.owner == user or self.access == self.PRIVATE else None
+        return self if self.owner == user or self.access == self.OPEN else None
 
     def for_open(self, user):
         return self if self.owner or self.access in [self.PRIVATE, self.OPEN] else None
