@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__doc__ = """
+"""
 WSGI entities to support WebSocket from within gevent.
 
 Its usage is rather simple:

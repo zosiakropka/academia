@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__doc__ = """
+"""
 This compatibility module is inspired by the one found
 in CherryPy. It provides a common entry point for the various
 functions and types that are used with ws4py but which

@@ -14,9 +14,10 @@ class PadTCPConnection(asyncore.dispatcher_with_send, PadBaseConnection):
     DELIMITER = u"\u001E"
     CHNL = "TCPConnection"
 
-    def __init__(self, sock=None, map=None):
+    def __init__(self, *args, **kwargs):
         PadBaseConnection.__init__(self)
-        asyncore.dispatcher_with_send.__init__(self, sock=sock, map=map)
+        sock = kwargs['sock'] if 'sock' in kwargs else args[0]
+        asyncore.dispatcher_with_send.__init__(self, *args, **kwargs)
         sock.setblocking(0)
         self.buffer = ""
         self.send_data(encode({"purpose": u"test", "message": u"ęółąśłżźćń"}))

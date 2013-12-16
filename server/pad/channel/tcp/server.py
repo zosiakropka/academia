@@ -27,7 +27,7 @@ class PadTCPServer(asyncore.dispatcher, PadBaseServer):
     def handle_accept(self):
         accept_pair = self.accept()
         if accept_pair is not None:
-            newSocket, address = accept_pair
+            newSocket = accept_pair[0]  # newSocket, address = accept_pair
             connection = self.PadConnection(newSocket)
             connection.conn_id = newSocket.fileno()
             self.new_connection(connection)

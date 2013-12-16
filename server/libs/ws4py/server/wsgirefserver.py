@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__doc__ = """
+"""
 Add WebSocket support to the built-in WSGI server
 provided by the :py:mod:`wsgiref`. This is clearly not
 meant to be a production server so please consider this

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__doc__ = """
+"""
 This module provides a WSGI application suitable
 for a WSGI server such as gevent or wsgiref for instance.
 

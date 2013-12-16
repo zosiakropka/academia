@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__doc__ = """
+"""
 The manager module provides a selected classes to
 handle websocket's execution.
 

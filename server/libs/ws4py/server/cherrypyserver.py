@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__doc__ = """
+"""
 WebSocket within CherryPy is a tricky bit since CherryPy is
 a threaded server which would choke quickly if each thread
 of the server were kept attached to a long living connection
@@ -266,16 +266,17 @@ class WebSocketTool(Tool):
                 break
             _locals = current.f_locals
             if 'self' in _locals:
-               if type(_locals['self']) == HTTPRequest:
-                   _locals['self'].close_connection = True
-               if type(_locals['self']) == HTTPConnection:
-                   _locals['self'].linger = True
-                   # HTTPConnection is more inner than
-                   # HTTPRequest so we can leave once
-                   # we're done here
-                   return
+                if type(_locals['self']) == HTTPRequest:
+                    _locals['self'].close_connection = True
+                if type(_locals['self']) == HTTPConnection:
+                    _locals['self'].linger = True
+                    # HTTPConnection is more inner than
+                    # HTTPRequest so we can leave once
+                    # we're done here
+                    return
             _locals = None
             current = current.f_back
+
 
 class WebSocketPlugin(plugins.SimplePlugin):
     def __init__(self, bus):
