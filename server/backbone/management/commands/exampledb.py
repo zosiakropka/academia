@@ -66,7 +66,7 @@ def get_nonsense(parameter):
 
 
 def get_nonsense_person():
-    return unicode(get_nonsense("Person")).split(' ')
+    return unicode(get_nonsense("Person")).replace('\n', '').split(' ')
 
 
 def get_nonsense_title(count=None):
