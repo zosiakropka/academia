@@ -58,6 +58,6 @@ def api(fun):
 def not_implemented(fun):
     @wraps(fun)
     def _wrapper(request, *args, **kwargs):
-        fun()
+        fun(request, *args, **kwargs)
         raise Exception("Function %s.%s not implemented." % (fun.__module__, fun.__name__))
     return _wrapper
