@@ -19,8 +19,8 @@ logger = logging.getLogger(__name__)
 @abstractor
 def note_edit(user, note_id):
 
-    note = get_object_or_404(Note, pk=note_id)
-    if note.access != "open" and note.owner != user:
+    note = get_object_or_404(Note, pk=note_id).for_edit(user)
+    if not note:
         raise PermissionDenied()
     else:
         return ('client/note/pad.html', {"note_id": note.id, "content": note.content})
@@ -42,8 +42,8 @@ def note_create(user, access_type, subject_abbr, activity_type):
 @abstractor
 def note_open(user, note_id):
 
-    note = get_object_or_404(Note, pk=note_id)
-    if note.access not in ["open", "public"] and note.owner != user:
+    note = get_object_or_404(Note, pk=note_id).for_open(user)
+    if not note:
         raise PermissionDenied()
     else:
         return ('client/note/open.html', {"note_id": note.id, "content": note.content})
