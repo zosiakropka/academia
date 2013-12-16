@@ -76,8 +76,17 @@ class Activity(models.Model):
     def __unicode__(self):
         return '[' + self.subject.abbr + '] ' + dict(self.ACTIVITY_TYPES)[self.type] + ' (' + unicode(self.supervisor) + ')'
 
-    def get_accessible_notes(self, user):
-        return self.notes.filter(Q(owner=user) | Q(access="open") | Q(access="public"))
+    def get_notes_for_open(self, user, **kwargs):
+        notes = self.notes
+        if len(kwargs) > 0:
+            notes = notes.filter(kwargs)
+        return notes.filter(Q(owner=user) | Q(access="open") | Q(access="public"))
+
+    def get_notes_for_edit(self, user, **kwargs):
+        notes = self.notes
+        if len(kwargs) > 0:
+            notes = notes.filter(kwargs)
+        return notes.filter(Q(owner=user) | Q(access="open"))
 
 
 class Note(models.Model):

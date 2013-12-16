@@ -6,7 +6,6 @@ from utils.decorators import authenticate, api
 from backbone.models import Subject, Activity, Note
 from utils.serializer import query_to_list, JsonEncoder, model_to_dict
 from django.shortcuts import get_object_or_404
-from django.http import Http404
 
 
 @authenticate(user=True, admin=True)
@@ -38,7 +37,7 @@ def note_list(user, subject_name=None, subject_abbr=None, activity_type=None):
         activity_type = activity_type.pop()
         subject = subjects.get()
         activity = subject.activities.get(type=activity_type)
-        notes = activity.get_accessible_notes(user=user)
+        notes = activity.get_notes_for_open(user=user)
         notes = query_to_list(notes, exclude_relations={'content': None})
         activity = model_to_dict(activity, exclude_relations={'notes': None})
         activity['notes'] = notes
@@ -51,7 +50,7 @@ def note_list(user, subject_name=None, subject_abbr=None, activity_type=None):
             activities = subject.activities.all()
             activities_list = []
             for activity in activities:
-                notes = activity.get_accessible_notes(user=user)
+                notes = activity.get_notes_for_open(user=user)
                 notes = query_to_list(notes, exclude_relations={'content': None})
                 activity = model_to_dict(activity, exclude_relations={'notes': None})
                 activity['notes'] = notes
