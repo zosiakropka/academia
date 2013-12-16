@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 @abstractor
 def note_edit(user, note_id):
 
-    note = get_object_or_404(Note, pk=note_id).for_edit(user)
+    note = get_object_or_404(Note, pk=note_id).for_edit(by_user=user)
     if not note:
         raise PermissionDenied()
     else:
@@ -42,7 +42,7 @@ def note_create(user, access_type, subject_abbr, activity_type):
 @abstractor
 def note_open(user, note_id):
 
-    note = get_object_or_404(Note, pk=note_id).for_open(user)
+    note = get_object_or_404(Note, pk=note_id).for_open(by_user=user)
     if not note:
         raise PermissionDenied()
     else:
