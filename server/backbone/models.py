@@ -76,17 +76,17 @@ class Activity(models.Model):
     def __unicode__(self):
         return '[' + self.subject.abbr + '] ' + dict(self.ACTIVITY_TYPES)[self.type] + ' (' + unicode(self.supervisor) + ')'
 
-    def get_notes_for_open(self, user, **kwargs):
+    def get_notes_for_open(self, by_user, **kwargs):
         notes = self.notes
         if len(kwargs) > 0:
             notes = notes.filter(kwargs)
-        return notes.filter(Q(owner=user) | Q(access="open") | Q(access="public"))
+        return notes.filter(Q(owner=by_user) | Q(access="open") | Q(access="public"))
 
-    def get_notes_for_edit(self, user, **kwargs):
+    def get_notes_for_edit(self, by_user, **kwargs):
         notes = self.notes
         if len(kwargs) > 0:
             notes = notes.filter(kwargs)
-        return notes.filter(Q(owner=user) | Q(access="open"))
+        return notes.filter(Q(owner=by_user) | Q(access="open"))
 
 
 class Note(models.Model):
@@ -126,11 +126,11 @@ class Note(models.Model):
         return models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using,
                                  update_fields=update_fields)
 
-    def for_edit(self, user):
-        return self if self.owner == user or self.access == self.OPEN else None
+    def for_edit(self, by_user):
+        return self if self.owner == by_user or self.access == self.OPEN else None
 
-    def for_open(self, user):
-        return self if self.owner or self.access in [self.PRIVATE, self.OPEN] else None
+    def for_open(self, by_user):
+        return self if self.owner == by_user or self.access in [self.PRIVATE, self.OPEN] else None
 
 
 class NoteModification(models.Model):
