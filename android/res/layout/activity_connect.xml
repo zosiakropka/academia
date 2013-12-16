@@ -9,50 +9,50 @@
     tools:context=".ConnectActivity" >
 
     <TextView
-        android:id="@+id/label_server_ip"
+        android:id="@+id/label_server_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="@string/label_server_ip"
+        android:text="@string/label_server_url"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/conn_server_ip"
+        android:id="@+id/conn_server_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/label_server_ip"
+        android:layout_below="@+id/label_server_url"
         android:ems="10"
-        android:inputType="text"
-        android:text="@string/conn_server_ip" />
+        android:inputType="textUri"
+        android:text="@string/conn_server_url" />
 
     <TextView
-        android:id="@+id/label_server_port"
+        android:id="@+id/label_pad_port"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/conn_server_ip"
-        android:layout_below="@+id/conn_server_ip"
+        android:layout_alignLeft="@+id/conn_server_url"
+        android:layout_below="@+id/conn_server_url"
         android:layout_marginTop="51dp"
-        android:text="@string/label_server_port"
+        android:text="@string/label_pad_port"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/conn_server_port"
+        android:id="@+id/conn_pad_port"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/conn_server_ip"
-        android:layout_below="@+id/label_server_port"
+        android:layout_alignLeft="@+id/conn_server_url"
+        android:layout_below="@+id/label_pad_port"
         android:ems="10"
-        android:inputType="text"
-        android:text="@integer/conn_socketserver_port" />
+        android:inputType="number"
+        android:text="@integer/conn_pad_port" />
 
     <Button
         android:id="@+id/button_connect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/conn_server_port"
-        android:layout_below="@+id/conn_server_port"
+        android:layout_alignLeft="@+id/conn_pad_port"
+        android:layout_below="@+id/conn_pad_port"
         android:layout_marginTop="61dp"
         android:text="@string/label_connect" />
 

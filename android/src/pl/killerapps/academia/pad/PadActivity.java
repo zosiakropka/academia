@@ -20,11 +20,9 @@ public class PadActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         String ip = extras.getString("ip");
-        int appPort = extras.getInt("port");
+        int padPort = extras.getInt("padport");
 
-        int socketPort = 5001; // TODO: should be obtained via application
-
-        client = new PadClient(ip, socketPort) {
+        client = new PadClient(ip, padPort) {
 
             @Override
             public void onMessage(PadMessage message) {

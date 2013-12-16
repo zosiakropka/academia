@@ -1,5 +1,8 @@
 package pl.killerapps.academia;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import pl.killerapps.academia.pad.PadActivity;
 import android.os.Bundle;
 import android.app.Activity;
@@ -23,14 +26,22 @@ public class ConnectActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
+				try {
+                EditText urlEdit = (EditText) findViewById(R.id.conn_server_url);
+            	String url =  urlEdit.getText().toString();
+            	String ip;
+					ip = (new URL(url)).getHost();
+            	
                 Intent padActivityIntent = new Intent(getApplicationContext(), PadActivity.class);
                 Bundle extras = new Bundle();
-                EditText ipEdit = (EditText) findViewById(R.id.conn_server_ip);
-                EditText appPortEdit = (EditText) findViewById(R.id.conn_server_port);
-                extras.putString("ip", ipEdit.getText().toString());
-                extras.putInt("port", Integer.parseInt(appPortEdit.getText().toString()));
+                EditText appPortEdit = (EditText) findViewById(R.id.conn_pad_port);
+                extras.putString("ip", ip);
+                extras.putInt("pad_port", Integer.parseInt(appPortEdit.getText().toString()));
                 padActivityIntent.putExtras(extras);
                 startActivity(padActivityIntent);
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
             }
         });
     }
