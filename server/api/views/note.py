@@ -6,6 +6,7 @@ from utils.decorators import authenticate, api
 from backbone.models import Subject, Activity, Note
 from utils.serializer import query_to_list, JsonEncoder, model_to_dict
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import PermissionDenied
 
 
 @authenticate(user=True, admin=True)
@@ -65,5 +66,10 @@ def note_list(user, subject_name=None, subject_abbr=None, activity_type=None):
 
 @authenticate(user=True, admin=True)
 @api
-def note_get(user):
-    pass
+def note_get(user, note_id, edit="False"):
+    note_id = note_id.pop()
+    note = get_object_or_404(Note, pk=note_id).for_edit(user)
+    if not note:
+        raise PermissionDenied()
+    note = model_to_dict(note)
+    return JsonEncoder().encode(note)
