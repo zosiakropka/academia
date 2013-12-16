@@ -37,7 +37,7 @@ def note_list(user, subject_name=None, subject_abbr=None, activity_type=None):
         activity_type = activity_type.pop()
         subject = subjects.get()
         activity = subject.activities.get(type=activity_type)
-        notes = activity.get_notes_for_open(user=user)
+        notes = activity.get_notes_for_open(by_user=user)
         notes = query_to_list(notes, exclude_relations={'content': None})
         activity = model_to_dict(activity, exclude_relations={'notes': None})
         activity['notes'] = notes
@@ -50,7 +50,7 @@ def note_list(user, subject_name=None, subject_abbr=None, activity_type=None):
             activities = subject.activities.all()
             activities_list = []
             for activity in activities:
-                notes = activity.get_notes_for_open(user=user)
+                notes = activity.get_notes_for_open(by_user=user)
                 notes = query_to_list(notes, exclude_relations={'content': None})
                 activity = model_to_dict(activity, exclude_relations={'notes': None})
                 activity['notes'] = notes
