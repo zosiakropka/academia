@@ -32,6 +32,14 @@
             android:name="pl.killerapps.academia.ConnectActivity"
             android:label="@string/title_activity_connect" >
         </activity>
+        <activity
+            android:name="pl.killerapps.academia.subject.SubjectsActivity"
+            android:label="@string/title_activity_subjects"
+            android:parentActivityName="pl.killerapps.academia.ConnectActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.killerapps.academia.ConnectActivity" />
+        </activity>
     </application>
 
 </manifest>
