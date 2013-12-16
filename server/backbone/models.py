@@ -117,10 +117,12 @@ class Note(models.Model):
         return self.title or self.content[:40] + (self.content[40:] and "..")
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if self.title in [u"no title", None] and len(self.content) > 5:
+            self.title = self.content[0:200]
         if not self.title:
             self.title = u"no title"
         if not self.slug:
-            self.slug = slugify(self.title + utimestamp())[0:100]
+            self.slug = slugify(self.title + '-' + utimestamp())[0:100]
         return models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using,
                                  update_fields=update_fields)
 
