@@ -126,6 +126,12 @@ class Note(models.Model):
         return models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using,
                                  update_fields=update_fields)
 
+    def for_edit(self, user):
+        return self if self.owner == user or self.access == self.PRIVATE else None
+
+    def for_open(self, user):
+        return self if self.owner or self.access in [self.PRIVATE, self.OPEN] else None
+
 
 class NoteModification(models.Model):
 
