@@ -19,12 +19,9 @@ public class PadMessage {
     {
         CODES = PadMessageCodes.instance();
     }
-
     private static final String INNER_DELIMITER = "\u001F";
     private static final String UNIT_DELIMITER = "\u001F\u001F";
-
     public static final char VERSION = '\u0001';
-
     private HashMap<String, String> strings;
     private Set<String> flags;
     private HashMap<String, byte[]> data;
@@ -121,5 +118,4 @@ public class PadMessage {
             }
         }
     }
-
 }

@@ -26,22 +26,22 @@ public class ConnectActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-				try {
-                EditText urlEdit = (EditText) findViewById(R.id.conn_server_url);
-            	String url =  urlEdit.getText().toString();
-            	String ip;
-					ip = (new URL(url)).getHost();
-            	
-                Intent padActivityIntent = new Intent(getApplicationContext(), PadActivity.class);
-                Bundle extras = new Bundle();
-                EditText appPortEdit = (EditText) findViewById(R.id.conn_pad_port);
-                extras.putString("ip", ip);
-                extras.putInt("pad_port", Integer.parseInt(appPortEdit.getText().toString()));
-                padActivityIntent.putExtras(extras);
-                startActivity(padActivityIntent);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
+                try {
+                    EditText urlEdit = (EditText) findViewById(R.id.conn_server_url);
+                    String url = urlEdit.getText().toString();
+                    String ip;
+                    ip = (new URL(url)).getHost();
+
+                    Intent padActivityIntent = new Intent(getApplicationContext(), PadActivity.class);
+                    Bundle extras = new Bundle();
+                    EditText appPortEdit = (EditText) findViewById(R.id.conn_pad_port);
+                    extras.putString("ip", ip);
+                    extras.putInt("pad_port", Integer.parseInt(appPortEdit.getText().toString()));
+                    padActivityIntent.putExtras(extras);
+                    startActivity(padActivityIntent);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -52,5 +52,4 @@ public class ConnectActivity extends Activity {
         getMenuInflater().inflate(R.menu.connect, menu);
         return true;
     }
-
 }

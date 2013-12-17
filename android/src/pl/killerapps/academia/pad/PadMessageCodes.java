@@ -54,5 +54,4 @@ public class PadMessageCodes {
         }
         return mc != null ? mc : instance();
     }
-
 }

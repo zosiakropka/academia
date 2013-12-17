@@ -15,18 +15,14 @@ import android.util.Log;
 public abstract class PadClient implements Runnable {
 
     static final int CHUNK_SIZE = 1024;
-
     private Socket socket;
     private String ip;
     private int port;
     private String buffer = "";
     static final String DELIMITER = "\u001E";
-
     private BufferedReader br;
     private BufferedWriter bw;
-
     Thread thread;
-
     boolean ready = true;
 
     public PadClient(String ip, int port) {
