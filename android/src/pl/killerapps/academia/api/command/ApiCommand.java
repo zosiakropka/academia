@@ -1,4 +1,4 @@
-package pl.killerapps.academia.api;
+package pl.killerapps.academia.api.command;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,13 +17,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-abstract class ApiClient {
+public abstract class ApiCommand<Type> {
 
     public String base_url;
     protected String method_path;
     HttpClient client = new DefaultHttpClient();
 
-    public ApiClient(String base_url, String method_path) {
+    protected ApiCommand(String base_url, String method_path) {
         if (base_url.endsWith("/")) {
             this.base_url = (String) (base_url.subSequence(0, base_url.length() - 1));
         } else {
@@ -37,6 +37,16 @@ abstract class ApiClient {
             this.method_path = "/" + method_path;
         }
     }
+
+    /**
+     * Implementation of this method should call get_json_response(params) and
+     * process JSON response to extract required data and create adequate object
+     * representing that data.
+     *
+     * @param params
+     * @return
+     */
+    public abstract Type execute(List<NameValuePair> params);
 
     protected JSONObject get_json_response(List<NameValuePair> params) {
         try {
@@ -53,7 +63,7 @@ abstract class ApiClient {
 
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(base_url + method_path);
+        HttpPost httppost = new HttpPost(fullMethodPath());
 
         try {
             httppost.setEntity(new UrlEncodedFormEntity(params));
@@ -78,5 +88,9 @@ abstract class ApiClient {
         } catch (IOException e) {
         }
         return null;
+    }
+
+    private String fullMethodPath() {
+        return base_url + "/api" + method_path;
     }
 }

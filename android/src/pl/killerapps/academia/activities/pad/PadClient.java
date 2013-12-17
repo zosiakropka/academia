@@ -1,4 +1,4 @@
-package pl.killerapps.academia.pad;
+package pl.killerapps.academia.activities.pad;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.lang.UnsupportedOperationException;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,8 +15,8 @@ public abstract class PadClient implements Runnable {
 
     static final int CHUNK_SIZE = 1024;
     private Socket socket;
-    private String ip;
-    private int port;
+    private final String ip;
+    private final int port;
     private String buffer = "";
     static final String DELIMITER = "\u001E";
     private BufferedReader br;

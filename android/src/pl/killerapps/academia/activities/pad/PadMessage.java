@@ -1,4 +1,4 @@
-package pl.killerapps.academia.pad;
+package pl.killerapps.academia.activities.pad;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;

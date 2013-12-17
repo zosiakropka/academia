@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="pl.killerapps.academia.MainActivity"
+            android:name="pl.killerapps.academia.activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,13 +29,13 @@
             android:label="@string/title_activity_pad" >
         </activity>
         <activity
-            android:name="pl.killerapps.academia.ConnectActivity"
+            android:name="pl.killerapps.academia.activities.ConnectActivity"
             android:label="@string/title_activity_connect" >
         </activity>
         <activity
-            android:name="pl.killerapps.academia.subject.SubjectsActivity"
+            android:name="pl.killerapps.academia.activities.subject.SubjectsActivity"
             android:label="@string/title_activity_subjects"
-            android:parentActivityName="pl.killerapps.academia.ConnectActivity" >
+            android:parentActivityName="pl.killerapps.academia.activities.ConnectActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.killerapps.academia.ConnectActivity" />
