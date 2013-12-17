@@ -74,19 +74,8 @@ class Activity(models.Model):
     supervisor = models.ForeignKey(Supervisor, related_name="acitivities")
 
     def __unicode__(self):
-        return '[' + self.subject.abbr + '] ' + dict(self.ACTIVITY_TYPES)[self.type] + ' (' + unicode(self.supervisor) + ')'
-
-    def get_notes_for_open(self, by_user, **kwargs):
-        notes = self.notes
-        if len(kwargs) > 0:
-            notes = notes.filter(kwargs)
-        return notes.filter(Q(owner=by_user) | Q(access="open") | Q(access="public"))
-
-    def get_notes_for_edit(self, by_user, **kwargs):
-        notes = self.notes
-        if len(kwargs) > 0:
-            notes = notes.filter(kwargs)
-        return notes.filter(Q(owner=by_user) | Q(access="open"))
+        return '[' + self.subject.abbr + '] ' + dict(self.ACTIVITY_TYPES)[self.type] + \
+            ' (' + unicode(self.supervisor) + ')'
 
 
 class Note(models.Model):
@@ -131,6 +120,20 @@ class Note(models.Model):
 
     def for_open(self, by_user):
         return self if self.owner == by_user or self.access in [self.PRIVATE, self.OPEN] else None
+
+    @staticmethod
+    def get_notes_for_open(by_user, **kwargs):
+        notes = Note.objects.all()
+        if len(kwargs) > 0:
+            notes = notes.filter(**kwargs)
+        return notes.filter(Q(owner=by_user) | Q(access="open") | Q(access="public"))
+
+    @staticmethod
+    def get_notes_for_edit(by_user, **kwargs):
+        notes = Note.objects.all()
+        if len(kwargs) > 0:
+            notes = notes.filter(**kwargs)
+        return notes.filter(Q(owner=by_user) | Q(access="open"))
 
 
 class NoteModification(models.Model):

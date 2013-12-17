@@ -5,7 +5,7 @@
 @date Nov 26, 2013
 """
 
-from backbone.models import Subject
+from backbone.models import Subject, Note
 from django.shortcuts import get_object_or_404
 from utils.decorators import authenticate, abstractor
 import logging
@@ -33,7 +33,7 @@ def subject_browse(user, subject_abbr):
     for activity in subject.activities.all():
         activities.append({
             "activity": activity,
-            "notes": activity.get_notes_for_open(by_user=user)
+            "notes": Note.get_notes_for_open(by_user=user, activity=activity)
         })
 
     return ('client/subject/browse.html',
