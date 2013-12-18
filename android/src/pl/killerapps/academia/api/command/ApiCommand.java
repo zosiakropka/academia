@@ -4,93 +4,85 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-public abstract class ApiCommand<Type> {
+public abstract class ApiCommand<Entity> extends ApiCommandBase {
 
-    public String base_url;
-    protected String method_path;
-    HttpClient client = new DefaultHttpClient();
+    public ApiCommand(URI uri) {
+        super(uri);
+    }
 
-    protected ApiCommand(String base_url, String method_path) {
-        if (base_url.endsWith("/")) {
-            this.base_url = (String) (base_url.subSequence(0, base_url.length() - 1));
-        } else {
-            this.base_url = base_url;
-        }
-        this.base_url = base_url;
+    protected ApiCommand(String base_url, String method_path) throws URISyntaxException {
+        super(base_url, method_path);
+    }
 
-        if (!method_path.startsWith("/")) {
-            this.method_path = method_path;
-        } else {
-            this.method_path = "/" + method_path;
-        }
+    public Entity send_request_get_response() throws JSONException,
+            ClientProtocolException, IOException {
+        return send_request_get_response(new ArrayList<NameValuePair>());
     }
 
     /**
-     * Implementation of this method should call get_json_response(params) and
-     * process JSON response to extract required data and create adequate object
-     * representing that data.
      *
      * @param params
      * @return
+     * @throws JSONException
+     * @throws IOException
+     * @throws ClientProtocolException
      */
-    public abstract Type execute(List<NameValuePair> params);
-
-    protected JSONObject get_json_response(List<NameValuePair> params) {
-        try {
-            String response = send_request(params);
-            JSONObject json_object = new JSONObject(response);
-            return json_object;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public Entity send_request_get_response(final List<NameValuePair> params)
+            throws JSONException, ClientProtocolException, IOException {
+        String response = real_request(params);
+        JSONArray json_array = new JSONArray(response);
+        return process_json(json_array);
     }
 
-    private String send_request(List<NameValuePair> params) {
+    /**
+     * Implementation of this method should process JSON response to extract
+     * required data and return right Entity object representing data gathered
+     * from HTTP response.
+     *
+     * @param json
+     * @return Type
+     */
+    protected abstract Entity process_json(JSONArray json);
 
-        // Create a new HttpClient and Post Header
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(fullMethodPath());
+    protected String real_request(List<NameValuePair> params)
+            throws ClientProtocolException, IOException {
 
-        try {
-            httppost.setEntity(new UrlEncodedFormEntity(params));
+        HttpPost httppost = new HttpPost();
+        httppost.setEntity(new UrlEncodedFormEntity(params));
 
-            // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(httppost);
+        HttpResponse response = raw_request_response(httppost);
 
-            int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode == 200) {
-                StringBuilder builder = new StringBuilder();
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line);
-                }
-                return builder.toString();
+        int statusCode = response.getStatusLine().getStatusCode();
+        if (statusCode == 200) {
+            StringBuilder builder = new StringBuilder();
+            HttpEntity entity = response.getEntity();
+            InputStream content = entity.getContent();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
             }
-
-        } catch (ClientProtocolException e) {
-        } catch (IOException e) {
+            return builder.toString();
         }
+
         return null;
     }
 
-    private String fullMethodPath() {
-        return base_url + "/api" + method_path;
+    protected void handleFailure(Exception ex) {
+        ex.printStackTrace();
     }
 }
