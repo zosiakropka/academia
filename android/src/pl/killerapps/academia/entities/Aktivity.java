@@ -12,9 +12,15 @@ import java.util.List;
  */
 public class Aktivity {
 
-    String supervisor;
-    String type;
-    List<Note> notes;
+    public Aktivity() {
+        supervisor = null;
+        type = null;
+        notes = null;
+    }
+
+    public String supervisor;
+    public String type;
+    public List<Note> notes;
 
     public static final String LECTURE = "lect";
     public static final String LABORATORIUM = "lab";
