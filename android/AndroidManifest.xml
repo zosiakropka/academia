@@ -25,12 +25,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="pl.killerapps.academia.pad.PadActivity"
+            android:name="pl.killerapps.academia.activities.pad.PadActivity"
             android:label="@string/title_activity_pad" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.killerapps.academia.subiect.SubjectsActivity" />
         </activity>
         <activity
             android:name="pl.killerapps.academia.activities.ConnectActivity"
-            android:label="@string/title_activity_connect" >
+            android:label="@string/title_activity_connect"
+            android:parentActivityName="pl.killerapps.academia.activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.killerapps.academia.ConnectActivity" />
         </activity>
         <activity
             android:name="pl.killerapps.academia.activities.subject.SubjectsActivity"

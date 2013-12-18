@@ -4,5 +4,9 @@
     <string name="label_server_url">server URL</string>
     <string name="label_pad_port">pad server port number</string>
     <string name="label_connect">Connect</string>
+    <string name="label_password">Password</string>
+    <string name="label_username">Username</string>
+    <string name="conn_password"></string>
+    <string name="conn_username"></string>
 
 </resources>
