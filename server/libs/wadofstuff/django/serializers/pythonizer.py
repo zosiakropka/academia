@@ -122,7 +122,7 @@ class Serializer(base.Serializer):
                     serializer.serialize([related], **options)[0]
                        for related in getattr(obj, fname).iterator()]
             else:
-                # emulate the original behaviour and serialize to a list of 
+                # emulate the original behaviour and serialize to a list of
                 # primary key values
                 if self.use_natural_keys and hasattr(field.rel.to, 'natural_key'):
                     m2m_value = lambda value: value.natural_key()
@@ -138,7 +138,7 @@ class Serializer(base.Serializer):
         not seekable).
         """
         return self.objects
-    
+
     def handle_extra_field(self, obj, field):
         """
         Return "extra" fields that the user specifies.
@@ -150,6 +150,5 @@ class Serializer(base.Serializer):
                 self._extras[field] = smart_unicode(extra(), strings_only=True)
             else:
                 self._extras[field] = smart_unicode(extra, strings_only=True)
-                
 
 Deserializer = PythonDeserializer

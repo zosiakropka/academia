@@ -7,7 +7,6 @@
 from django.shortcuts import render
 from academia.settings import LOGIN_URL
 from functools import wraps
-import logging
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson
 from django.core.exceptions import PermissionDenied
@@ -51,7 +50,7 @@ def api(fun):
     def _wrapper(user, request, **kwargs):
         parameters = request.POST if request.method == 'POST' else request.GET
         data = fun(user, **dict(parameters))
-        return HttpResponse(simplejson.dumps(data), mimetype='application/json')
+        return HttpResponse(data, mimetype='application/json')
     return _wrapper
 
 
