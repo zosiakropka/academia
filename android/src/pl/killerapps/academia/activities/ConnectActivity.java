@@ -1,11 +1,10 @@
 package pl.killerapps.academia.activities;
 
 import pl.killerapps.academia.R;
-import pl.killerapps.academia.activities.subject.SubjectsActivity;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -28,16 +27,22 @@ public class ConnectActivity extends Activity {
                 EditText urlEdit = (EditText) findViewById(R.id.conn_server_url);
                 String url = urlEdit.getText().toString();
 
-                EditText appPortEdit = (EditText) findViewById(R.id.conn_pad_port);
-                int port = Integer.parseInt(appPortEdit.getText().toString());
+                EditText padPortEdit = (EditText) findViewById(R.id.conn_pad_port);
+                int padPort = Integer.parseInt(padPortEdit.getText().toString());
 
-                Intent padActivityIntent = new Intent(getApplicationContext(), SubjectsActivity.class);
-                Editor preferencesEditor = getPreferences(MODE_PRIVATE).edit();
-                preferencesEditor.putString("academia_url", url);
-                preferencesEditor.putInt("academia_padport", port);
-                preferencesEditor.commit();
+                EditText usernameEdit = (EditText) findViewById(R.id.conn_username);
+                String username = usernameEdit.getText().toString();
 
-                startActivity(padActivityIntent);
+                EditText passwordEdit = (EditText) findViewById(R.id.conn_password);
+                String password = passwordEdit.getText().toString();
+
+                Editor prefsEditor;
+                prefsEditor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
+                prefsEditor.clear();
+                if (prefsEditor.putString("academia-url", url).commit() && prefsEditor.putInt("academia-padport", padPort).commit()) {
+                    finish();
+                }
+
             }
         });
     }

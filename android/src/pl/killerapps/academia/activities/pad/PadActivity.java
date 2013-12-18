@@ -5,11 +5,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import pl.killerapps.academia.R;
-import pl.killerapps.academia.activities.ConnectActivity;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 
 public class PadActivity extends Activity {
@@ -51,7 +50,6 @@ public class PadActivity extends Activity {
             };
             client.start();
         } catch (MalformedURLException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
             // @todo go back
         }
@@ -66,7 +64,6 @@ public class PadActivity extends Activity {
 
     private void handleFailure(Exception e) {
         e.printStackTrace();
-        Intent aboutActivityIntent = new Intent(this, ConnectActivity.class);
-        startActivity(aboutActivityIntent);
+        NavUtils.navigateUpFromSameTask(this);
     }
 }
