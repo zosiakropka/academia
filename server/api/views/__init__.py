@@ -6,3 +6,4 @@
 """
 from note import *
 from subject import *
+from activity import *
