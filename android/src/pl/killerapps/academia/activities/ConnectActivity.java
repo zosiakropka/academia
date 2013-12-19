@@ -39,7 +39,9 @@ public class ConnectActivity extends Activity {
                 Editor prefsEditor;
                 prefsEditor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
                 prefsEditor.clear();
-                if (prefsEditor.putString("academia-url", url).commit() && prefsEditor.putInt("academia-padport", padPort).commit()) {
+                prefsEditor.putString("academia-url", url);
+                prefsEditor.putInt("academia-padport", padPort);
+                if (prefsEditor.commit()) {
                     finish();
                 }
 
