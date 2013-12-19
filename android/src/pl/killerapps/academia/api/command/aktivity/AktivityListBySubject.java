@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import pl.killerapps.academia.api.command.ApiCommand;
 import pl.killerapps.academia.api.command.ApiCommandAsync;
 import pl.killerapps.academia.entities.Aktivity;
 import pl.killerapps.academia.entities.Subject;
