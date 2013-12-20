@@ -2,13 +2,12 @@
 @author: Zosia Sobocinska
 @date Dec 17, 2013
 """
-from utils.decorators import authenticate, api
+from utils.decorators import api, api_auth
 from backbone.models import Activity, Subject
 from utils.serializer import jsonize
-from json.encoder import JSONEncoder
 
 
-@authenticate(user=True, admin=True)
+@api_auth(user=True, admin=True)
 @api
 def activity_list(user, activity_id=None, subject_id=None, subject_abbr=None):
     activities = Activity.objects.all()
@@ -20,7 +19,7 @@ def activity_list(user, activity_id=None, subject_id=None, subject_abbr=None):
     return jsonize(activities, relations=relations)
 
 
-@authenticate(user=True, admin=True)
+@api_auth(user=True, admin=True)
 @api
 def activity_list_by_subject(user, activity_id=None, subject_id=None, subject_abbr=None):
     subjects = Subject.objects.all()
