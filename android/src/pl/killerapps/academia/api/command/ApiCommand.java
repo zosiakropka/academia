@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,17 +19,13 @@ import org.json.JSONException;
 
 public abstract class ApiCommand<Entity> extends ApiCommandBase {
 
-    public ApiCommand(URI uri) {
-        super(uri);
-    }
-
     protected ApiCommand(String base_url, String method_path) throws URISyntaxException {
         super(base_url, method_path);
     }
 
-    public Entity send_request_get_response() throws JSONException,
+    public Entity post() throws JSONException,
             ClientProtocolException, IOException {
-        return send_request_get_response(new ArrayList<NameValuePair>());
+        return post(new ArrayList<NameValuePair>());
     }
 
     /**
@@ -41,9 +36,9 @@ public abstract class ApiCommand<Entity> extends ApiCommandBase {
      * @throws IOException
      * @throws ClientProtocolException
      */
-    public Entity send_request_get_response(final List<NameValuePair> params)
+    public Entity post(final List<NameValuePair> params)
             throws JSONException, ClientProtocolException, IOException {
-        String response = real_request(params);
+        String response = real_post(params);
         JSONArray json_array = new JSONArray(response);
         return process_json(json_array);
     }
@@ -58,13 +53,13 @@ public abstract class ApiCommand<Entity> extends ApiCommandBase {
      */
     protected abstract Entity process_json(JSONArray json);
 
-    protected String real_request(List<NameValuePair> params)
+    protected String real_post(List<NameValuePair> params)
             throws ClientProtocolException, IOException {
 
         HttpPost httppost = new HttpPost();
         httppost.setEntity(new UrlEncodedFormEntity(params));
 
-        HttpResponse response = raw_request_response(httppost);
+        HttpResponse response = raw_post(httppost);
 
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode == 200) {

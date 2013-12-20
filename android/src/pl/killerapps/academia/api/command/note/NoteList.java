@@ -7,7 +7,6 @@ package pl.killerapps.academia.api.command.note;
 
 import android.util.Log;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,10 +23,6 @@ import pl.killerapps.academia.entities.Note;
  * @author zosia
  */
 public class NoteList extends ApiCommandAsync<List<Note>> {
-
-    public NoteList(URI uri) {
-        super(uri);
-    }
 
     public NoteList(String base_url) throws URISyntaxException {
         super(base_url, "/subject/list/");

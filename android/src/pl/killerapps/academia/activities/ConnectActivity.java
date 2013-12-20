@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.View.OnClickListener;
+import java.net.URISyntaxException;
+import pl.killerapps.academia.api.command.authenticate.Login;
 
 public class ConnectActivity extends Activity {
 
@@ -41,10 +44,15 @@ public class ConnectActivity extends Activity {
                 prefsEditor.clear();
                 prefsEditor.putString("academia-url", url);
                 prefsEditor.putInt("academia-padport", padPort);
-                if (prefsEditor.commit()) {
-                    finish();
+                try {
+                    Login loginCommand = new Login(url, getBaseContext());
+                    loginCommand.login(username, password);
+                    if (prefsEditor.commit()) {
+                        finish();
+                    }
+                } catch (URISyntaxException ex) {
+                    Log.e("login", "cant login", ex);
                 }
-
             }
         });
     }

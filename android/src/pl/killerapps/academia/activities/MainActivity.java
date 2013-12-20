@@ -16,14 +16,15 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("MainActivity", "Main activity created.");
         super.onCreate(savedInstanceState);
-    	goNext();
+        clearConnectionPrefs();
     }
 
     @Override
     protected void onResume() {
-    	super.onResume();
-    	goNext();
+        super.onResume();
+        goNext();
     }
+
     protected void goNext() {
         Log.i("main", "Chosing nxt activity");
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -39,11 +40,19 @@ public class MainActivity extends Activity {
         }
         startActivity(nxtActivityIntent);
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    private boolean clearConnectionPrefs() {
+        SharedPreferences.Editor prefsEditor;
+        prefsEditor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
+        prefsEditor.remove("academia-url");
+        prefsEditor.remove("academia-padport");
+        return prefsEditor.commit();
     }
 }
