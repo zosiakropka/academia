@@ -4,10 +4,10 @@
 """
 from backbone.models import Subject
 from utils.serializer import jsonize
-from utils.decorators import authenticate, api
+from utils.decorators import api, api_auth
 
 
-@authenticate(user=True, admin=True)
+@api_auth(user=True, admin=True)
 @api
 def subject_list(user, admin=False, subject_id=None, subject_name=None, subject_abbr=None, activity_type=None):
     subjects = Subject.objects.all()

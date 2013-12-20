@@ -2,14 +2,14 @@
 @author Zosia Sobocinska
 @date Dec 14, 2013
 """
-from utils.decorators import authenticate, api
-from backbone.models import Activity, Note, Subject
+from utils.decorators import api, api_auth
+from backbone.models import Activity, Note
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from utils.serializer import jsonize
 
 
-@authenticate(user=True, admin=True)
+@api_auth(user=True, admin=True)
 @api
 def note_create(user, note_access, subject_abbr, activity_type):
     note_access = note_access.pop()
@@ -22,7 +22,7 @@ def note_create(user, note_access, subject_abbr, activity_type):
     return jsonize(note)
 
 
-@authenticate(user=True, admin=True)
+@api_auth(user=True, admin=True)
 @api
 def note_list(user, admin=False, subject_name=None, subject_abbr=None, activity_type=None, note_access=None):
 
@@ -51,7 +51,7 @@ def note_list(user, admin=False, subject_name=None, subject_abbr=None, activity_
     return jsonize(notes, relations=relations, excludes=excludes)
 
 
-@authenticate(user=True, admin=True)
+@api_auth(user=True, admin=True)
 @api
 def note_get(user, note_id, edit="False"):
     note = get_object_or_404(Note, pk__in=note_id)
