@@ -3,6 +3,7 @@ package pl.killerapps.academia.api.command.note;
 import android.util.Log;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,13 @@ import pl.killerapps.academia.api.command.ApiCommandAsync;
 import pl.killerapps.academia.entities.Aktivity;
 import pl.killerapps.academia.entities.Subject;
 
-public abstract class NoteListBySubjectByActivity extends ApiCommandAsync<List<Subject>> {
+public abstract class NoteListBySubjectByAktivity extends ApiCommandAsync<List<Subject>> {
 
-    public NoteListBySubjectByActivity(String base_url) throws URISyntaxException {
+    public NoteListBySubjectByAktivity(URI uri) {
+        super(uri);
+    }
+
+    public NoteListBySubjectByAktivity(String base_url) throws URISyntaxException {
         super(base_url, "/subject/list/");
         //super(base_url, "/fail/");
     }
@@ -47,13 +52,10 @@ public abstract class NoteListBySubjectByActivity extends ApiCommandAsync<List<S
                         int note_id = notes_json.getJSONObject(k).getInt("pk");
                         notes_request_params.add(new BasicNameValuePair("note_id", Integer.toString(note_id)));
                         try {
-                            aktivity.notes = (new NoteList(base_url)).post(notes_request_params);
+                            aktivity.notes = (new NoteList(uri)).send_request_get_response(notes_request_params);
                         } catch (ClientProtocolException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (URISyntaxException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
