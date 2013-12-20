@@ -4,7 +4,8 @@
     <div id="sidebar">
         {% block sidebar %}
         <ul>
-            <li><a href="/">Home</a></li>
+            <li><a href="{% url "client.views.subject_list" %}">Home</a></li>
+            <li><a href="{% url "account.views.signout" %}">Logout</a></li>
         </ul>
         {% endblock %}
     </div>
