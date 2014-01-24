@@ -5,9 +5,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import pl.killerapps.academia.R;
+import pl.killerapps.academia.preferences.Preferences;
+import pl.killerapps.academia.preferences.Preferences.UninitializedException;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 
@@ -21,11 +22,10 @@ public class PadActivity extends Activity {
         try {
             setContentView(R.layout.activity_pad);
 
-            SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-            String url = prefs.getString("academia_url", null);
+            String url = Preferences.get().academiaUrl();
             String ip;
             ip = (new URL(url)).getHost();
-            int padPort = prefs.getInt("academia_padport", 0);
+            int padPort = Preferences.get().academiaPadPort();
 
             client = new PadClient(ip, padPort) {
 
@@ -52,7 +52,10 @@ public class PadActivity extends Activity {
         } catch (MalformedURLException e1) {
             e1.printStackTrace();
             // @todo go back
-        }
+        } catch (UninitializedException e1) {
+            // @todo go back
+			e1.printStackTrace();
+		}
     }
 
     @Override

@@ -3,8 +3,6 @@ package pl.killerapps.academia.activities;
 import pl.killerapps.academia.R;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -13,6 +11,7 @@ import android.widget.EditText;
 import android.view.View.OnClickListener;
 import java.net.URISyntaxException;
 import pl.killerapps.academia.api.command.authenticate.Login;
+import pl.killerapps.academia.preferences.Preferences;
 
 public class ConnectActivity extends Activity {
 
@@ -39,20 +38,17 @@ public class ConnectActivity extends Activity {
                 EditText passwordEdit = (EditText) findViewById(R.id.conn_password);
                 String password = passwordEdit.getText().toString();
 
-                Editor prefsEditor;
-                prefsEditor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
-                prefsEditor.clear();
-                prefsEditor.putString("academia-url", url);
-                prefsEditor.putInt("academia-padport", padPort);
                 try {
+                    Preferences.set().academiaPadPort(padPort);
+                    Preferences.set().academiaUrl(url);
+                    Preferences.set().credentials(username, password);
                     Login loginCommand = new Login(url, getBaseContext());
                     loginCommand.login(username, password);
-                    if (prefsEditor.commit()) {
-                        finish();
-                    }
                 } catch (URISyntaxException ex) {
-                    Log.e("login", "cant login", ex);
-                }
+                    Log.e("login", "can't login", ex);
+                } catch (Preferences.UninitializedException ex) {
+                    Log.e("connect", "uninitialized pref", ex);
+				}
             }
         });
     }

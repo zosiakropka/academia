@@ -24,6 +24,8 @@ import org.apache.http.protocol.HttpContext;
 import android.util.Log;
 
 import pl.killerapps.academia.api.command.ApiCommandBase;
+import pl.killerapps.academia.preferences.Preferences;
+import pl.killerapps.academia.preferences.Preferences.UninitializedException;
 
 /**
  *
@@ -49,8 +51,7 @@ public class Login extends ApiCommandBase {
                 DefaultHttpClient httpclient = new DefaultHttpClient();
 
                 try {
-                    GetCsrfToken csrf_token_getter = new GetCsrfToken(base_url, context);
-                    String csrftoken = csrf_token_getter.get();
+                    String csrftoken = Preferences.get().csrfToken();
 
                     if (csrftoken != null) {
 
@@ -94,11 +95,11 @@ public class Login extends ApiCommandBase {
 
                     }
 
-                } catch (URISyntaxException ex) {
-                    Log.e("login", "uri syntax", ex);
                 } catch (IOException ex) {
                     Log.e("login", "io exception", ex);
-                }
+                } catch (UninitializedException ex) {
+                    Log.e("login", "prefs uninit", ex);
+				}
 
                 // When HttpClient instance is no longer needed, 
                 // shut down the connection manager to ensure
