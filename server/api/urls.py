@@ -14,7 +14,7 @@ urlpatterns = patterns('')
 urlpatterns += patterns('api.views',
 
     url(r'^auth/csrf$', 'auth_csrf'),
-    url(r'^auth/signin', 'auth_csrf'),
+    url(r'^auth/signin', 'signin'),
 
     url(r'^note/list/$', 'note_list'),
     url(r'^note/get/$', 'note_get'),
