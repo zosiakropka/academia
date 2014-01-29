@@ -9,9 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.View.OnClickListener;
+
+import java.io.IOException;
 import java.net.URISyntaxException;
+
+import org.apache.http.client.ClientProtocolException;
+
+import pl.killerapps.academia.api.command.authenticate.Hello;
 import pl.killerapps.academia.api.command.authenticate.Login;
 import pl.killerapps.academia.preferences.Preferences;
+import pl.killerapps.academia.preferences.Preferences.UninitializedException;
 
 public class ConnectActivity extends Activity {
 
@@ -27,28 +34,26 @@ public class ConnectActivity extends Activity {
             @Override
             public void onClick(View arg0) {
                 EditText urlEdit = (EditText) findViewById(R.id.conn_server_url);
-                String url = urlEdit.getText().toString();
+                final String url = urlEdit.getText().toString();
 
                 EditText padPortEdit = (EditText) findViewById(R.id.conn_pad_port);
                 int padPort = Integer.parseInt(padPortEdit.getText().toString());
 
                 EditText usernameEdit = (EditText) findViewById(R.id.conn_username);
-                String username = usernameEdit.getText().toString();
+                final String username = usernameEdit.getText().toString();
 
                 EditText passwordEdit = (EditText) findViewById(R.id.conn_password);
-                String password = passwordEdit.getText().toString();
+                final String password = passwordEdit.getText().toString();
 
                 try {
                     Preferences.set().academiaPadPort(padPort);
                     Preferences.set().academiaUrl(url);
                     Preferences.set().credentials(username, password);
-                    Login loginCommand = new Login(url, getBaseContext());
-                    loginCommand.login(username, password);
-                } catch (URISyntaxException ex) {
-                    Log.e("login", "can't login", ex);
                 } catch (Preferences.UninitializedException ex) {
                     Log.e("connect", "uninitialized pref", ex);
 				}
+                
+                finish();
             }
         });
     }

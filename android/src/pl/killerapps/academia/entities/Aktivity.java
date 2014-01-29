@@ -17,6 +17,8 @@ public class Aktivity {
         type = null;
         notes = null;
     }
+    
+    public int id;
 
     public String supervisor;
     public String type;

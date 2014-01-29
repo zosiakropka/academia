@@ -8,6 +8,7 @@ import org.apache.http.client.ClientProtocolException;
 import pl.killerapps.academia.R;
 import pl.killerapps.academia.activities.subject.SubjectsActivity;
 import pl.killerapps.academia.api.command.authenticate.Hello;
+import pl.killerapps.academia.api.command.authenticate.Login;
 import pl.killerapps.academia.preferences.Preferences;
 import pl.killerapps.academia.preferences.Preferences.UninitializedException;
 import android.os.Bundle;
@@ -15,35 +16,61 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
+import android.webkit.CookieSyncManager;
 
 public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d("MainActivity", "Main activity created.");
+        Log.d("MainActivity", "onCreate.");
         super.onCreate(savedInstanceState);
-        try {
-            Preferences.init(getBaseContext());
-			clearConnectionPrefs();
-			(new Hello(getBaseContext())).hello();
-		} catch (UninitializedException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        Preferences.init(getBaseContext());
+
+        CookieSyncManager.createInstance(this); 
+        CookieSyncManager.getInstance().startSync();
+        goNext();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("MainActivity", "onResume.");
+        Preferences.init(getBaseContext());
+        CookieSyncManager.getInstance().stopSync();
         goNext();
     }
+    
+    @Override
+    protected void onPause() {
+    	super.onPause();
+    	CookieSyncManager.getInstance().sync();
+    }
 
+    private void login() {
+        (new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+                try {
+                	Preferences.Getter prefs = Preferences.get();
+        			(new Hello(getBaseContext())).hello();
+                    (new Login(prefs.academiaUrl(), getBaseContext())).login(prefs.username(), prefs.password());
+                } catch (URISyntaxException ex) {
+                    Log.e("login", "can't login", ex);
+				} catch (ClientProtocolException ex) {
+                    Log.e("connect", "client protocol exception", ex);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (UninitializedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		})).start();
+    }
+    
     protected void goNext() {
         Log.i("main", "Chosing nxt activity");
         String url;
@@ -53,6 +80,7 @@ public class MainActivity extends Activity {
 	        Intent nxtActivityIntent;
 	        if (url != null && pad_port > -1) {
 	            Log.i("main", "entering subjects activity");
+	            login();
 	            nxtActivityIntent = new Intent(this, SubjectsActivity.class);
 	        } else {
 	            Log.i("main", "let's connect!");

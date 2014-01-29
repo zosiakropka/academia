@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
+	
+	protected boolean get = false;
 
     public ApiCommandAsync(String base_url, String method_path) throws URISyntaxException {
         super(base_url, method_path);
@@ -49,7 +51,12 @@ public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
             public void run() {
 
                 try {
-                    String response = real_post(params);
+                	String response;
+                	if (get) {
+                		response = real_get(params);
+                	} else {
+                		response = real_post(params);
+                	}
                     if (response != null) {
                         JSONArray json_array = new JSONArray(response);
 

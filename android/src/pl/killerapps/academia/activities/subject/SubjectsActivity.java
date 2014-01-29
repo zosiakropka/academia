@@ -5,6 +5,14 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -13,13 +21,14 @@ import android.os.Build;
 import java.net.URISyntaxException;
 import java.util.List;
 import pl.killerapps.academia.activities.ConnectActivity;
-import pl.killerapps.academia.api.command.note.NoteListBySubjectByAktivity;
+import pl.killerapps.academia.api.command.subject.SubjectsByAktivity;
+import pl.killerapps.academia.entities.Aktivity;
 import pl.killerapps.academia.entities.Subject;
 import pl.killerapps.academia.preferences.Preferences;
 import pl.killerapps.academia.preferences.Preferences.UninitializedException;
 
 public class SubjectsActivity extends Activity {
-
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,25 +38,50 @@ public class SubjectsActivity extends Activity {
         String url;
 		try {
 			url = Preferences.get().academiaUrl();
-	        if (url == null) {
-	            Intent nxtActivityIntent = new Intent(this, ConnectActivity.class);
-	            startActivity(nxtActivityIntent);
-	        } else {
 
-	            NoteListBySubjectByAktivity noteListCommand;
-	            final Activity curr_activity = this;
-	            try {
-	                noteListCommand = new NoteListBySubjectByAktivity(url) {
-	                    @Override
-	                    public void on_response(List<Subject> response) {
-	                        NavUtils.navigateUpFromSameTask(curr_activity);
-	                    }
-	                };
-	                noteListCommand.send_request();
-	            } catch (URISyntaxException e) {
-	                e.printStackTrace();
-	                finish();
-	            }
+            SubjectsByAktivity subjectsByAktivityCommand;
+//            final Activity curr_activity = this;
+            try {
+            	final Activity ctx = this;
+                subjectsByAktivityCommand = new SubjectsByAktivity(url) {
+                    @Override
+                    public void on_response(final List<Subject> subjects) {
+                    	ctx.runOnUiThread(new Runnable() {
+                		  public void run() {
+                          	LinearLayout layout = (LinearLayout) findViewById(R.id.subjects_layout);
+                        	for (Subject subject: subjects) {
+                        		TextView tv = new TextView(ctx);
+                        		tv.setText(subject.name);
+                        		layout.addView(tv);
+                        		ListView lv = new ListView(ctx);
+                        		layout.addView(lv);
+                        		for (final Aktivity aktivity: subject.aktivities) {
+                            		TextView tv2 = new TextView(ctx);
+                        			tv2.setText("-" + subject.abbr + ": " + aktivity.type);
+                        			tv2.setOnClickListener(new OnClickListener() {
+										
+										@Override
+										public void onClick(View v) {
+											// TODO Auto-generated method stub
+
+									        Intent aktivityActivityIntent = new Intent(ctx, AktivityActivity.class);;
+									        aktivityActivityIntent.putExtra("AKTIVITY_ID", aktivity.id);
+									        startActivity(aktivityActivityIntent);
+										}
+									});
+                        			layout.addView(tv2);
+                        		}
+                        	}
+
+                		  }
+                		});
+//                        NavUtils.navigateUpFromSameTask(curr_activity);
+                    }
+                };
+                subjectsByAktivityCommand.send_request();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+                finish();
 	        }
 		} catch (UninitializedException e1) {
 			e1.printStackTrace();

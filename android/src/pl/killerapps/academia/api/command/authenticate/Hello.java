@@ -2,6 +2,8 @@ package pl.killerapps.academia.api.command.authenticate;
 
 import android.content.Context;
 import android.util.Log;
+import android.webkit.CookieSyncManager;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,8 +18,7 @@ import pl.killerapps.academia.preferences.Preferences;
 import pl.killerapps.academia.preferences.Preferences.UninitializedException;
 
 /**
- * @todo rename to Hello and call before Login, not inside it
- * @author zosia
+s * @author zosia
  */
 public class Hello {
 

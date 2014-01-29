@@ -47,6 +47,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.killerapps.academia.ConnectActivity" />
         </activity>
+        <activity
+            android:name="pl.killerapps.academia.activities.subject.AktivityActivity"
+            android:label="@string/title_activity_aktivity" >
+        </activity>
     </application>
 
 </manifest>

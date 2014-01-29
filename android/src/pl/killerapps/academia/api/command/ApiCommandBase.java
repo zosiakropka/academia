@@ -7,9 +7,13 @@ import java.net.URISyntaxException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
+
+import pl.killerapps.academia.preferences.Preferences;
+import pl.killerapps.academia.preferences.Preferences.UninitializedException;
 
 public abstract class ApiCommandBase {
 
@@ -43,9 +47,27 @@ public abstract class ApiCommandBase {
     }
 
     protected HttpResponse raw_post(HttpPost post) throws ClientProtocolException, IOException {
-        post.setURI(uri);
+    	post.setURI(uri);
+		try {
+	    	Preferences.Getter prefs = Preferences.get();
+	        post.addHeader("Cookie", "csrftoken=" + prefs.csrfToken() + "; " + "sessionid=" + prefs.sessionId());
+	        post.addHeader("X-CSRFToken", prefs.csrfToken());
+		} catch (UninitializedException e) {
+			e.printStackTrace();
+		}
         HttpResponse response = client.execute(post);
         return response;
+    }
+    protected HttpResponse raw_get(HttpGet get, String params) throws ClientProtocolException, IOException {
+    	try {
+			get.setURI(new URI(uri.toString() + "?" + params));
+			get.addHeader("Cookie", "sessionid=" + Preferences.get().sessionId());
+	        HttpResponse response = client.execute(get);
+	        return response;
+		} catch (URISyntaxException e) {
+		} catch (UninitializedException e) {
+		}
+		return null;
     }
 
     protected void handleFailure(Exception ex) {

@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -44,71 +45,53 @@ public class Login extends ApiCommandBase {
 
     public void login(final String username, final String password) {
 
-        Runnable runnable = new Runnable() {
+        DefaultHttpClient httpclient = new DefaultHttpClient();
 
-            public void run() {
+        try {
+            String csrftoken = Preferences.get().csrfToken();
 
-                DefaultHttpClient httpclient = new DefaultHttpClient();
+            Log.i("login", "csrftoken");
+            if (csrftoken != null) {
 
-                try {
-                    String csrftoken = Preferences.get().csrfToken();
+                HttpPost post = new HttpPost(uri);
+                post.addHeader("Cookie", "csrftoken=" + csrftoken);
+                post.addHeader("X-CSRFToken", csrftoken);
+                
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("username", username));
+                params.add(new BasicNameValuePair("password", password));
 
-                    if (csrftoken != null) {
+                post.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 
-                        HttpPost post = new HttpPost(uri);
+                HttpResponse response = httpclient.execute(post);
 
-                        Log.d("auth", "CSRF token: " + csrftoken);
+                HttpEntity entity = response.getEntity();
 
-                        HttpContext localContext = new BasicHttpContext();
-                        BasicCookieStore cookieStore = new BasicCookieStore();
-                        BasicClientCookie csrf_token_cookie = new BasicClientCookie("csrftoken", csrftoken);
-                        cookieStore.addCookie(csrf_token_cookie);
-                        csrf_token_cookie.setDomain(base_url);
-                        csrf_token_cookie.setPath("/");
+                System.out.println("Login form get: " + response.getStatusLine());
+                if (entity != null) {
+                    entity.consumeContent();
+                }
 
-                        localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
-                        List<NameValuePair> params = new ArrayList<NameValuePair>();
-                        params.add(new BasicNameValuePair("username", username));
-                        params.add(new BasicNameValuePair("password", password));
-
-                        post.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-
-                        httpclient.setCookieStore(cookieStore);
-                        HttpResponse response = httpclient.execute(post);
-
-                        HttpEntity entity = response.getEntity();
-
-                        System.out.println("Login form get: " + response.getStatusLine());
-                        if (entity != null) {
-                            entity.consumeContent();
-                        }
-
-                        System.out.println("Post logon cookies:");
-                        List<Cookie> cookies = httpclient.getCookieStore().getCookies();
-                        if (cookies.isEmpty()) {
-                            System.out.println("None");
-                        } else {
-                            for (int i = 0; i < cookies.size(); i++) {
-                                System.out.println("- " + cookies.get(i).toString());
-                            }
-                        }
-
+                List<Cookie> cookies = httpclient.getCookieStore().getCookies();
+                if (!cookies.isEmpty()) {
+                    for (int i = 0; i < cookies.size(); i++) {
+                    	if (cookies.get(i).getName().equals("sessionid")) {
+                    		Preferences.set().sessionId(cookies.get(i).getValue());
+                    	}
                     }
+                }
 
-                } catch (IOException ex) {
-                    Log.e("login", "io exception", ex);
-                } catch (UninitializedException ex) {
-                    Log.e("login", "prefs uninit", ex);
-				}
-
-                // When HttpClient instance is no longer needed, 
-                // shut down the connection manager to ensure
-                // immediate deallocation of all system resources
-                httpclient.getConnectionManager().shutdown();
             }
-        };
 
-        (new Thread(runnable)).start();
+        } catch (IOException ex) {
+            Log.e("login", "io exception", ex);
+        } catch (UninitializedException ex) {
+            Log.e("login", "prefs uninit", ex);
+		}
 
+        // When HttpClient instance is no longer needed, 
+        // shut down the connection manager to ensure
+        // immediate deallocation of all system resources
+        httpclient.getConnectionManager().shutdown();
     }
 }

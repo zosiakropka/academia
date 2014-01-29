@@ -4,20 +4,25 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Preferences {
 
 	static String USERNAME = "username";
 	static String PASSWORD = "password";
 	static String CSRF_TOKEN = "csrftoken";
+	static String SESSION_ID = "sessionid";
 	static String ACADEMIA_URL = "academia-url";
 	static String ACADEMIA_PAD_PORT = "academia-pad-port";
 	
 	private static SharedPreferences preferences = null;
 
 	public static void init(Context context) {
-		preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		preferences.edit().clear();
+		if (preferences == null) {
+			Log.d("prefs", "initializing preferences");
+			preferences = PreferenceManager.getDefaultSharedPreferences(context);
+			preferences.edit().clear();
+		}
 	}
 	
 	public static Getter get() throws UninitializedException {
@@ -58,6 +63,9 @@ public class Preferences {
 		public String csrfToken() {
 			return preferences.getString(Preferences.CSRF_TOKEN, null);
 		}
+		public String sessionId() {
+			return preferences.getString(Preferences.SESSION_ID, "");
+		}
 		public String academiaUrl() {
 			return preferences.getString(Preferences.ACADEMIA_URL, null);
 		}
@@ -79,6 +87,9 @@ public class Preferences {
 		public boolean csrfToken(String csrftoken) {
 			return editor.putString(Preferences.CSRF_TOKEN, csrftoken).commit();
 		}
+		public boolean sessionId(String sessionid) {
+			return editor.putString(Preferences.SESSION_ID, sessionid).commit();
+		}
 		public boolean academiaUrl(String academia_url) {
 			return editor.putString(Preferences.ACADEMIA_URL, academia_url).commit();
 		}
@@ -94,6 +105,7 @@ public class Preferences {
 		}
 		public boolean execute() {
 			editor.remove(Preferences.CSRF_TOKEN);
+			editor.remove(Preferences.SESSION_ID);
 			editor.remove(Preferences.USERNAME);
 			editor.remove(Preferences.PASSWORD);
 			editor.remove(Preferences.ACADEMIA_PAD_PORT);

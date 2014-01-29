@@ -22,10 +22,10 @@ import pl.killerapps.academia.entities.Note;
  *
  * @author zosia
  */
-public class NoteList extends ApiCommandAsync<List<Note>> {
+public abstract class NoteList extends ApiCommandAsync<List<Note>> {
 
     public NoteList(String base_url) throws URISyntaxException {
-        super(base_url, "/subject/list/");
+        super(base_url, "/note/list/");
     }
 
     @Override

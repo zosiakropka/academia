@@ -11,5 +11,6 @@
     <string name="pad_content"></string>
     <string name="title_activity_subjects">SubjectsActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_aktivity">AktivityActivity</string>
 
 </resources>
