@@ -18,7 +18,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = config.ADMINS
 
-MANAGERS = ADMINS
+MANAGERS = config.MANAGERS
 
 DATABASES = config.DATABASES
 
@@ -28,25 +28,25 @@ TIME_ZONE = config.TIME_ZONE
 
 LANGUAGE_CODE = config.LANGUAGE_CODE
 
-SITE_ID = 1
+SITE_ID = config.SITE_ID
 
 USE_I18N = config.USE_I18N
 
 ## If you set this to False, Django will not format dates, numbers and
 #  calendars according to the current locale.
-USE_L10N = True
+USE_L10N = config.USE_L10N
 
 ## If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = config.USE_TZ
 
 ## Absolute filesystem path to the directory that will hold user-uploaded files.
 #  Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = config.MEDIA_ROOT
 
 ## URL that handles the media served from MEDIA_ROOT. Make sure to use a
 #  trailing slash.
 #  Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = config.MEDIA_URL
 
 ## Non-default serializer that enables including custom fields to / excluding
 # specified fields from serialized JSON
