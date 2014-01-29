@@ -24,7 +24,7 @@ def note_create(user, note_access, subject_abbr, activity_type):
 
 @api_auth(user=True, admin=True)
 @api
-def note_list(user, admin=False, subject_name=None, subject_abbr=None, activity_type=None, note_access=None):
+def note_list(user, admin=False, subject_name=None, subject_abbr=None, activity_type=None, activity_id=None, note_access=None):
 
     notes = None
 
@@ -35,6 +35,9 @@ def note_list(user, admin=False, subject_name=None, subject_abbr=None, activity_
 
     if note_access:
         notes = notes.filter(access__in=note_access)
+
+    if activity_id:
+        notes = notes.filter(activity__pk__in=activity_id)
 
     if subject_name or subject_abbr:
         if subject_name:
