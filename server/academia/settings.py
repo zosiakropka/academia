@@ -6,51 +6,31 @@
 
 Django settings for Academia project.
 """
+import config
 
-DEBUG = True
+DEBUG = config.DEBUG
 
-if DEBUG:
+if not config.PRODUCTION:
     from os import path
     PROJECT_DIR = path.dirname(__file__) + "/.."
 
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
+ADMINS = config.ADMINS
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'academia',                      # Or path to database file if using sqlite3.
-        'USER': 'academia',                      # Not used with sqlite3.
-        'PASSWORD': '---CHANGE-THIS-!!!---',     # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
+DATABASES = config.DATABASES
 
-## Hosts/domain names that are valid for this site; required if DEBUG is False
-#  See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = config.ALLOWED_HOSTS
 
-## Local time zone for this installation. Choices can be found here:
-#  http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-#  although not all choices may be available on all operating systems.
-#  In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'Europe/Warsaw'
+TIME_ZONE = config.TIME_ZONE
 
-## Language code for this installation. All choices can be found here:
-#  http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = config.LANGUAGE_CODE
 
 SITE_ID = 1
 
-## If you set this to False, Django will make some optimizations so as not
-#  to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = config.USE_I18N
 
 ## If you set this to False, Django will not format dates, numbers and
 #  calendars according to the current locale.
@@ -101,7 +81,7 @@ STATICFILES_FINDERS = (
 )
 
 ## Make this unique, and don't share it with anybody.
-SECRET_KEY = '---CHANGE-THIS-!!!---'
+SECRET_KEY = config.SECRET_KEY
 
 ## List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -124,9 +104,7 @@ ROOT_URLCONF = 'academia.urls'
 
 WSGI_APPLICATION = 'academia.wsgi.application'
 
-TEMPLATE_DIRS = (
-    path.join(PROJECT_DIR, "templates") if DEBUG else None,
-)
+TEMPLATE_DIRS = config.TEMPLATE_DIRS if config.PRODUCTION else (path.join(PROJECT_DIR, "templates"))
 
 INSTALLED_APPS = (
      'django.contrib.auth',
@@ -143,76 +121,8 @@ INSTALLED_APPS = (
     'pad',
 )
 
-## A sample logging configuration. The only tangible logging
-#  performed by this configuration is to send an email to
-#  the site admins on every HTTP 500 error when DEBUG=False.
-#  See http://docs.djangoproject.com/en/dev/topics/logging for
-#  more details on how to customize your logging configuration.
-LOGS_PATH = path.join(PROJECT_DIR, "../logs/%s.log") if DEBUG else None
-
-LOGS_FORMAT_JSON = """{
-  "time": "%(asctime)s",
-  "lvl": "%(levelname)s",
-  "module": "%(module)s",
-  "line": "%(lineno)s",
-  "thread": "%(thread)d",
-  "msg": "%(message)s"
-}"""
-LOGS_FORMAT_STANDARD = """[%(asctime)s] [%(levelname)s:%(module)s:%(lineno)s] %(message)s"""
-
-LOGS_DATEFORMAT = "%d/%b/%Y %H:%M:%S"
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'formatters': {
-        'standard': {
-            #'()': 'djangocolors_formatter.DjangoColorsFormatter',
-            'format': LOGS_FORMAT_STANDARD,
-            'datefmt': LOGS_DATEFORMAT
-        },
-        'json': {
-            #'()': 'djangocolors_formatter.DjangoColorsFormatter',
-            'format': LOGS_FORMAT_JSON,
-            'datefmt': LOGS_DATEFORMAT
-        },
-    },
-    'handlers': {
-        'null': {
-            'level': 'DEBUG',
-            'class': 'django.utils.log.NullHandler',
-        },
-        'logfile': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': LOGS_PATH % "log",
-            'maxBytes': 50000,
-            'backupCount': 2,
-            'formatter': 'json',
-        },
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'standard'
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'logfile'],
-            'propagate': True,
-            'level': 'INFO',
-        },
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        '': {
-            'handlers': ['console', 'logfile'],
-            'level': 'DEBUG',
-        },
-    }
-}
+from academia import logs
+LOGGING = logs.LOGGING
 
 ## Where to redirect unauthorized
 LOGIN_URL = "/account/signin"
