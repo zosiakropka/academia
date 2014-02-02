@@ -14,6 +14,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         from pad.channel.ws.server import PadWSServer
+        from academia.settings import PADSERVERS
+        server = PADSERVERS['wsserver']
 
-        wsserver = PadWSServer("0.0.0.0", 5002)  # @todo: shouldn't be hardcoded
+        wsserver = PadWSServer(server['host'], server['port'])
         wsserver.run()

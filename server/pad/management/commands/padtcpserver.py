@@ -14,6 +14,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         from pad.channel.tcp.server import PadTCPServer
+        from academia.settings import PADSERVERS
+        server = PADSERVERS['tcpserver']
 
-        tcpserver = PadTCPServer("0.0.0.0", 5001)  # @todo: shouldn't be hardcoded
+        tcpserver = PadTCPServer(server['host'], server['port'])
         tcpserver.run()
