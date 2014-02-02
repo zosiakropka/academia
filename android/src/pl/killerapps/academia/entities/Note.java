@@ -5,38 +5,38 @@ import java.util.HashMap;
 
 public class Note {
 
-    public Note() {
-        owner = null;
-        aktivity = null;
-        date = null;
-        title = null;
-        slug = null;
-        content = null;
-        access = null;
-    }
+  public Note() {
+    owner = null;
+    aktivity = null;
+    date = null;
+    title = null;
+    slug = null;
+    content = null;
+    access = null;
+  }
 
-    public String owner;
+  public String owner;
 
-    public Aktivity aktivity;
+  public Aktivity aktivity;
 
-    public Date date;
+  public Date date;
 
-    public String title;
+  public String title;
 
-    public String slug;
+  public String slug;
 
-    public String content;
+  public String content;
 
-    public String access;
+  public String access;
 
-    public static final String OPEN = "open";
-    public static final String PUBLIC = "public";
-    public static final String PRIVATE = "private";
-    public static final HashMap<String, String> NOTE_ACCESS = new HashMap<String, String>();
+  public static final String OPEN = "open";
+  public static final String PUBLIC = "public";
+  public static final String PRIVATE = "private";
+  public static final HashMap<String, String> NOTE_ACCESS = new HashMap<String, String>();
 
-    {
-        NOTE_ACCESS.put(OPEN, "Open");
-        NOTE_ACCESS.put(PUBLIC, "Public");
-        NOTE_ACCESS.put(PRIVATE, "Private");
-    }
+  {
+    NOTE_ACCESS.put(OPEN, "Open");
+    NOTE_ACCESS.put(PUBLIC, "Public");
+    NOTE_ACCESS.put(PRIVATE, "Private");
+  }
 }

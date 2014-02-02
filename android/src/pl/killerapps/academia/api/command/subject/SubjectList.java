@@ -17,14 +17,15 @@ import pl.killerapps.academia.entities.Subject;
  */
 public abstract class SubjectList extends ApiCommand<List<Subject>> {
 
-    public SubjectList(String base_url) throws URISyntaxException {
-        super(base_url, "/subject/list/");
-    }
+  public SubjectList(String base_url)
+    throws URISyntaxException {
+    super(base_url, "/subject/list/");
+  }
 
-    @Override
-    protected List<Subject> process_json(JSONArray json) {
+  @Override
+  protected List<Subject> process_json(JSONArray json) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
 }

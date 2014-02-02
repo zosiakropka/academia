@@ -24,29 +24,30 @@ import pl.killerapps.academia.entities.Note;
  */
 public abstract class NoteList extends ApiCommandAsync<List<Note>> {
 
-    public NoteList(String base_url) throws URISyntaxException {
-        super(base_url, "/note/list/");
-    }
+  public NoteList(String base_url)
+    throws URISyntaxException {
+    super(base_url, "/note/list/");
+  }
 
-    @Override
-    protected List<Note> process_json(JSONArray notes_json) {
-        List<Note> notes = new ArrayList<Note>();
-        for (int i = 0; i < notes_json.length(); i++) {
-            try {
-                JSONObject note_json = notes_json.getJSONObject(i);
-                Note note = new Note();
-                note.access = note_json.getString("access");
-                note.date = (new SimpleDateFormat("yyyy-mm-dd")).parse(note_json.getString("date"));
-                note.slug = note_json.getString("slug");
-                note.title = note_json.getString("title");
-                notes.add(note);
-            } catch (JSONException ex) {
-                Log.e("academia_api", "cant parse json", ex);
-            } catch (ParseException ex) {
-                Log.e("academia_api", "cant parse date", ex);
-            }
-        }
-        return notes;
+  @Override
+  protected List<Note> process_json(JSONArray notes_json) {
+    List<Note> notes = new ArrayList<Note>();
+    for (int i = 0; i < notes_json.length(); i++) {
+      try {
+        JSONObject note_json = notes_json.getJSONObject(i);
+        Note note = new Note();
+        note.access = note_json.getString("access");
+        note.date = (new SimpleDateFormat("yyyy-mm-dd")).parse(note_json.getString("date"));
+        note.slug = note_json.getString("slug");
+        note.title = note_json.getString("title");
+        notes.add(note);
+      } catch (JSONException ex) {
+        Log.e("academia_api", "cant parse json", ex);
+      } catch (ParseException ex) {
+        Log.e("academia_api", "cant parse date", ex);
+      }
     }
+    return notes;
+  }
 
 }

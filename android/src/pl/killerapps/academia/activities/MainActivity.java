@@ -20,87 +20,88 @@ import android.webkit.CookieSyncManager;
 
 public class MainActivity extends Activity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d("MainActivity", "onCreate.");
-        super.onCreate(savedInstanceState);
-        Preferences.init(getBaseContext());
+    Log.d("MainActivity", "onCreate.");
+    super.onCreate(savedInstanceState);
+    Preferences.init(getBaseContext());
 
-        CookieSyncManager.createInstance(this); 
-        CookieSyncManager.getInstance().startSync();
-        goNext();
-    }
+    CookieSyncManager.createInstance(this);
+    CookieSyncManager.getInstance().startSync();
+    goNext();
+  }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("MainActivity", "onResume.");
-        Preferences.init(getBaseContext());
-        CookieSyncManager.getInstance().stopSync();
-        goNext();
-    }
-    
-    @Override
-    protected void onPause() {
-    	super.onPause();
-    	CookieSyncManager.getInstance().sync();
-    }
+  @Override
+  protected void onResume() {
+    super.onResume();
+    Log.d("MainActivity", "onResume.");
+    Preferences.init(getBaseContext());
+    CookieSyncManager.getInstance().stopSync();
+    goNext();
+  }
 
-    private void login() {
-        (new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-                try {
-                	Preferences.Getter prefs = Preferences.get();
-        			(new Hello(getBaseContext())).hello();
-                    (new Login(prefs.academiaUrl(), getBaseContext())).login(prefs.username(), prefs.password());
-                } catch (URISyntaxException ex) {
-                    Log.e("login", "can't login", ex);
-				} catch (ClientProtocolException ex) {
-                    Log.e("connect", "client protocol exception", ex);
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (UninitializedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+  @Override
+  protected void onPause() {
+    super.onPause();
+    CookieSyncManager.getInstance().sync();
+  }
 
-			}
-		})).start();
-    }
-    
-    protected void goNext() {
-        Log.i("main", "Chosing nxt activity");
-        String url;
-		try {
-			url = Preferences.get().academiaUrl();
-	        int pad_port = Preferences.get().academiaPadPort();
-	        Intent nxtActivityIntent;
-	        if (url != null && pad_port > -1) {
-	            Log.i("main", "entering subjects activity");
-	            login();
-	            nxtActivityIntent = new Intent(this, SubjectsActivity.class);
-	        } else {
-	            Log.i("main", "let's connect!");
-	            nxtActivityIntent = new Intent(this, ConnectActivity.class);
-	        }
-	        startActivity(nxtActivityIntent);
-		} catch (UninitializedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
+  private void login() {
+    (new Thread(new Runnable() {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+      @Override
+      public void run() {
+        try {
+          Preferences.Getter prefs = Preferences.get();
+          (new Hello(getBaseContext())).hello();
+          (new Login(prefs.academiaUrl(), getBaseContext())).login(prefs.username(), prefs.password());
+        } catch (URISyntaxException ex) {
+          Log.e("login", "can't login", ex);
+        } catch (ClientProtocolException ex) {
+          Log.e("connect", "client protocol exception", ex);
+        } catch (IOException e) {
+          e.printStackTrace();
+        } catch (UninitializedException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
 
-    private boolean clearConnectionPrefs() throws UninitializedException {
-    	return Preferences.clear().execute();
+      }
+    })).start();
+  }
+
+  protected void goNext() {
+    Log.i("main", "Chosing nxt activity");
+    String url;
+    try {
+      url = Preferences.get().academiaUrl();
+      int pad_port = Preferences.get().academiaPadPort();
+      Intent nxtActivityIntent;
+      if (url != null && pad_port > -1) {
+        Log.i("main", "entering subjects activity");
+        login();
+        nxtActivityIntent = new Intent(this, SubjectsActivity.class);
+      } else {
+        Log.i("main", "let's connect!");
+        nxtActivityIntent = new Intent(this, ConnectActivity.class);
+      }
+      startActivity(nxtActivityIntent);
+    } catch (UninitializedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.main, menu);
+    return true;
+  }
+
+  private boolean clearConnectionPrefs()
+    throws UninitializedException {
+    return Preferences.clear().execute();
+  }
 }

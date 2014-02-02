@@ -13,66 +13,66 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
-	
-	protected boolean get = false;
 
-    public ApiCommandAsync(String base_url, String method_path) throws URISyntaxException {
-        super(base_url, method_path);
-    }
+  protected boolean get = false;
 
-    /**
-     * This method should be implemented as final reaction for send request.
-     *
-     * @param response
-     */
-    public void on_response(Entity response) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+  public ApiCommandAsync(String base_url, String method_path)
+    throws URISyntaxException {
+    super(base_url, method_path);
+  }
 
-    /**
-     * Implementation of this method should process JSON response to extract
-     * required data and return right Entity object representing data gathered
-     * from HTTP response.
-     *
-     * @param json
-     * @return Type
-     */
-    protected abstract Entity process_json(JSONArray json);
+  /**
+   * This method should be implemented as final reaction for send request.
+   *
+   * @param response
+   */
+  public void on_response(Entity response) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
-    public void send_request() {
-        send_request(new ArrayList<NameValuePair>());
-    }
+  /**
+   * Implementation of this method should process JSON response to extract required data and return right Entity object
+   * representing data gathered from HTTP response.
+   *
+   * @param json
+   * @return Type
+   */
+  protected abstract Entity process_json(JSONArray json);
 
-    public void send_request(final List<NameValuePair> params) {
+  public void send_request() {
+    send_request(new ArrayList<NameValuePair>());
+  }
 
-        Runnable thread;
-        thread = new Runnable() {
+  public void send_request(final List<NameValuePair> params) {
 
-            public void run() {
+    Runnable thread;
+    thread = new Runnable() {
 
-                try {
-                	String response;
-                	if (get) {
-                		response = real_get(params);
-                	} else {
-                		response = real_post(params);
-                	}
-                    if (response != null) {
-                        JSONArray json_array = new JSONArray(response);
+      public void run() {
 
-                        Entity entity = process_json(json_array);
-                        on_response(entity);
-                    }
-                } catch (JSONException e) {
-                    Log.e("academia_api", e.getLocalizedMessage());
-                } catch (ClientProtocolException e) {
-                    Log.e("academia_api", e.getLocalizedMessage());
-                } catch (IOException e) {
-                    Log.e("academia_api", e.getLocalizedMessage());
-                }
-            }
-        };
-        (new Thread(thread)).start();
-    }
+        try {
+          String response;
+          if (get) {
+            response = real_get(params);
+          } else {
+            response = real_post(params);
+          }
+          if (response != null) {
+            JSONArray json_array = new JSONArray(response);
+
+            Entity entity = process_json(json_array);
+            on_response(entity);
+          }
+        } catch (JSONException e) {
+          Log.e("academia_api", e.getLocalizedMessage());
+        } catch (ClientProtocolException e) {
+          Log.e("academia_api", e.getLocalizedMessage());
+        } catch (IOException e) {
+          Log.e("academia_api", e.getLocalizedMessage());
+        }
+      }
+    };
+    (new Thread(thread)).start();
+  }
 
 }
