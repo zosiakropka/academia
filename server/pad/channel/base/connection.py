@@ -6,6 +6,8 @@
 """
 import logging
 from pad.channel.endec import encode, decode
+from access_tokens import tokens, scope
+from backbone.models import Note
 
 
 class PadBaseConnection():
@@ -32,8 +34,20 @@ class PadBaseConnection():
             purpose = data["purpose"]
             if purpose == "pad":
                 self.pad = data.pop("message")
-            if purpose == "patches":
-                self.pad_broadcast(data)
+            elif purpose == "patches":
+                try:
+                    token = data.pop("token", None)
+                    tokens.validate(
+                        token,
+                        scope.access_obj(Note.objects.get(pk=self.pad), "edit"),
+                    )
+                    self.pad_broadcast(data)
+                except Exception:
+                    response = {
+                        "purpose": "auth",
+                        "message": "fail"
+                    }
+                    self.send(encode(response))
             elif purpose == "test" and "message" in data:
                 logging.debug("Test message received: %s", data["message"])
 

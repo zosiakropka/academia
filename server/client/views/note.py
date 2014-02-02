@@ -10,6 +10,8 @@ from django.utils.timezone import now
 from utils.decorators import authenticate, abstractor
 import logging
 from django.core.exceptions import PermissionDenied
+from access_tokens import scope, tokens
+import logging
 
 from academia.settings import PADSERVERS
 wsserver = PADSERVERS['wsserver']
@@ -22,10 +24,13 @@ logger = logging.getLogger(__name__)
 def note_edit(user, note_id):
 
     note = get_object_or_404(Note, pk=note_id).for_edit(by_user=user)
+    token = tokens.generate(
+        scope.access_obj(note, "edit"),
+    )
     if not note:
         raise PermissionDenied()
     else:
-        return ('client/note/pad.html', {"note_id": note.id, "content": note.content, "pad_port": wsserver["port"]})
+        return ('client/note/pad.html', {"note_id": note.id, "content": note.content, "pad_port": wsserver["port"], "token": token})
 
 
 @authenticate(user=True)
@@ -37,7 +42,10 @@ def note_create(user, access_type, subject_abbr, activity_type):
     date = now()
     note = Note(activity=activity, owner=user, date=date, access=access_type)
     note.save()
-    return ('client/note/pad.html', {"note_id": note.id, "content": "Editable pad", "pad_port": wsserver["port"]})
+    token = tokens.generate(
+        scope.access_obj(note, "edit"),
+    )
+    return ('client/note/pad.html', {"note_id": note.id, "content": "Editable pad", "pad_port": wsserver["port"], "token": token})
 
 
 @authenticate(user=True)
