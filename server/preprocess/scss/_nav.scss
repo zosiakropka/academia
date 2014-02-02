@@ -1,0 +1,23 @@
+$elems-height: 2rem;
+$elems-margin: 1rem;
+#nav-top, #page-footer {
+  height: $elems-height;
+  line-height: $elems-height;
+  font-size: 1rem;
+  background-color: #555;
+  color: #fff;
+  * {
+    color: #fff;
+  }
+  ul {
+    li {
+      display: inline-block;
+    }
+  } 
+}
+#nav-top {
+  margin-bottom: $elems-margin;
+}
+#page-wrapper {
+  padding-bottom: $elems-height + $elems-margin;
+}
