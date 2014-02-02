@@ -5,7 +5,7 @@
         {% block sidebar %}
         <ul>
             <li><a href="{% url "client.views.subject_list" %}">Home</a></li>
-            <li><a href="{% url "account.views.signout" %}">Logout</a></li>
+            {% if user.is_authenticated %}<li><a href="{% url "account.views.signout" %}">Logout</a></li>{% endif %}
         </ul>
         {% endblock %}
     </div>
