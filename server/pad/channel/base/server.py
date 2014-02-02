@@ -23,7 +23,6 @@ class PadBaseServer(Thread):
 
     def pad_broadcast(self, rawdata, pad, broadcaster_id):
         for conn_id in self.connections:
-            #if conn_id != broadcaster_id:
             if conn_id != broadcaster_id and self.connections[conn_id].pad == pad:
                 self.connections[conn_id].send(rawdata)
 
