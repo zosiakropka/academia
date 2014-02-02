@@ -114,9 +114,16 @@ var codes = {
 			
 		}
 	};
-	var socket = new WebSocket("ws://" + window.location.hostname + ":5002");
-	socket.onmessage = function(response) {
-		var patch_text = decode(response.data).message;
-		diffs.apply(patch_text);
-	};
-	diffs.interval = setInterval(diffs.schedule, 1000);
+var socket = new WebSocket("ws://" + window.location.hostname + ":" + academia.pad_port);
+socket.onmessage = function(response) {
+	var data = decode(response.data);
+	if (data && data.purpose) {
+		switch (data.purpose) {
+			case "patches": 
+				console.log(data);
+				var patch_text = data.message;
+				diffs.apply(patch_text);
+				break;
+		}
+	}
+};

@@ -8,6 +8,10 @@ Django settings for Academia project.
 """
 import config
 
+PADSERVERS = config.PADSERVERS
+
+##############################################################################
+
 DEBUG = config.DEBUG
 
 if not config.PRODUCTION:

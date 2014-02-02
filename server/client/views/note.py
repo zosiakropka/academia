@@ -11,6 +11,8 @@ from utils.decorators import authenticate, abstractor
 import logging
 from django.core.exceptions import PermissionDenied
 
+from academia.settings import PADSERVERS
+wsserver = PADSERVERS['wsserver']
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +25,7 @@ def note_edit(user, note_id):
     if not note:
         raise PermissionDenied()
     else:
-        return ('client/note/pad.html', {"note_id": note.id, "content": note.content})
+        return ('client/note/pad.html', {"note_id": note.id, "content": note.content, "pad_port": wsserver["port"]})
 
 
 @authenticate(user=True)
@@ -35,7 +37,7 @@ def note_create(user, access_type, subject_abbr, activity_type):
     date = now()
     note = Note(activity=activity, owner=user, date=date, access=access_type)
     note.save()
-    return ('client/note/pad.html', {"note_id": note.id, "content": "Editable pad"})
+    return ('client/note/pad.html', {"note_id": note.id, "content": "Editable pad", "pad_port": wsserver["port"]})
 
 
 @authenticate(user=True)
