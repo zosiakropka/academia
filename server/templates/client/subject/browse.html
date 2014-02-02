@@ -12,12 +12,15 @@
 			<h2>{{ activity.activity }}</h2>
 			<ul>
 				{% for note in activity.notes %}
-				{{note.date}} {{note}}
-				[<a href="{% url "client.views.note_open" note_id=note.pk %}">open</a>]
+				<li>
+				{{note.date}}
+				<a href="{% url "client.views.note_open" note_id=note.pk %}">
+				{{note}}
+				</a>
 				{% if note.owner == user or note.access == 'open' %}
 				[<a href="{% url "client.views.note_edit" note_id=note.pk %}">edit</a>]
 				{% endif %}
-				<br/>
+				</li>
 				{% endfor %}
 			</ul>
 		</li>
@@ -25,7 +28,7 @@
 			Create
 			<a href="{% url "client.views.note_create" access_type="open" subject_abbr=subject.abbr activity_type=activity.activity.type %}">open</a> |
 			<a href="{% url "client.views.note_create" access_type="public" subject_abbr=subject.abbr activity_type=activity.activity.type %}">public</a> |
-			<a href="{% url "client.views.note_create" access_type="private" subject_abbr=subject.abbr activity_type=activity.activity.type %}">private</a> |
+			<a href="{% url "client.views.note_create" access_type="private" subject_abbr=subject.abbr activity_type=activity.activity.type %}">private</a>
 		</p>
 		{% endfor %}
 	</ul>

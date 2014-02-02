@@ -1,16 +1,19 @@
 {% extends "empty.html" %}
 
 {% block body %}
-    <div id="sidebar">
+<div id="page-wrapper">
+    <nav id="nav-top">
         {% block sidebar %}
         <ul>
             <li><a href="{% url "client.views.subject_list" %}">Home</a></li>
             {% if user.is_authenticated %}<li><a href="{% url "account.views.signout" %}">Logout</a></li>{% endif %}
         </ul>
         {% endblock %}
-    </div>
+    </nav>
 
     <div id="content">
         {% block content %}{% endblock %}
     </div>
+	<footer id="page-footer"></footer>
+</div>
 {% endblock %}
