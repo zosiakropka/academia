@@ -7,10 +7,11 @@
 from ws4py.server.geventserver import WSGIServer, GEventWebSocketPool
 
 from gevent import monkey
+monkey.patch_all(socket=True, dns=True, time=True, select=True,thread=False, os=True, ssl=True, httplib=False, aggressive=True)
+
 from pad.channel.base.server import PadBaseServer
 from pad.channel.ws.connection import PadWSConnection
 from ws4py.server.wsgiutils import WebSocketWSGIApplication
-monkey.patch_all()
 
 
 class PadWSServer(WSGIServer, PadBaseServer):
