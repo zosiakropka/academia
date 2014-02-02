@@ -5,15 +5,15 @@ import java.util.Map.Entry;
 
 public class PadMessageCodes {
 
-    private static PadMessageCodes mc = null;
-    private HashMap<String, Integer> CODES = new HashMap<String, Integer>();
+  private static PadMessageCodes mc = null;
+  private HashMap<String, Integer> CODES = new HashMap<String, Integer>();
 
-    private PadMessageCodes() {
-        CODES.put("purpose", 1);
-        CODES.put("pad", 2);
-        CODES.put("login", 3);
-        CODES.put("password", 4);
-        CODES.put("message", 5);
+  private PadMessageCodes() {
+    CODES.put("purpose", 1);
+    CODES.put("login", 2);
+    CODES.put("password", 3);
+    CODES.put("token", 4);
+    CODES.put("message", 5);
     }
 
     public String label(Integer code) {

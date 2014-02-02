@@ -20,13 +20,6 @@
 	  };
 	  return null;
 	};
-	var codes = {
-		purpose: "\u0001",
-		pad: "\u0002",
-		login: "\u0003",
-		password: "\u0004",
-		message: "\u0005",
-	};
 	
 	var UNIT_DELIMTR = "\u001F\u001F";
 	var INNER_DELIMTR = "\u001F";
@@ -45,6 +38,13 @@
 			} catch (err) {
 				console.error(err);
 			}
+var codes = {
+	purpose: "\u0001",
+	login: "\u0002",
+	password: "\u0003",
+	token: "\u0004",
+	message: "\u0005",
+};
 		}
 		return data;
 	}

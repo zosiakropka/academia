@@ -7,9 +7,9 @@
 
 CODES = {
     "purpose": 1,
-    "pad": 2,
-    "login": 3,
-    "password": 4,
+    "login": 2,
+    "password": 3,
+    "token": 4,
     "message": 5
 }
 
