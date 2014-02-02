@@ -6,7 +6,6 @@
 """
 
 from django.core.management.base import BaseCommand
-import os
 import subprocess
 from backbone.models import Subject, Note, Activity, Supervisor
 from random import choice

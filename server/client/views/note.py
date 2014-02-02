@@ -8,7 +8,6 @@ from django.shortcuts import get_object_or_404
 from backbone.models import Note, Activity, Subject
 from django.utils.timezone import now
 from utils.decorators import authenticate, abstractor
-import logging
 from django.core.exceptions import PermissionDenied
 from access_tokens import scope, tokens
 import logging
