@@ -30,6 +30,8 @@ class PadBaseConnection():
         if data and "purpose" in data:
             logging.debug("%s has data onboard." % (self.CHNL))
             purpose = data["purpose"]
+            if purpose == "pad":
+                self.pad = data.pop("message")
             if purpose == "patches":
                 self.pad_broadcast(data)
             elif purpose == "test" and "message" in data:
