@@ -107,14 +107,16 @@ WSGI_APPLICATION = 'academia.wsgi.application'
 TEMPLATE_DIRS = config.TEMPLATE_DIRS if config.PRODUCTION else (path.join(PROJECT_DIR, "templates"))
 
 INSTALLED_APPS = (
-     'django.contrib.auth',
-     'django.contrib.contenttypes',
-     'django.contrib.sessions',
-     'django.contrib.sites',
-     'django.contrib.messages',
-     'django.contrib.staticfiles',
-     'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.admin',
 
+    'access_tokens',
+    
     'account',
     'backbone',
     'client',
