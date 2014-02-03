@@ -3,13 +3,12 @@
 @author: Zosia Sobocinska
 @date Dec 11, 2013
 """
-import asyncore
+from asyncore import dispatcher_with_send as dispatcher
 from pad.channel.base.connection import PadBaseConnection
 import logging
-from pad.channel.endec import encode
 
 
-class PadTCPConnection(asyncore.dispatcher_with_send, PadBaseConnection):
+class PadTCPConnection(dispatcher, PadBaseConnection):
 
     DELIMITER = u"\u001E"
     CHNL = "TCPConnection"
@@ -17,7 +16,7 @@ class PadTCPConnection(asyncore.dispatcher_with_send, PadBaseConnection):
     def __init__(self, *args, **kwargs):
         PadBaseConnection.__init__(self)
         sock = kwargs['sock'] if 'sock' in kwargs else args[0]
-        asyncore.dispatcher_with_send.__init__(self, *args, **kwargs)
+        dispatcher.__init__(self, *args, **kwargs)
         sock.setblocking(0)
         self.buffer = ""
 
@@ -37,4 +36,4 @@ class PadTCPConnection(asyncore.dispatcher_with_send, PadBaseConnection):
                     self.handle_message(record)
 
     def send_data(self, message):
-        asyncore.dispatcher_with_send.send(self, "%s%s%s" % (message, self.DELIMITER, '\n'))
+        dispatcher.send(self, "%s%s%s" % (message, self.DELIMITER, '\n'))
