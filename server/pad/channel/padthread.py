@@ -8,10 +8,9 @@ from threading import Thread
 
 
 class PadServerThread (Thread):
-    def __init__(self, server, group=None, target=None, name=None,
-        args=(), kwargs=None, verbose=None):
+    def __init__(self, server, *args, **kwargs):
         self.PadServer = server
-        Thread.__init__(self, group=group, target=target, name=name, args=args, kwargs=kwargs, verbose=verbose)
+        Thread.__init__(self, *args, **kwargs)
 
     def run(self):
         self.PadServer.start_server()
