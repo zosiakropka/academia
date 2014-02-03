@@ -20,7 +20,6 @@ class PadTCPConnection(asyncore.dispatcher_with_send, PadBaseConnection):
         asyncore.dispatcher_with_send.__init__(self, *args, **kwargs)
         sock.setblocking(0)
         self.buffer = ""
-        self.send_data(encode({"purpose": u"test", "message": u"ęółąśłżźćń"}))
 
     def handle_read(self):
         data = None
