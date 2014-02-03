@@ -30,6 +30,7 @@ def signin(request):
             failure = True
 
     return render(request, 'account/signin.html', {"nxt": nxt, "failure": failure})
+
 def signout(request):
 
     logout(request)
