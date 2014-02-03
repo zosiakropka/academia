@@ -52,7 +52,7 @@ class PadBaseConnection():
                 logging.debug("Test message received: %s", data["message"])
 
     def close(self):
-        pass
+        self.close()
 
     def pad_broadcast(self, data):
         self.pad_server.pad_broadcast(encode(data), self.pad, self.conn_id)
