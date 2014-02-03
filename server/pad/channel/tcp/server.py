@@ -9,6 +9,7 @@ from IN import AF_INET
 from socket import SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from pad.channel.base.server import PadBaseServer
 from pad.channel.tcp.connection import PadTCPConnection
+import logging
 
 
 class PadTCPServer(asyncore.dispatcher, PadBaseServer):
@@ -35,4 +36,9 @@ class PadTCPServer(asyncore.dispatcher, PadBaseServer):
     def run(self):
         self.bind((self.hostname, self.port))
         self.listen(100)
-        asyncore.loop()
+        try:
+            asyncore.loop()
+        except KeyboardInterrupt:
+            logging.info("Ctrl+C pressend, shutting down %s"%self.CHNL)
+        except Exception:
+            logging.info("Shutting down: %s"%self.CHNL)

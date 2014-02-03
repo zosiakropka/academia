@@ -7,6 +7,7 @@
 from ws4py.server.geventserver import WSGIServer, GEventWebSocketPool
 
 from gevent import monkey
+import logging
 monkey.patch_all(socket=True, dns=True, time=True, select=True,thread=False, os=True, ssl=True, httplib=False, aggressive=True)
 
 from pad.channel.base.server import PadBaseServer
@@ -34,4 +35,7 @@ class PadWSServer(WSGIServer, PadBaseServer):
         self.pool = GEventWebSocketPool()
 
     def run(self):
-        self.serve_forever()
+        try:
+            self.serve_forever()
+        except Exception:
+            logging.info("Shutting down: %s"%self.CHNL)
