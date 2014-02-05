@@ -19,7 +19,7 @@ def note_create(user, note_access, subject_abbr, activity_type):
     note = Note(access=note_access, activity=activity, owner=user)
     note.save()
     note = Note.objects.filter()
-    return jsonize(note)
+    return jsonize([note])
 
 
 @api_auth(user=True, admin=True)
@@ -64,4 +64,4 @@ def note_get(user, note_id, edit="False"):
         note = note.for_open(by_user=user)
     if not note:
         raise PermissionDenied()
-    return jsonize(note)
+    return jsonize([note])
