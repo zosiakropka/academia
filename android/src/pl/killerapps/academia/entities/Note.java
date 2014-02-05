@@ -6,6 +6,7 @@ import java.util.HashMap;
 public class Note {
 
   public Note() {
+    id = 0;
     owner = null;
     aktivity = null;
     date = null;
@@ -15,6 +16,8 @@ public class Note {
     access = null;
   }
 
+  public int id;
+  
   public String owner;
 
   public Aktivity aktivity;

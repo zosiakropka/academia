@@ -8,13 +8,17 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import pl.killerapps.academia.R;
+import pl.killerapps.academia.activities.pad.PadActivity;
 import pl.killerapps.academia.api.command.note.NoteList;
 import pl.killerapps.academia.entities.Note;
 import pl.killerapps.academia.preferences.Preferences;
 import pl.killerapps.academia.preferences.Preferences.UninitializedException;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,9 +45,18 @@ public class AktivityActivity extends Activity {
             ctx.runOnUiThread(new Runnable() {
               public void run() {
                 final LinearLayout layout = (LinearLayout) findViewById(R.id.aktivity_layout);
-                for (Note note : notes) {
+                for (final Note note : notes) {
                   TextView tv = new TextView(ctx);
                   tv.setText(note.title);
+                  tv.setOnClickListener(new OnClickListener() {
+					
+                    @Override
+					public void onClick(View v) {
+                      Intent padActivityIntent = new Intent(ctx, PadActivity.class);;
+                      padActivityIntent.putExtra("NOTE_ID", note.id);
+                      startActivity(padActivityIntent);
+                    }
+				});
                   layout.addView(tv);
                 }
               }
