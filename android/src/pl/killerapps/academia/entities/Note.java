@@ -8,7 +8,7 @@ public class Note {
   public Note() {
     id = 0;
     owner = null;
-    aktivity = null;
+    aktivity_id = 0;
     date = null;
     title = null;
     slug = null;
@@ -20,7 +20,7 @@ public class Note {
   
   public String owner;
 
-  public Aktivity aktivity;
+  public int aktivity_id;
 
   public Date date;
 
