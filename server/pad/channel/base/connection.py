@@ -34,7 +34,7 @@ class PadBaseConnection():
             purpose = data["purpose"]
             if purpose == "pad":
                 self.pad = data.pop("message")
-            elif purpose == "patches":
+            elif purpose == "patches" and self.pad:
                 try:
                     token = data.pop("token", None)
                     tokens.validate(
