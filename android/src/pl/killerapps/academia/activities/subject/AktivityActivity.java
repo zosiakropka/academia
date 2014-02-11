@@ -52,7 +52,7 @@ public class AktivityActivity extends Activity {
 					
                     @Override
 					public void onClick(View v) {
-                      Intent padActivityIntent = new Intent(ctx, PadActivity.class);;
+                      Intent padActivityIntent = new Intent(ctx, PadActivity.class);
                       padActivityIntent.putExtra("NOTE_ID", note.id);
                       startActivity(padActivityIntent);
                     }
