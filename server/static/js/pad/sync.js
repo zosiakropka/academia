@@ -90,22 +90,16 @@ var diffs = {
 					}
 				}
 			}
-			console.log("Offset: " + cursor_offset);
-			console.log(patches);
 			var result = dmp.patch_apply(patches, padContentElement.innerHTML.toString());
 			padContentElement.innerHTML = result[0];
 			diffs.prev = result[0];
 			console.log (result[0]);
 			if (move_cursor) {
-				console.log("Carret...");
 				var position = cursor_offset;
-				
 				var range = document.createRange();
-				
 				range.setStart(padContentElement.childNodes[0], position);
 				range.setEnd(padContentElement.childNodes[0], position);
 				range.collapse(false);
-				
 				var sel = window.getSelection(); 
 				sel.removeAllRanges();
 				sel.addRange(range);
