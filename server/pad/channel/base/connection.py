@@ -48,8 +48,6 @@ class PadBaseConnection():
                         "message": "fail"
                     }
                     self.send(encode(response))
-            elif purpose == "test" and "message" in data:
-                logging.debug("Test message received: %s", data["message"])
 
     def close(self):
         self.close()
