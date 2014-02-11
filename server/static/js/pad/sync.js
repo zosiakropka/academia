@@ -137,4 +137,4 @@ socket.onmessage = function(response) {
 		}
 	}
 };
-diffs.interval = setInterval(diffs.schedule, 1000);
+diffs.interval = setInterval(diffs.schedule, 500);
