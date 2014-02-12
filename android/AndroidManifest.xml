@@ -4,12 +4,12 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -26,10 +26,11 @@
         </activity>
         <activity
             android:name="pl.killerapps.academia.activities.pad.PadActivity"
-            android:label="@string/title_activity_pad" >
+            android:label="@string/title_activity_pad"
+            android:parentActivityName="pl.killerapps.academia.activities.subject.AktivityActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.killerapps.academia.subiect.SubjectsActivity" />
+                android:value="pl.killerapps.academia.activities.subject.AktivityActivity" />
         </activity>
         <activity
             android:name="pl.killerapps.academia.activities.ConnectActivity"
