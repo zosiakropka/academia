@@ -24,13 +24,13 @@ class PadTCPProxy(PadTCPConnection):
         self.connection = connection
 
     def handle_read(self):
-        data = None
+        rawdata = None
         try:
-            data = self.recv(self.CHUNK_SIZE)
+            rawdata = self.recv(self.CHUNK_SIZE)
         except Exception:
             pass
-        if (data):
-            self.buffer += data
+        if (rawdata):
+            self.buffer += rawdata
             if self.DELIMITER in self.buffer:
                 records = self.buffer.split(self.DELIMITER)
                 self.buffer = records.pop()
