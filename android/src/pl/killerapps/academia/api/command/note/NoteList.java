@@ -25,7 +25,7 @@ import pl.killerapps.academia.entities.Note;
 public abstract class NoteList extends ApiCommandAsync<List<Note>> {
 
   public NoteList(String base_url)
-    throws URISyntaxException {
+          throws URISyntaxException {
     super(base_url, "/note/list/");
   }
 

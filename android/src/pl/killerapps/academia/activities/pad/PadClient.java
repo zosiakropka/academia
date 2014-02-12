@@ -31,7 +31,8 @@ public abstract class PadClient implements Runnable {
   }
 
   private void init()
-    throws UnknownHostException, IOException {
+          throws UnknownHostException, IOException {
+
     socket = new Socket(ip, port);
 
     InputStreamReader isr = new InputStreamReader(socket.getInputStream());

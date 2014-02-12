@@ -101,7 +101,7 @@ public class MainActivity extends Activity {
   }
 
   private boolean clearConnectionPrefs()
-    throws UninitializedException {
+          throws UninitializedException {
     return Preferences.clear().execute();
   }
 }

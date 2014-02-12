@@ -17,60 +17,61 @@ import pl.killerapps.academia.preferences.Preferences.UninitializedException;
 
 public abstract class ApiCommandBase {
 
-    protected URI uri;
+  protected URI uri;
 
-    protected String base_url;
-    protected String command_path;
+  protected String base_url;
+  protected String command_path;
 
-    HttpClient client = new DefaultHttpClient();
+  HttpClient client = new DefaultHttpClient();
 
-    protected ApiCommandBase(String _base_url, String _command_path) throws URISyntaxException {
-        if (_base_url.endsWith("/")) {
-            base_url = (String) (_base_url.subSequence(0, _base_url.length() - 1));
-        } else {
-            base_url = _base_url;
-        }
-
-        if (!_command_path.startsWith("/")) {
-            command_path = "/" + _command_path;
-        } else {
-            command_path = _command_path;
-        }
-
-        this.uri = new URI("http://" + base_url + "/api" + command_path);
+  protected ApiCommandBase(String _base_url, String _command_path) throws URISyntaxException {
+    if (_base_url.endsWith("/")) {
+      base_url = (String) (_base_url.subSequence(0, _base_url.length() - 1));
+    } else {
+      base_url = _base_url;
     }
 
-    protected HttpResponse raw_post(HttpPost post, HttpContext localContext) throws ClientProtocolException, IOException {
-        post.setURI(uri);
-        HttpResponse response = client.execute(post, localContext);
-        return response;
+    if (!_command_path.startsWith("/")) {
+      command_path = "/" + _command_path;
+    } else {
+      command_path = _command_path;
     }
 
-    protected HttpResponse raw_post(HttpPost post) throws ClientProtocolException, IOException {
-    	post.setURI(uri);
-		try {
-	    	Preferences.Getter prefs = Preferences.get();
-	        post.addHeader("Cookie", "csrftoken=" + prefs.csrfToken() + "; " + "sessionid=" + prefs.sessionId());
-	        post.addHeader("X-CSRFToken", prefs.csrfToken());
-		} catch (UninitializedException e) {
-			e.printStackTrace();
-		}
-        HttpResponse response = client.execute(post);
-        return response;
-    }
-    protected HttpResponse raw_get(HttpGet get, String params) throws ClientProtocolException, IOException {
-    	try {
-			get.setURI(new URI(uri.toString() + "?" + params));
-			get.addHeader("Cookie", "sessionid=" + Preferences.get().sessionId());
-	        HttpResponse response = client.execute(get);
-	        return response;
-		} catch (URISyntaxException e) {
-		} catch (UninitializedException e) {
-		}
-		return null;
-    }
+    this.uri = new URI("http://" + base_url + "/api" + command_path);
+  }
 
-    protected void handleFailure(Exception ex) {
-        ex.printStackTrace();
+  protected HttpResponse raw_post(HttpPost post, HttpContext localContext) throws ClientProtocolException, IOException {
+    post.setURI(uri);
+    HttpResponse response = client.execute(post, localContext);
+    return response;
+  }
+
+  protected HttpResponse raw_post(HttpPost post) throws ClientProtocolException, IOException {
+    post.setURI(uri);
+    try {
+      Preferences.Getter prefs = Preferences.get();
+      post.addHeader("Cookie", "csrftoken=" + prefs.csrfToken() + "; " + "sessionid=" + prefs.sessionId());
+      post.addHeader("X-CSRFToken", prefs.csrfToken());
+    } catch (UninitializedException e) {
+      e.printStackTrace();
     }
+    HttpResponse response = client.execute(post);
+    return response;
+  }
+
+  protected HttpResponse raw_get(HttpGet get, String params) throws ClientProtocolException, IOException {
+    try {
+      get.setURI(new URI(uri.toString() + "?" + params));
+      get.addHeader("Cookie", "sessionid=" + Preferences.get().sessionId());
+      HttpResponse response = client.execute(get);
+      return response;
+    } catch (URISyntaxException e) {
+    } catch (UninitializedException e) {
+    }
+    return null;
+  }
+
+  protected void handleFailure(Exception ex) {
+    ex.printStackTrace();
+  }
 }

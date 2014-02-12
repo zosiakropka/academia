@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * "k" in Aktivity comes into play to distinguish between Android Activity and Activity entity in Academia notes
- * hierarchy.
+ * "k" in Aktivity comes into play to distinguish between Android Activity and
+ * Activity entity in Academia notes hierarchy.
  *
  * @author zosia
  *

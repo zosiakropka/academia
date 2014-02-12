@@ -36,7 +36,6 @@ public class SubjectsActivity extends Activity {
       url = Preferences.get().academiaUrl();
 
       SubjectsByAktivity subjectsByAktivityCommand;
-//            final Activity curr_activity = this;
       try {
         final Activity ctx = this;
         subjectsByAktivityCommand = new SubjectsByAktivity(url) {
@@ -58,8 +57,6 @@ public class SubjectsActivity extends Activity {
 
                       @Override
                       public void onClick(View v) {
-                        // TODO Auto-generated method stub
-
                         Intent aktivityActivityIntent = new Intent(ctx, AktivityActivity.class);;
                         aktivityActivityIntent.putExtra("AKTIVITY_ID", aktivity.id);
                         startActivity(aktivityActivityIntent);
@@ -83,7 +80,7 @@ public class SubjectsActivity extends Activity {
       e1.printStackTrace();
     }
   }
-
+  
   /**
    * Set up the {@link android.app.ActionBar}, if the API is available.
    */
@@ -105,7 +102,7 @@ public class SubjectsActivity extends Activity {
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:
-                // This ID represents the Home or Up button. In the case of this
+        // This ID represents the Home or Up button. In the case of this
         // activity, the Up button is shown. Use NavUtils to allow users
         // to navigate up one level in the application structure. For
         // more details, see the Navigation pattern on Android Design:
