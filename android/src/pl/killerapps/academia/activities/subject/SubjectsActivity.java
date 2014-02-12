@@ -28,6 +28,11 @@ public class SubjectsActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
     setContentView(R.layout.activity_subjects);
     setupActionBar();
 
