@@ -8,19 +8,20 @@ from academia import settings
 from IN import AF_INET
 from socket import SOCK_STREAM
 
+
 class PadTCPProxy(PadTCPConnection):
     """
     @todo Since it's almost the same PadTCPConnection, it ought to be somehow
-    reimplemented to avoid code redundancy. 
+    reimplemented to avoid code redundancy.
     """
 
     DELIMITER = PadTCPConnection.DELIMITER
-    
+
     def __init__(self, connection):
         tcpserver = settings.PADSERVERS['tcpserver']
         dispatcher.__init__(self)
         self.create_socket(AF_INET, SOCK_STREAM)
-        self.connect( (tcpserver['host'], tcpserver['port']) )
+        self.connect((tcpserver['host'], tcpserver['port']))
         self.connection = connection
 
     def handle_read(self):
