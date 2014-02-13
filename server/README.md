@@ -13,6 +13,7 @@ Requirements
 - python-django
 - python-gevent
 - python-cherrypy
+- python-m2crypto
 
 ### Academia server settings
 
