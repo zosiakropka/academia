@@ -4,7 +4,7 @@ Academia - Server
 Requirements
 ------------
 
-### Clone repository
+### Cloned repository
 
     git clone https://github.com/zosiakropka/academia.git
 
@@ -17,25 +17,29 @@ Requirements
 
 ### Academia server settings
 
-Adjust settings in academia/server/settings.py
+Create `academia/server/academia/config.py` file. The easies way is to copy
+example config file (`academia/server/academia/config.py.example`) and adjust
+approperiate settings.
 
-Especially `DATABASES`, `SECRET_KEY` and `LOGS_PATH` vars should concern you.
+You should be especially concerned about `DATABASES`, `SECRET_KEY` and
+`LOGS_PATH` settings:
 
-**Database** You need to provide configuration of the academia database you
-created / are willing to create.
+**Database** Configuration of the academia database you created / are willing
+to create.
 
 **Secret key** Unique key for a specific app installation for cryptographic
 signing.
 
 **Logs** By default Academia development server will try to store logs in
-`academia/logs` directory, which doesn't exist. You should either create that
-directory, or provide more adequate (existing) path.
+`academia/logs` directory. You may want to create logs directory under some
+more adequate path. Remember to ensure that user on which Academia is running
+has the right to write to that directory.
 
 ### Database
 
-Django-supported database server needs to be installed.
-Next proper database (with settings consistent with those listed in settings.py
-file) needs to be created, eg.:
+Django-supported database server needs to be installed. Then database (with
+settings consistent with those listed in config.py file) needs to be created,
+eg.:
 
 ```mysql
 CREATE USER 'academia'@'localhost' IDENTIFIED BY 'password';
@@ -57,8 +61,7 @@ cd academia/server
 python manage.py syncdb
 ```
 
-- if you need example data, run:
-
+- if you need example data (eg. for system demo), run:
 
 ```bash
 python manage.py exampledb
@@ -81,32 +84,25 @@ proper production Apache WSGI based server ought to appear.
 cd academia/server
 ```
 
-- add current dir to `$PYTHONPATH`:
-
-```bash
-export PYTHONPATH=$PYTHONPATH:"./"
-```
-
 - run:
 
 ```bash
 python manage.py runserver [<host>:<port_number>] &
-python manage.py padwsserver [<host>:<port_number>]
-```
-
-#### Subserver for Android client TCP connection
-
-```bash
 python manage.py padtcpserver
+python manage.py padwsserver
 ```
 
 ### Production server
 
-Docs on production server shall be written down as soon as Academia is capable of being used in production.
+Docs on production server shall be written down as soon as Academia is capable
+of being used in production.
 
-Only web browser interface shall be ran the other way. TCP and WebSocket servers for realtime collaboration are supposed to be launched the way these where launched under development phase:
+Only web browser interface shall be ran the other way. TCP and WebSocket
+servers for realtime collaboration are supposed to be launched the way these
+where launched under development phase:
 
 ```bash
 python manage.py padwsserver [<host>:<port_number>]
-python manage.py padtcpserver [<host>:<port_number>]
+python manage.py padtcpserver
+python manage.py padwsserver
 ```
