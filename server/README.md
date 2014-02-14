@@ -13,6 +13,9 @@ Requirements
 - python-django
 - python-gevent
 - python-cherrypy
+- diff_match_patch port:
+
+	https://github.com/JoshData/diff_match_patch-python
 
 ### Academia server settings
 
