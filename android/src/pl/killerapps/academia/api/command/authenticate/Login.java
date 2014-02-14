@@ -24,7 +24,8 @@ import pl.killerapps.academia.preferences.Preferences.UninitializedException;
 
 /**
  *
- * @todo preferences.CsrfToken should fetch csrf token from server instead of Login command
+ * @todo preferences.CsrfToken should fetch csrf token from server instead of
+ * Login command
  * @author zosia
  */
 public class Login extends ApiCommandBase {
@@ -32,7 +33,7 @@ public class Login extends ApiCommandBase {
   Context context;
 
   public Login(String base_url, Context context)
-    throws URISyntaxException {
+          throws URISyntaxException {
     super(base_url, "/auth/signin/");
     this.context = context;
   }

@@ -37,5 +37,5 @@ class PadWSServer(WSGIServer, PadBaseServer):
     def run(self):
         try:
             self.serve_forever()
-        except Exception:
-            logging.info("Shutting down: %s"%self.CHNL)
+        except Exception, e:
+            logging.info("Shutting down %s: %s" % (self.CHNL, e))

@@ -11,7 +11,7 @@ from utils.serializer import jsonize
 
 @api_auth(user=True, admin=True)
 @api
-def note_create(user, note_access, subject_abbr, activity_type):
+def note_create(user, admin=False, note_access=None, subject_abbr=None, activity_type=None):
     note_access = note_access.pop()
     subject_abbr = subject_abbr.pop()
     activity_type = activity_type.pop()
@@ -56,7 +56,7 @@ def note_list(user, admin=False, subject_name=None, subject_abbr=None, activity_
 
 @api_auth(user=True, admin=True)
 @api
-def note_get(user, note_id, edit="False"):
+def note_get(user, admin=False, note_id=None, edit="False"):
     note = get_object_or_404(Note, pk__in=note_id)
     if edit == "True":
         note = note.for_edit(by_user=user)

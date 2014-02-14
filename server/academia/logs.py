@@ -1,12 +1,6 @@
-from config import DEBUG
+from config import LOGS_DIR, DEBUG
 from os import path
-
-## A sample logging configuration. The only tangible logging
-#  performed by this configuration is to send an email to
-#  the site admins on every HTTP 500 error when DEBUG=False.
-#  See http://docs.djangoproject.com/en/dev/topics/logging for
-#  more details on how to customize your logging configuration.
-LOGS_PATH = path.join("/tmp/academia/logs/%s.log") if DEBUG else None
+LOGS_PATH = path.join(LOGS_DIR, "%s.log") if DEBUG else None
 
 LOGS_FORMAT_JSON = """{
   "time": "%(asctime)s",
@@ -16,6 +10,7 @@ LOGS_FORMAT_JSON = """{
   "thread": "%(thread)d",
   "msg": "%(message)s"
 }"""
+
 LOGS_FORMAT_STANDARD = """[%(asctime)s] [%(levelname)s:%(module)s:%(lineno)s] %(message)s"""
 
 LOGS_DATEFORMAT = "%d/%b/%Y %H:%M:%S"
@@ -71,4 +66,3 @@ LOGGING = {
         },
     }
 }
-

@@ -7,16 +7,12 @@
 Django settings for Academia project.
 """
 import config
+import os
+from academia.defs import PROJECT_DIR
 
 PADSERVERS = config.PADSERVERS
 
-##############################################################################
-
 DEBUG = config.DEBUG
-
-if not config.PRODUCTION:
-    from os import path
-    PROJECT_DIR = path.dirname(__file__) + "/.."
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -73,7 +69,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    path.join(PROJECT_DIR, "static") if DEBUG else None,
+    os.path.join(PROJECT_DIR, "static") if DEBUG else None,
 )
 
 ## List of finder classes that know how to find static files in
@@ -108,7 +104,7 @@ ROOT_URLCONF = 'academia.urls'
 
 WSGI_APPLICATION = 'academia.wsgi.application'
 
-TEMPLATE_DIRS = config.TEMPLATE_DIRS if config.PRODUCTION else (path.join(PROJECT_DIR, "templates"))
+TEMPLATE_DIRS = os.path.join(PROJECT_DIR, "templates")
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -120,15 +116,18 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     'access_tokens',
-    
+
     'account',
     'backbone',
     'client',
     'pad',
+    'utils'
 )
 
 from academia import logs
 LOGGING = logs.LOGGING
+if not os.path.isdir(logs.LOGS_DIR):
+    os.mkdir(logs.LOGS_DIR)
 
 ## Where to redirect unauthorized
 LOGIN_URL = "/account/signin"

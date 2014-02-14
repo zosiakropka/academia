@@ -25,7 +25,7 @@ public class Hello {
   Context context;
 
   public Hello(Context context)
-    throws URISyntaxException, UninitializedException {
+          throws URISyntaxException, UninitializedException {
     String _base_url = Preferences.get().academiaUrl();
     Log.d("csrftoken", "Hostname: " + _base_url);
     if (_base_url.endsWith("/")) {
@@ -36,7 +36,7 @@ public class Hello {
   }
 
   public void hello()
-    throws ClientProtocolException, IOException {
+          throws ClientProtocolException, IOException {
 
     HttpGet httpGet = new HttpGet(this.uri);
     HttpResponse response;

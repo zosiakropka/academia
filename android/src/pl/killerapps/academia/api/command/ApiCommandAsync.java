@@ -17,7 +17,7 @@ public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
   protected boolean get = false;
 
   public ApiCommandAsync(String base_url, String method_path)
-    throws URISyntaxException {
+          throws URISyntaxException {
     super(base_url, method_path);
   }
 
@@ -31,8 +31,9 @@ public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
   }
 
   /**
-   * Implementation of this method should process JSON response to extract required data and return right Entity object
-   * representing data gathered from HTTP response.
+   * Implementation of this method should process JSON response to extract
+   * required data and return right Entity object representing data gathered
+   * from HTTP response.
    *
    * @param json
    * @return Type

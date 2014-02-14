@@ -17,7 +17,7 @@ import pl.killerapps.academia.entities.Subject;
 public abstract class SubjectsByAktivity extends ApiCommandAsync<List<Subject>> {
 
   public SubjectsByAktivity(String base_url)
-    throws URISyntaxException {
+          throws URISyntaxException {
     super(base_url, "/subject/list/");
   }
 

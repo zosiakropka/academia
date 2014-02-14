@@ -25,7 +25,7 @@ import pl.killerapps.academia.entities.Note;
 public abstract class NoteList extends ApiCommandAsync<List<Note>> {
 
   public NoteList(String base_url)
-    throws URISyntaxException {
+          throws URISyntaxException {
     super(base_url, "/note/list/");
   }
 
@@ -36,6 +36,7 @@ public abstract class NoteList extends ApiCommandAsync<List<Note>> {
       try {
         JSONObject note_json = notes_json.getJSONObject(i);
         Note note = new Note();
+        note.id = note_json.getInt("pk");
         note.access = note_json.getString("access");
         note.date = (new SimpleDateFormat("yyyy-mm-dd")).parse(note_json.getString("date"));
         note.slug = note_json.getString("slug");

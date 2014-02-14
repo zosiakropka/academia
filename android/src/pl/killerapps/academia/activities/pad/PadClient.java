@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import android.text.TextUtils;
@@ -30,7 +31,8 @@ public abstract class PadClient implements Runnable {
   }
 
   private void init()
-    throws UnknownHostException, IOException {
+          throws UnknownHostException, IOException {
+
     socket = new Socket(ip, port);
 
     InputStreamReader isr = new InputStreamReader(socket.getInputStream());
@@ -50,25 +52,38 @@ public abstract class PadClient implements Runnable {
       init();
 
       Log.i("PadSocket", "Waiting for data.");
-      while (true) {
-        String line = br.readLine();
-        if (line != null && !line.isEmpty()) {
-          buffer += line;
-        }
-        int d_index = buffer.indexOf(DELIMITER);
-        if (d_index >= 0) {
-          String parts[] = TextUtils.split(buffer, DELIMITER);
-          buffer = parts[parts.length - 1];  // this ought to be implemented in C-pointer-like manner
-          for (int i = 0; i < parts.length - 1; i++) {
-            PadMessage msg = new PadMessage();
-            msg.decode(parts[i]);
-            Log.i("PadSocket", "Data onboard: " + parts[i]);
-            if (msg.contains("purpose")) {
-              onMessage(msg);
+      (new Thread(new Runnable() {
+
+        public void run() {
+          while (true) {
+            try {
+              String line = br.readLine();
+              if (line != null && !line.isEmpty()) {
+                buffer += line;
+              }
+              int d_index = buffer.indexOf(DELIMITER);
+              if (d_index >= 0) {
+                String parts[] = TextUtils.split(buffer, DELIMITER);
+                buffer = parts[parts.length - 1];  // this ought to be implemented in C-pointer-like manner
+                for (int i = 0; i < parts.length - 1; i++) {
+                  PadMessage msg = new PadMessage();
+                  msg.decode(parts[i]);
+                  Log.i("PadSocket", "Data onboard: " + parts[i]);
+                  if (msg.contains("purpose")) {
+                    onMessage(msg);
+                  }
+                }
+              }
+            } catch (SocketException e) {
+              break;
+            } catch (IOException e) {
+              onFailure(e);
             }
           }
         }
-      }
+      })).start();
+
+      onReady();
     } catch (IOException e) {
       onFailure(e);
     } catch (IndexOutOfBoundsException e) {
@@ -76,17 +91,19 @@ public abstract class PadClient implements Runnable {
     }
   }
 
-  void stop()
-    throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
+  void stop() throws IOException {
+    thread.interrupt();
+    socket.close();
   }
 
   public void send(PadMessage msg)
-    throws UnsupportedOperationException, IOException {
+          throws IOException {
     bw.write(msg.encode() + DELIMITER);
     bw.flush();
   }
 
+  protected abstract void onReady();
+  
   protected abstract void onMessage(PadMessage message);
 
   protected abstract void onFailure(Exception e);

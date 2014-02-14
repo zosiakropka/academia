@@ -27,6 +27,11 @@ public class AktivityActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
     setContentView(R.layout.activity_aktivity);
 
     Bundle extras = getIntent().getExtras();
@@ -74,7 +79,7 @@ public class AktivityActivity extends Activity {
       }
     }
   }
-
+  
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.

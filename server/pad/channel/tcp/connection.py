@@ -27,7 +27,6 @@ class PadTCPConnection(dispatcher, PadBaseConnection):
         except Exception:
             pass
         if (data):
-            logging.debug("%s has data onboard: %s", self.CHNL, data)
             self.buffer += data
             if self.DELIMITER in self.buffer:
                 records = self.buffer.split(self.DELIMITER)

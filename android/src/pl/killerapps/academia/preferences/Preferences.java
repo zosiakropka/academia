@@ -26,22 +26,22 @@ public class Preferences {
   }
 
   public static Getter get()
-    throws UninitializedException {
+          throws UninitializedException {
     return new Getter(getOrExcept());
   }
 
   public static Setter set()
-    throws UninitializedException {
+          throws UninitializedException {
     return new Setter(getOrExcept());
   }
 
   public static Cleaner clear()
-    throws UninitializedException {
+          throws UninitializedException {
     return new Cleaner(getOrExcept());
   }
 
   private static SharedPreferences getOrExcept()
-    throws UninitializedException {
+          throws UninitializedException {
     if (preferences == null) {
       throw new UninitializedException();
     } else {
