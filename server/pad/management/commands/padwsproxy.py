@@ -13,9 +13,9 @@ class Command(BaseCommand):
     help = 'Runs WS server to enable real time collaboration via WS sockets'
 
     def handle(self, *args, **options):
-        from pad.channel.ws.server import PadWSServer
+        from pad.channel.ws.proxy import PadWSProxy
         from academia.settings import PADSERVERS
-        server = PADSERVERS['wsserver']
+        server = PADSERVERS['wsproxy']
 
-        wsserver = PadWSServer(server['host'], server['port'])
+        wsserver = PadWSProxy(server['host'], server['port'])
         wsserver.run()

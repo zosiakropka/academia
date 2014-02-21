@@ -40,6 +40,7 @@ public abstract class PadClient implements Runnable {
 
     OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
     bw = new BufferedWriter(osw);
+    Log.i("PadSocket", "Client initialized.");
   }
 
   public void start() {
@@ -103,7 +104,7 @@ public abstract class PadClient implements Runnable {
   }
 
   protected abstract void onReady();
-  
+
   protected abstract void onMessage(PadMessage message);
 
   protected abstract void onFailure(Exception e);

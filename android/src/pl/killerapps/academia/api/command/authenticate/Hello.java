@@ -1,6 +1,8 @@
 package pl.killerapps.academia.api.command.authenticate;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import java.io.IOException;
@@ -11,10 +13,13 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
+import pl.killerapps.academia.activities.ConnectActivity;
+import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
-import pl.killerapps.academia.preferences.Preferences;
-import pl.killerapps.academia.preferences.Preferences.UninitializedException;
+import pl.killerapps.academia.utils.preferences.Preferences;
 
 /**
  * s * @author zosia
@@ -25,7 +30,7 @@ public class Hello {
   Context context;
 
   public Hello(Context context)
-          throws URISyntaxException, UninitializedException {
+          throws URISyntaxException, PreferencesUninitializedException, NoConnectionDetailsException {
     String _base_url = Preferences.get().academiaUrl();
     Log.d("csrftoken", "Hostname: " + _base_url);
     if (_base_url.endsWith("/")) {
@@ -36,8 +41,7 @@ public class Hello {
   }
 
   public void hello()
-          throws ClientProtocolException, IOException {
-
+          throws HttpHostConnectException, ClientProtocolException, IOException, PreferencesUninitializedException {
     HttpGet httpGet = new HttpGet(this.uri);
     HttpResponse response;
     response = (new DefaultHttpClient()).execute(httpGet);
@@ -50,14 +54,11 @@ public class Hello {
         Log.d("header_unit", "content: " + unit);
         if (keyval[0].equals("csrftoken")) {
           String csrftoken = keyval[1];
-          try {
-            Preferences.set().csrfToken(csrftoken);
-          } catch (UninitializedException e) {
-            e.printStackTrace();
-          }
+          Preferences.set().csrfToken(csrftoken);
         }
       }
     }
+
   }
 
 }

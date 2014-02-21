@@ -5,12 +5,12 @@
  */
 package pl.killerapps.academia.api.command.aktivity;
 
+import android.app.Activity;
+import android.util.Log;
 import android.util.SparseArray;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,9 +24,9 @@ import pl.killerapps.academia.entities.Subject;
  */
 public abstract class AktivityListBySubject extends ApiCommandAsync<SparseArray<Subject>> {
 
-  public AktivityListBySubject(String base_url)
+  public AktivityListBySubject(String base_url, Activity activity)
           throws URISyntaxException {
-    super(base_url, "/activity/list/");
+    super(base_url, "/activity/list/", activity);
   }
 
   @Override
@@ -53,7 +53,7 @@ public abstract class AktivityListBySubject extends ApiCommandAsync<SparseArray<
         subjects.append(subject.id, subject);
       }
     } catch (JSONException ex) {
-      Logger.getLogger(AktivityListBySubject.class.getName()).log(Level.SEVERE, null, ex);
+      Log.e("JSONException", ex.getMessage(), ex);
     }
     return subjects;
   }

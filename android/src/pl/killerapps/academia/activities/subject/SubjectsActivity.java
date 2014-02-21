@@ -1,7 +1,6 @@
 package pl.killerapps.academia.activities.subject;
 
 import pl.killerapps.academia.R;
-import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,72 +19,64 @@ import java.util.List;
 import pl.killerapps.academia.api.command.subject.SubjectsByAktivity;
 import pl.killerapps.academia.entities.Aktivity;
 import pl.killerapps.academia.entities.Subject;
-import pl.killerapps.academia.preferences.Preferences;
-import pl.killerapps.academia.preferences.Preferences.UninitializedException;
+import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
+import pl.killerapps.academia.utils.preferences.Preferences;
+import pl.killerapps.academia.utils.safe.SafeActivity;
 
-public class SubjectsActivity extends Activity {
-
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-  }
+public class SubjectsActivity extends SafeActivity {
 
   @Override
-  protected void onResume() {
-    super.onResume();
+  protected void safeOnResume() throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException {
     setContentView(R.layout.activity_subjects);
     setupActionBar();
 
     String url;
-    try {
-      url = Preferences.get().academiaUrl();
+    url = Preferences.get().academiaUrl();
 
-      SubjectsByAktivity subjectsByAktivityCommand;
-      try {
-        final Activity ctx = this;
-        subjectsByAktivityCommand = new SubjectsByAktivity(url) {
-          @Override
-          public void on_response(final List<Subject> subjects) {
-            ctx.runOnUiThread(new Runnable() {
-              public void run() {
-                LinearLayout layout = (LinearLayout) findViewById(R.id.subjects_layout);
-                for (Subject subject : subjects) {
-                  TextView tv = new TextView(ctx);
-                  tv.setText(subject.name);
-                  layout.addView(tv);
-                  ListView lv = new ListView(ctx);
-                  layout.addView(lv);
-                  for (final Aktivity aktivity : subject.aktivities) {
-                    TextView tv2 = new TextView(ctx);
-                    tv2.setText("-" + subject.abbr + ": " + aktivity.type);
-                    tv2.setOnClickListener(new OnClickListener() {
+    SubjectsByAktivity subjectsByAktivityCommand;
+    final Activity ctx = this;
+    subjectsByAktivityCommand = new SubjectsByAktivity(url, this) {
+      @Override
+      public void on_response(final List<Subject> subjects) {
+        ctx.runOnUiThread(new Runnable() {
+          public void run() {
+            LinearLayout layout = (LinearLayout) findViewById(R.id.subjects_layout);
+            for (Subject subject : subjects) {
+              TextView tv = new TextView(ctx);
+              tv.setText(subject.name);
+              layout.addView(tv);
+              ListView lv = new ListView(ctx);
+              layout.addView(lv);
+              for (final Aktivity aktivity : subject.aktivities) {
+                TextView tv2 = new TextView(ctx);
+                tv2.setText("-" + subject.abbr + ": " + aktivity.type);
+                tv2.setOnClickListener(new OnClickListener() {
 
-                      @Override
-                      public void onClick(View v) {
-                        Intent aktivityActivityIntent = new Intent(ctx, AktivityActivity.class);;
-                        aktivityActivityIntent.putExtra("AKTIVITY_ID", aktivity.id);
-                        startActivity(aktivityActivityIntent);
-                      }
-                    });
-                    layout.addView(tv2);
+                  @Override
+                  public void onClick(View v) {
+                    Intent aktivityActivityIntent = new Intent(ctx, AktivityActivity.class);;
+                    aktivityActivityIntent.putExtra("AKTIVITY_ID", aktivity.id);
+                    startActivity(aktivityActivityIntent);
                   }
-                }
-
+                });
+                layout.addView(tv2);
               }
-            });
-//                        NavUtils.navigateUpFromSameTask(curr_activity);
+            }
+
           }
-        };
-        subjectsByAktivityCommand.send_request();
-      } catch (URISyntaxException e) {
-        e.printStackTrace();
-        finish();
+        });
+//                        NavUtils.navigateUpFromSameTask(curr_activity);
       }
-    } catch (UninitializedException e1) {
-      e1.printStackTrace();
-    }
+
+      @Override
+      public void on_failure() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      }
+    };
+    subjectsByAktivityCommand.send_request();
   }
-  
+
   /**
    * Set up the {@link android.app.ActionBar}, if the API is available.
    */

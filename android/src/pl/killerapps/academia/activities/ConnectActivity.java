@@ -1,30 +1,28 @@
 package pl.killerapps.academia.activities;
 
 import pl.killerapps.academia.R;
-import android.os.Bundle;
-import android.app.Activity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.view.View.OnClickListener;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
-import pl.killerapps.academia.preferences.Preferences;
+import pl.killerapps.academia.utils.preferences.Preferences;
+import pl.killerapps.academia.utils.safe.SafeActivity;
+import pl.killerapps.academia.utils.safe.SafeOnClickListener;
 
-public class ConnectActivity extends Activity {
+public class ConnectActivity extends SafeActivity {
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+  protected void safeOnResume() {
     setContentView(R.layout.activity_connect);
 
     Button connectButton = (Button) findViewById(R.id.button_connect);
 
-    connectButton.setOnClickListener(new OnClickListener() {
+    connectButton.setOnClickListener(new SafeOnClickListener(this) {
 
       @Override
-      public void onClick(View arg0) {
+      public void safeOnClick(View arg0) throws PreferencesUninitializedException {
         EditText urlEdit = (EditText) findViewById(R.id.conn_server_url);
         final String url = urlEdit.getText().toString();
 
@@ -37,13 +35,10 @@ public class ConnectActivity extends Activity {
         EditText passwordEdit = (EditText) findViewById(R.id.conn_password);
         final String password = passwordEdit.getText().toString();
 
-        try {
-          Preferences.set().academiaPadPort(padPort);
-          Preferences.set().academiaUrl(url);
-          Preferences.set().credentials(username, password);
-        } catch (Preferences.UninitializedException ex) {
-          Log.e("connect", "uninitialized pref", ex);
-        }
+        Preferences.Setter prefs = Preferences.set();
+        prefs.academiaPadPort(padPort);
+        prefs.academiaUrl(url);
+        prefs.credentials(username, password);
 
         finish();
       }

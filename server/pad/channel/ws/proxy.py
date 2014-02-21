@@ -6,19 +6,19 @@
 """
 from ws4py.server.geventserver import WSGIServer, GEventWebSocketPool
 
-from gevent import monkey
 import logging
-monkey.patch_all(socket=True, dns=True, time=True, select=True,thread=False, os=True, ssl=True, httplib=False, aggressive=True)
+from gevent import monkey
+monkey.patch_all(socket=True, dns=True, time=True, select=True, thread=False, os=True, ssl=True, httplib=False, aggressive=True)
 
 from pad.channel.base.server import PadBaseServer
-from pad.channel.ws.connection import PadWSConnection
+from pad.channel.ws.endpoints import PadWSProxyWSEndpoint
 from ws4py.server.wsgiutils import WebSocketWSGIApplication
 
 
-class PadWSServer(WSGIServer, PadBaseServer):
+class PadWSProxy(WSGIServer, PadBaseServer):
 
     CHNL = "WS"
-    PadConnection = PadWSConnection
+    PadConnection = PadWSProxyWSEndpoint
 
     def __init__(self, hostname, port):
         PadBaseServer.__init__(self, hostname, port)

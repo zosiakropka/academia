@@ -17,7 +17,7 @@ public class Note {
   }
 
   public int id;
-  
+
   public String owner;
 
   public int aktivity_id;

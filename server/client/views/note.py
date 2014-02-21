@@ -13,7 +13,7 @@ from access_tokens import scope, tokens
 import logging
 
 from academia.settings import PADSERVERS
-wsserver = PADSERVERS['wsserver']
+wsproxy = PADSERVERS['wsproxy']
 
 logger = logging.getLogger(__name__)
 

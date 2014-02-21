@@ -3,28 +3,27 @@ package pl.killerapps.academia.activities;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import org.apache.http.client.ClientProtocolException;
-
 import pl.killerapps.academia.R;
 import pl.killerapps.academia.activities.subject.SubjectsActivity;
 import pl.killerapps.academia.api.command.authenticate.Hello;
 import pl.killerapps.academia.api.command.authenticate.Login;
-import pl.killerapps.academia.preferences.Preferences;
-import pl.killerapps.academia.preferences.Preferences.UninitializedException;
+import pl.killerapps.academia.utils.preferences.Preferences;
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.webkit.CookieSyncManager;
+import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
+import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
+import pl.killerapps.academia.utils.safe.SafeActivity;
+import pl.killerapps.academia.utils.safe.SafeRunnable;
 
-public class MainActivity extends Activity {
+public class MainActivity extends SafeActivity {
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void safeOnCreate(Bundle savedInstanceState) throws NoConnectionDetailsException, PreferencesUninitializedException {
 
-    Log.d("MainActivity", "onCreate.");
-    super.onCreate(savedInstanceState);
     Preferences.init(getBaseContext());
 
     CookieSyncManager.createInstance(this);
@@ -33,9 +32,7 @@ public class MainActivity extends Activity {
   }
 
   @Override
-  protected void onResume() {
-    super.onResume();
-    Log.d("MainActivity", "onResume.");
+  protected void safeOnResume() throws NoConnectionDetailsException, PreferencesUninitializedException {
     Preferences.init(getBaseContext());
     CookieSyncManager.getInstance().stopSync();
     goNext();
@@ -48,49 +45,23 @@ public class MainActivity extends Activity {
   }
 
   private void login() {
-    (new Thread(new Runnable() {
+
+    (new Thread(new SafeRunnable(this) {
 
       @Override
-      public void run() {
-        try {
-          Preferences.Getter prefs = Preferences.get();
-          (new Hello(getBaseContext())).hello();
-          (new Login(prefs.academiaUrl(), getBaseContext())).login(prefs.username(), prefs.password());
-        } catch (URISyntaxException ex) {
-          Log.e("login", "can't login", ex);
-        } catch (ClientProtocolException ex) {
-          Log.e("connect", "client protocol exception", ex);
-        } catch (IOException e) {
-          e.printStackTrace();
-        } catch (UninitializedException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
-
+      public void safeRun() throws URISyntaxException, URISyntaxException, PreferencesUninitializedException, NoConnectionDetailsException, IOException, HelloRequiredException {
+        Log.d("main", "hello and login");
+        Preferences.Getter prefs = Preferences.get();
+        (new Hello(getBaseContext())).hello();
+        (new Login(prefs.academiaUrl(), getBaseContext())).login(prefs.username(), prefs.password());
       }
     })).start();
   }
 
-  protected void goNext() {
-    Log.i("main", "Chosing nxt activity");
-    String url;
-    try {
-      url = Preferences.get().academiaUrl();
-      int pad_port = Preferences.get().academiaPadPort();
-      Intent nxtActivityIntent;
-      if (url != null && pad_port > -1) {
-        Log.i("main", "entering subjects activity");
-        login();
-        nxtActivityIntent = new Intent(this, SubjectsActivity.class);
-      } else {
-        Log.i("main", "let's connect!");
-        nxtActivityIntent = new Intent(this, ConnectActivity.class);
-      }
-      startActivity(nxtActivityIntent);
-    } catch (UninitializedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+  protected void goNext() throws NoConnectionDetailsException, PreferencesUninitializedException {
+    login();
+    Intent nxtActivityIntent = new Intent(this, SubjectsActivity.class);
+    startActivity(nxtActivityIntent);
   }
 
   @Override
@@ -98,10 +69,5 @@ public class MainActivity extends Activity {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.main, menu);
     return true;
-  }
-
-  private boolean clearConnectionPrefs()
-          throws UninitializedException {
-    return Preferences.clear().execute();
   }
 }
