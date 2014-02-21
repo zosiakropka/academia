@@ -8,7 +8,8 @@ from ws4py.server.geventserver import WSGIServer, GEventWebSocketPool
 
 import logging
 from gevent import monkey
-monkey.patch_all(socket=True, dns=True, time=True, select=True, thread=False, os=True, ssl=True, httplib=False, aggressive=True)
+monkey.patch_all(socket=True, dns=True, time=True, select=True, thread=False,
+                 os=True, ssl=True, httplib=False, aggressive=True)
 
 from pad.channel.base.server import PadBaseServer
 from pad.channel.ws.endpoints import PadWSProxyWSEndpoint

@@ -31,6 +31,7 @@ def signin(request):
 
     return render(request, 'account/signin.html', {"nxt": nxt, "failure": failure})
 
+
 def signout(request):
 
     logout(request)

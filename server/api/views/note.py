@@ -24,7 +24,8 @@ def note_create(user, admin=False, note_access=None, subject_abbr=None, activity
 
 @api_auth(user=True, admin=True)
 @api
-def note_list(user, admin=False, subject_name=None, subject_abbr=None, activity_type=None, activity_id=None, note_access=None):
+def note_list(user, admin=False, subject_name=None, subject_abbr=None,
+              activity_type=None, activity_id=None, note_access=None):
 
     notes = None
 
