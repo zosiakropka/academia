@@ -1,10 +1,13 @@
-package pl.killerapps.academia.preferences;
+package pl.killerapps.academia.utils.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
 public class Preferences {
 
@@ -26,65 +29,83 @@ public class Preferences {
   }
 
   public static Getter get()
-          throws UninitializedException {
+          throws PreferencesUninitializedException {
     return new Getter(getOrExcept());
   }
 
   public static Setter set()
-          throws UninitializedException {
+          throws PreferencesUninitializedException {
     return new Setter(getOrExcept());
   }
 
   public static Cleaner clear()
-          throws UninitializedException {
+          throws PreferencesUninitializedException {
     return new Cleaner(getOrExcept());
   }
 
   private static SharedPreferences getOrExcept()
-          throws UninitializedException {
+          throws PreferencesUninitializedException {
     if (preferences == null) {
-      throw new UninitializedException();
+      throw new PreferencesUninitializedException();
     } else {
       return preferences;
     }
   }
 
-  public static class UninitializedException extends Exception {
-
-    private static final long serialVersionUID = 1L;
-
-  }
-
   public static class Getter {
 
-    private SharedPreferences preferences;
+    private final SharedPreferences preferences;
 
     public Getter(SharedPreferences preferences) {
       this.preferences = preferences;
     }
 
-    public String username() {
-      return preferences.getString(Preferences.USERNAME, null);
+    public String username() throws NoConnectionDetailsException {
+      String pref = preferences.getString(Preferences.USERNAME, null);
+      if (pref == null) {
+        throw new NoConnectionDetailsException();
+      }
+      return pref;
     }
 
-    public String password() {
-      return preferences.getString(Preferences.PASSWORD, null);
+    public String password() throws NoConnectionDetailsException {
+      String pref = preferences.getString(Preferences.PASSWORD, null);
+      if (pref == null) {
+        throw new NoConnectionDetailsException();
+      }
+      return pref;
     }
 
-    public String csrfToken() {
-      return preferences.getString(Preferences.CSRF_TOKEN, null);
+    public String csrfToken() throws HelloRequiredException {
+      String pref = preferences.getString(Preferences.CSRF_TOKEN, null);
+      if (pref == null) {
+        throw new HelloRequiredException();
+      }
+      return pref;
     }
 
-    public String sessionId() {
-      return preferences.getString(Preferences.SESSION_ID, "");
+    public String sessionId() throws HelloRequiredException {
+      String pref = preferences.getString(Preferences.SESSION_ID, null);
+      if (pref == null) {
+        throw new HelloRequiredException();
+      }
+      return pref;
     }
 
-    public String academiaUrl() {
-      return preferences.getString(Preferences.ACADEMIA_URL, null);
+    public String academiaUrl() throws NoConnectionDetailsException {
+      String pref = preferences.getString(Preferences.ACADEMIA_URL, null);
+      if (pref == null) {
+        throw new NoConnectionDetailsException();
+      }
+      return pref;
     }
 
-    public int academiaPadPort() {
-      return preferences.getInt(Preferences.ACADEMIA_PAD_PORT, -1);
+    public int academiaPadPort() throws NoConnectionDetailsException {
+      int port = preferences.getInt(Preferences.ACADEMIA_PAD_PORT, -1);
+      if (port == -1) {
+        throw new NoConnectionDetailsException();
+      }
+      return port;
     }
   }
 

@@ -1,5 +1,6 @@
 package pl.killerapps.academia.api.command;
 
+import android.util.Log;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,9 +12,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
+import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
-import pl.killerapps.academia.preferences.Preferences;
-import pl.killerapps.academia.preferences.Preferences.UninitializedException;
+import pl.killerapps.academia.utils.preferences.Preferences;
 
 public abstract class ApiCommandBase {
 
@@ -46,29 +48,21 @@ public abstract class ApiCommandBase {
     return response;
   }
 
-  protected HttpResponse raw_post(HttpPost post) throws ClientProtocolException, IOException {
+  protected HttpResponse raw_post(HttpPost post) throws ClientProtocolException, IOException, HelloRequiredException, PreferencesUninitializedException {
+    Log.d("Request path: ", uri.getHost() + ":" + uri.getPort() + uri.getPath());
     post.setURI(uri);
-    try {
-      Preferences.Getter prefs = Preferences.get();
-      post.addHeader("Cookie", "csrftoken=" + prefs.csrfToken() + "; " + "sessionid=" + prefs.sessionId());
-      post.addHeader("X-CSRFToken", prefs.csrfToken());
-    } catch (UninitializedException e) {
-      e.printStackTrace();
-    }
+    Preferences.Getter prefs = Preferences.get();
+    post.addHeader("Cookie", "csrftoken=" + prefs.csrfToken() + "; " + "sessionid=" + prefs.sessionId());
+    post.addHeader("X-CSRFToken", prefs.csrfToken());
     HttpResponse response = client.execute(post);
     return response;
   }
 
-  protected HttpResponse raw_get(HttpGet get, String params) throws ClientProtocolException, IOException {
-    try {
-      get.setURI(new URI(uri.toString() + "?" + params));
-      get.addHeader("Cookie", "sessionid=" + Preferences.get().sessionId());
-      HttpResponse response = client.execute(get);
-      return response;
-    } catch (URISyntaxException e) {
-    } catch (UninitializedException e) {
-    }
-    return null;
+  protected HttpResponse raw_get(HttpGet get, String params) throws ClientProtocolException, IOException, HelloRequiredException, URISyntaxException, PreferencesUninitializedException {
+    get.setURI(new URI(uri.toString() + "?" + params));
+    get.addHeader("Cookie", "sessionid=" + Preferences.get().sessionId());
+    HttpResponse response = client.execute(get);
+    return response;
   }
 
   protected void handleFailure(Exception ex) {

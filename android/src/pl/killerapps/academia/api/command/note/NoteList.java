@@ -5,6 +5,7 @@
  */
 package pl.killerapps.academia.api.command.note;
 
+import android.app.Activity;
 import android.util.Log;
 
 import java.net.URISyntaxException;
@@ -24,9 +25,9 @@ import pl.killerapps.academia.entities.Note;
  */
 public abstract class NoteList extends ApiCommandAsync<List<Note>> {
 
-  public NoteList(String base_url)
+  public NoteList(String base_url, Activity activity)
           throws URISyntaxException {
-    super(base_url, "/note/list/");
+    super(base_url, "/note/list/", activity);
   }
 
   @Override

@@ -1,5 +1,6 @@
 package pl.killerapps.academia.api.command;
 
+import android.app.Activity;
 import android.util.Log;
 
 import java.io.IOException;
@@ -11,24 +12,32 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
+import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
+import pl.killerapps.academia.utils.safe.SafeRunnable;
 
 public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
 
   protected boolean get = false;
+  protected Activity activity;
 
-  public ApiCommandAsync(String base_url, String method_path)
+  public ApiCommandAsync(String base_url, String method_path, Activity activity)
           throws URISyntaxException {
     super(base_url, method_path);
+    this.activity = activity;
   }
 
   /**
-   * This method should be implemented as final reaction for send request.
+   * Implement a successful response callback.
    *
    * @param response
    */
-  public void on_response(Entity response) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+  public abstract void on_response(Entity response);
+
+  /**
+   * Implement a successful response callback.
+   */
+  public abstract void on_failure();
 
   /**
    * Implementation of this method should process JSON response to extract
@@ -45,24 +54,29 @@ public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
   }
 
   public void send_request(final List<NameValuePair> params) {
-
     Runnable thread;
-    thread = new Runnable() {
+    thread = new SafeRunnable(this.activity) {
 
-      public void run() {
+      public void safeRun() throws HelloRequiredException, URISyntaxException, PreferencesUninitializedException {
 
         try {
+          Log.i("command", "Sending request.");
           String response;
           if (get) {
             response = real_get(params);
+            Log.d("command", "get.");
           } else {
             response = real_post(params);
+            Log.d("command", "post.");
           }
           if (response != null) {
             JSONArray json_array = new JSONArray(response);
 
             Entity entity = process_json(json_array);
             on_response(entity);
+          } else {
+            Log.d("response", "command failed");
+            on_failure();
           }
         } catch (JSONException e) {
           Log.e("academia_api", e.getLocalizedMessage());

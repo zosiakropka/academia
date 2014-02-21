@@ -1,5 +1,6 @@
 package pl.killerapps.academia.api.command.subject;
 
+import android.app.Activity;
 import android.util.Log;
 
 import java.net.URISyntaxException;
@@ -16,9 +17,9 @@ import pl.killerapps.academia.entities.Subject;
 
 public abstract class SubjectsByAktivity extends ApiCommandAsync<List<Subject>> {
 
-  public SubjectsByAktivity(String base_url)
+  public SubjectsByAktivity(String base_url, Activity activity)
           throws URISyntaxException {
-    super(base_url, "/subject/list/");
+    super(base_url, "/subject/list/", activity);
   }
 
   @Override
