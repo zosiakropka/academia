@@ -81,4 +81,5 @@ public class AktivityActivity extends SafeActivity {
     getMenuInflater().inflate(R.menu.aktivity, menu);
     return true;
   }
+
 }

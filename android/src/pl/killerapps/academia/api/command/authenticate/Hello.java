@@ -1,8 +1,6 @@
 package pl.killerapps.academia.api.command.authenticate;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import java.io.IOException;
@@ -15,7 +13,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
-import pl.killerapps.academia.activities.ConnectActivity;
 import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 

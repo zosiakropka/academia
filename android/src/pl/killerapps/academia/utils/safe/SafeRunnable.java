@@ -5,7 +5,6 @@
  */
 package pl.killerapps.academia.utils.safe;
 
-import android.app.Activity;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -20,21 +19,23 @@ import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException
  */
 public abstract class SafeRunnable implements Runnable {
 
-  Activity activity;
+  SafeActivity activity;
 
-  public SafeRunnable(Activity activity) {
+  public String getActivityName() {
+    return activity.getActivityName();
+  }
+
+  public SafeRunnable(SafeActivity activity) {
     this.activity = activity;
   }
 
   public void run() {
     try {
       safeRun();
-    } catch (PreferencesUninitializedException ex) {
-      ExceptionsHandler.handlePreferencesUninitialized(activity, ex);
-    } catch (HttpHostConnectException ex) {
-      ExceptionsHandler.handleHttpHostConnect(activity, ex);
     } catch (NoConnectionDetailsException ex) {
       ExceptionsHandler.handleNoConnectionDetails(activity, ex);
+    } catch (HttpHostConnectException ex) {
+      ExceptionsHandler.handleHttpHostConnect(activity, ex);
     } catch (URISyntaxException ex) {
       ExceptionsHandler.handleNoConnectionDetails(activity, ex);
     } catch (MalformedURLException ex) {
@@ -43,6 +44,8 @@ public abstract class SafeRunnable implements Runnable {
       ExceptionsHandler.handleHelloRequiredException(activity, ex);
     } catch (IOException ex) {
       ExceptionsHandler.handleIO(activity, ex);
+    } catch (PreferencesUninitializedException ex) {
+      ExceptionsHandler.handlePreferencesUninitialized(activity, ex);
     }
   }
 

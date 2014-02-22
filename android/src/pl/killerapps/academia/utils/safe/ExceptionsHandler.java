@@ -48,9 +48,14 @@ public class ExceptionsHandler {
     //startActivity(activity, ???.class);
   }
 
+  /**
+   * @todo Collect missing preferences
+   * @param activity
+   * @param ex 
+   */
   public static void handlePreferencesUninitialized(Activity activity, Exception ex) {
     Log.e("PreferencesUninitialized", ex.getMessage(), ex);
-    throw new UnsupportedOperationException("handlePreferencesUninitialized");
+    handleNoConnectionDetails(activity, ex);
     //startActivity(activity, ???.class);
   }
 

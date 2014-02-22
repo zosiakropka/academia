@@ -24,17 +24,14 @@ public class MainActivity extends SafeActivity {
   @Override
   protected void safeOnCreate(Bundle savedInstanceState) throws NoConnectionDetailsException, PreferencesUninitializedException {
 
-    Preferences.init(getBaseContext());
-
     CookieSyncManager.createInstance(this);
     CookieSyncManager.getInstance().startSync();
-    goNext();
   }
 
   @Override
   protected void safeOnResume() throws NoConnectionDetailsException, PreferencesUninitializedException {
-    Preferences.init(getBaseContext());
     CookieSyncManager.getInstance().stopSync();
+    Preferences.init(getBaseContext());
     goNext();
   }
 

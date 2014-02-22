@@ -5,7 +5,6 @@
  */
 package pl.killerapps.academia.utils.safe;
 
-import android.app.Activity;
 import android.view.View;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -21,21 +20,23 @@ import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException
  */
 public abstract class SafeOnClickListener implements View.OnClickListener {
 
-  Activity activity;
+  SafeActivity activity;
 
-  public SafeOnClickListener(Activity activity) {
+  public String getActivityName() {
+    return activity.getActivityName();
+  }
+
+  public SafeOnClickListener(SafeActivity activity) {
     this.activity = activity;
   }
 
   public void onClick(View arg0) {
     try {
       safeOnClick(arg0);
-    } catch (PreferencesUninitializedException ex) {
-      ExceptionsHandler.handlePreferencesUninitialized(activity, ex);
-    } catch (HttpHostConnectException ex) {
-      ExceptionsHandler.handleHttpHostConnect(activity, ex);
     } catch (NoConnectionDetailsException ex) {
       ExceptionsHandler.handleNoConnectionDetails(activity, ex);
+    } catch (HttpHostConnectException ex) {
+      ExceptionsHandler.handleHttpHostConnect(activity, ex);
     } catch (URISyntaxException ex) {
       ExceptionsHandler.handleNoConnectionDetails(activity, ex);
     } catch (MalformedURLException ex) {
@@ -44,6 +45,8 @@ public abstract class SafeOnClickListener implements View.OnClickListener {
       ExceptionsHandler.handleHelloRequiredException(activity, ex);
     } catch (IOException ex) {
       ExceptionsHandler.handleIO(activity, ex);
+    } catch (PreferencesUninitializedException ex) {
+      ExceptionsHandler.handlePreferencesUninitialized(activity, ex);
     }
   }
 

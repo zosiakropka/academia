@@ -1,8 +1,6 @@
 package pl.killerapps.academia.api.command.authenticate;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
