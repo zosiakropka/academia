@@ -1,6 +1,5 @@
 package pl.killerapps.academia.api.command;
 
-import android.app.Activity;
 import android.util.Log;
 
 import java.io.IOException;
@@ -14,14 +13,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
+import pl.killerapps.academia.utils.safe.SafeActivity;
 import pl.killerapps.academia.utils.safe.SafeRunnable;
 
 public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
 
   protected boolean get = false;
-  protected Activity activity;
+  protected SafeActivity activity;
 
-  public ApiCommandAsync(String base_url, String method_path, Activity activity)
+  public ApiCommandAsync(String base_url, String method_path, SafeActivity activity)
           throws URISyntaxException {
     super(base_url, method_path);
     this.activity = activity;

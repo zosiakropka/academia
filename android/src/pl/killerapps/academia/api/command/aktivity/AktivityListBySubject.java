@@ -5,7 +5,6 @@
  */
 package pl.killerapps.academia.api.command.aktivity;
 
-import android.app.Activity;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -17,6 +16,7 @@ import org.json.JSONObject;
 import pl.killerapps.academia.api.command.ApiCommandAsync;
 import pl.killerapps.academia.entities.Aktivity;
 import pl.killerapps.academia.entities.Subject;
+import pl.killerapps.academia.utils.safe.SafeActivity;
 
 /**
  *
@@ -24,7 +24,7 @@ import pl.killerapps.academia.entities.Subject;
  */
 public abstract class AktivityListBySubject extends ApiCommandAsync<SparseArray<Subject>> {
 
-  public AktivityListBySubject(String base_url, Activity activity)
+  public AktivityListBySubject(String base_url, SafeActivity activity)
           throws URISyntaxException {
     super(base_url, "/activity/list/", activity);
   }

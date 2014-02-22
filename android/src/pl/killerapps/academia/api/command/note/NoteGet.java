@@ -1,6 +1,5 @@
 package pl.killerapps.academia.api.command.note;
 
-import android.app.Activity;
 import java.net.URISyntaxException;
 
 import org.json.JSONArray;
@@ -11,10 +10,11 @@ import android.util.Log;
 
 import pl.killerapps.academia.api.command.ApiCommandAsync;
 import pl.killerapps.academia.entities.Note;
+import pl.killerapps.academia.utils.safe.SafeActivity;
 
 public abstract class NoteGet extends ApiCommandAsync<Note> {
 
-  public NoteGet(String base_url, Activity activity)
+  public NoteGet(String base_url, SafeActivity activity)
           throws URISyntaxException {
     super(base_url, "/note/get/", activity);
   }

@@ -6,7 +6,6 @@
 package pl.killerapps.academia.utils.safe;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import java.io.IOException;
@@ -38,12 +37,10 @@ public abstract class SafeActivity extends Activity {
     Log.i("createdActivity", getActivityName());
     try {
       safeOnCreate(savedInstanceState);
-    } catch (PreferencesUninitializedException ex) {
-      ExceptionsHandler.handlePreferencesUninitialized(this, ex);
-    } catch (HttpHostConnectException ex) {
-      ExceptionsHandler.handleHttpHostConnect(this, ex);
     } catch (NoConnectionDetailsException ex) {
       ExceptionsHandler.handleNoConnectionDetails(this, ex);
+    } catch (HttpHostConnectException ex) {
+      ExceptionsHandler.handleHttpHostConnect(this, ex);
     } catch (URISyntaxException ex) {
       ExceptionsHandler.handleNoConnectionDetails(this, ex);
     } catch (MalformedURLException ex) {
@@ -52,12 +49,12 @@ public abstract class SafeActivity extends Activity {
       ExceptionsHandler.handleHelloRequiredException(this, ex);
     } catch (IOException ex) {
       ExceptionsHandler.handleIO(this, ex);
+    } catch (PreferencesUninitializedException ex) {
+      ExceptionsHandler.handlePreferencesUninitialized(this, ex);
     }
   }
 
-  protected void safeOnCreate(Bundle savedInstanceState) throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException {
-
-  }
+  protected void safeOnCreate(Bundle savedInstanceState) throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException {}
 
   @Override
   protected void onResume() {
@@ -83,5 +80,4 @@ public abstract class SafeActivity extends Activity {
   }
 
   protected abstract void safeOnResume() throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException;
-
 }
