@@ -5,7 +5,6 @@
 @date Dec 11, 2013
 """
 from threading import Thread
-import logging
 
 
 class PadBaseServer(Thread):

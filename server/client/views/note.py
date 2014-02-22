@@ -29,7 +29,8 @@ def note_edit(user, note_id):
     if not note:
         raise PermissionDenied()
     else:
-        return ('client/note/pad.html', {"note_id": note.id, "content": note.content, "pad_port": wsserver["port"], "token": token})
+        return ('client/note/pad.html',
+                {"note_id": note.id, "content": note.content, "pad_port": wsproxy["port"], "token": token})
 
 
 @authenticate(user=True)
@@ -44,7 +45,8 @@ def note_create(user, access_type, subject_abbr, activity_type):
     token = tokens.generate(
         scope.access_obj(note, "edit"),
     )
-    return ('client/note/pad.html', {"note_id": note.id, "content": "Editable pad", "pad_port": wsserver["port"], "token": token})
+    return ('client/note/pad.html',
+            {"note_id": note.id, "content": "Editable pad", "pad_port": wsproxy["port"], "token": token})
 
 
 @authenticate(user=True)
@@ -55,4 +57,5 @@ def note_open(user, note_id):
     if not note:
         raise PermissionDenied()
     else:
-        return ('client/note/open.html', {"note_id": note.id, "content": note.content})
+        return ('client/note/open.html',
+                {"note_id": note.id, "content": note.content})
