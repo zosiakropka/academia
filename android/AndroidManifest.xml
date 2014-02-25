@@ -33,24 +33,36 @@
                 android:value="pl.killerapps.academia.activities.subject.AktivityActivity" />
         </activity>
         <activity
+            android:name="pl.killerapps.academia.activities.note.NoteActivity"
+            android:label="@string/title_activity_note"
+            android:parentActivityName="pl.killerapps.academia.activities.subject.AktivityActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.killerapps.academia.activities.subject.AktivityActivity" />
+        </activity>
+        <activity
             android:name="pl.killerapps.academia.activities.ConnectActivity"
             android:label="@string/title_activity_connect"
             android:parentActivityName="pl.killerapps.academia.activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.killerapps.academia.ConnectActivity" />
+                android:value="pl.killerapps.academia.activities.MainActivity" />
         </activity>
         <activity
             android:name="pl.killerapps.academia.activities.subject.SubjectsActivity"
             android:label="@string/title_activity_subjects"
-            android:parentActivityName="pl.killerapps.academia.activities.ConnectActivity" >
+            android:parentActivityName="pl.killerapps.academia.activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.killerapps.academia.ConnectActivity" />
+                android:value="pl.killerapps.academia.activities.MainActivity" />
         </activity>
         <activity
             android:name="pl.killerapps.academia.activities.subject.AktivityActivity"
-            android:label="@string/title_activity_aktivity" >
+            android:label="@string/title_activity_aktivity"
+            android:parentActivityName="pl.killerapps.academia.activities.subject.SubjectActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.killerapps.academia.activities.subject.SubjectActivity" />
         </activity>
     </application>
 
