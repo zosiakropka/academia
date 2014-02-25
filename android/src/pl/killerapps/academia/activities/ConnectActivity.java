@@ -1,10 +1,17 @@
 package pl.killerapps.academia.activities;
 
+import android.os.Bundle;
 import pl.killerapps.academia.R;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import org.apache.http.conn.HttpHostConnectException;
+import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
+import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
 import pl.killerapps.academia.utils.preferences.Preferences;
@@ -14,8 +21,12 @@ import pl.killerapps.academia.utils.safe.SafeOnClickListener;
 public class ConnectActivity extends SafeActivity {
 
   @Override
+  protected void safeOnCreate(Bundle savedInstanceState) throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException {
+      setContentView(R.layout.activity_connect);
+  }
+  
+  @Override
   protected void safeOnResume() {
-    setContentView(R.layout.activity_connect);
 
     Button connectButton = (Button) findViewById(R.id.button_connect);
 
