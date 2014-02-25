@@ -5,8 +5,9 @@
     <string name="app_name">Academia</string>
 
     <!-- Activities titles -->
-    <string name="title_activity_pad">Pad</string>
-    <string name="title_activity_connect">ConnectActivity</string>
+    <string name="title_activity_pad">Edit note</string>
+    <string name="title_activity_note">Preview note</string>
+    <string name="title_activity_connect">Connection Details</string>
     <string name="action_settings">Settings</string>
     <string name="pad_content"></string>
     <string name="title_activity_subjects">SubjectsActivity</string>
