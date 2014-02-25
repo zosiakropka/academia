@@ -20,7 +20,7 @@ function getKey(dict, value) {
   };
   return null;
 };
-var codes = {
+academia.codes = {
 	purpose: "\u0001",
 	login: "\u0002",
 	password: "\u0003",
@@ -28,8 +28,8 @@ var codes = {
 	message: "\u0005",
 };
 
-var UNIT_DELIMTR = "\u001F\u001F";
-var INNER_DELIMTR = "\u001F";
+academia.UNIT_DELIMTR = "\u001F\u001F";
+academia.INNER_DELIMTR = "\u001F";
 
 var VERSION = "\u0001";
 
@@ -37,10 +37,10 @@ var TOKEN = academia.token;
 
 function decode(message) {
 	data = {};
-	units = message.split(UNIT_DELIMTR);
+	units = message.split(academia.UNIT_DELIMTR);
 	for (var i in units) {
-		pair = units[i].split(INNER_DELIMTR);
-		var key = getKey(codes, pair[0]) || pair[0];
+		pair = units[i].split(academia.INNER_DELIMTR);
+		var key = getKey(academia.codes, pair[0]) || pair[0];
 		//data[key] = (pair.length == 1) || pair[1];
 		try {
 			data[key] = (pair.length == 1) || B64.decode(pair[1].replace(/\n/g, ''));
@@ -53,9 +53,9 @@ function decode(message) {
 function encode(data) {
 	units = [];
 	for (var key in data) {
-		units.push(codes[key] + ((data[key] == true)?"":(INNER_DELIMTR + B64.encode(data[key]))));
+		units.push(academia.codes[key] + ((data[key] == true)?"":(academia.INNER_DELIMTR + B64.encode(data[key]))));
 	}
-	return units.join(UNIT_DELIMTR);
+	return units.join(academia.UNIT_DELIMTR);
 }
 padContentElement = document.getElementById('pad-content');
 var dmp = new diff_match_patch();
@@ -111,9 +111,11 @@ var diffs = {
 	}
 };
 var socket = new WebSocket("ws://" + window.location.hostname + ":" + academia.pad_port);
+
 socket.onopen = function() {
 	socket.send(encode({purpose: "pad", message: ""+academia.pad_id}));
-}
+};
+
 socket.onmessage = function(response) {
 	var data = decode(response.data);
 	if (data && data.purpose) {
