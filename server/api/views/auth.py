@@ -5,13 +5,14 @@
 from django.http.response import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.core.exceptions import PermissionDenied
+from django.core.context_processors import csrf
 
 
 def auth_csrf(request):
-    """
-    @todo find out why this requires template and I just can't send 201
-    """
-    return HttpResponse(status=201)
+    ctkn = unicode(csrf(request)['csrf_token'])
+    response = HttpResponse(status=204)
+    response.set_cookie("csrftoken", ctkn)
+    return response
 
 
 def signin(request):
@@ -32,4 +33,4 @@ def signin(request):
     if failure:
         raise PermissionDenied()
     else:
-        return HttpResponse(status=201)
+        return HttpResponse(status=204)
