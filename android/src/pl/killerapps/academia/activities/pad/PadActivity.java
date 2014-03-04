@@ -2,10 +2,7 @@ package pl.killerapps.academia.activities.pad;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
-
 import pl.killerapps.academia.R;
-import pl.killerapps.academia.utils.preferences.Preferences;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -17,7 +14,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import pl.killerapps.academia.api.command.note.NoteGet;
 import pl.killerapps.academia.entities.Note;
-import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.safe.SafeActivity;
 
@@ -26,7 +23,7 @@ public class PadActivity extends SafeActivity {
   PadClient client;
 
   @Override
-  protected void safeOnResume() throws NoConnectionDetailsException, PreferencesUninitializedException, URISyntaxException, MalformedURLException {
+  protected void safeOnResume() throws FaultyConnectionDetailsException, PreferencesUninitializedException, URISyntaxException, MalformedURLException {
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
@@ -34,11 +31,8 @@ public class PadActivity extends SafeActivity {
 
       setContentView(R.layout.activity_pad);
 
-      String url = Preferences.get().academiaUrl();
-
       NoteGet noteGetCommand;
-      noteGetCommand = new NoteGet(url, this) {
-
+      noteGetCommand = new NoteGet(this) {
         @Override
         public void on_response(final Note note) {
           runOnUiThread(new Runnable() {
@@ -58,10 +52,7 @@ public class PadActivity extends SafeActivity {
       params.add(new BasicNameValuePair("note_id", "" + note_id));
       noteGetCommand.send_request(params);
 
-      String ip = (new URL("http://" + url)).getHost();
-      int padPort = Preferences.get().academiaPadPort();
-
-      client = new PadClient(ip, padPort) {
+      client = new PadClient() {
 
         @Override
         public void onMessage(PadMessage message) {

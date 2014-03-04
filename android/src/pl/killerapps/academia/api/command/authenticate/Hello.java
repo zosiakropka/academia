@@ -13,7 +13,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
-import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.HelloFailedException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
 import pl.killerapps.academia.utils.preferences.Preferences;
@@ -27,19 +28,17 @@ public class Hello {
   Context context;
 
   public Hello(Context context)
-          throws URISyntaxException, PreferencesUninitializedException, NoConnectionDetailsException {
-    String _base_url = Preferences.get().academiaUrl();
-    Log.d("csrftoken", "Hostname: " + _base_url);
-    if (_base_url.endsWith("/")) {
-      _base_url = _base_url.substring(0, _base_url.length() - 1);
-    }
-    this.uri = new URI("http://" + _base_url + "/api/auth/csrf");
+          throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
+    URI base_uri = Preferences.get().academiaApiUri();
+    this.uri = base_uri.resolve("/api/auth/csrf");
+    Log.d("csrftoken", "Path: " + this.uri.toString());
     this.context = context;
   }
 
   public void hello()
-          throws HttpHostConnectException, ClientProtocolException, IOException, PreferencesUninitializedException {
+          throws HttpHostConnectException, ClientProtocolException, IOException, PreferencesUninitializedException, HelloFailedException {
     HttpGet httpGet = new HttpGet(this.uri);
+    httpGet.setHeader("", null);
     HttpResponse response;
     response = (new DefaultHttpClient()).execute(httpGet);
     Header[] set_cookie_headers = response.getHeaders("Set-Cookie");
@@ -55,6 +54,7 @@ public class Hello {
         }
       }
     }
+    throw new HelloFailedException();
 
   }
 

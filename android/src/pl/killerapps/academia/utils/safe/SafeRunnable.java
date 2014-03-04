@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.killerapps.academia.utils.safe;
 
 import java.io.IOException;
@@ -10,7 +5,9 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import org.apache.http.conn.HttpHostConnectException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
-import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.HelloFailedException;
+import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
 /**
@@ -32,7 +29,7 @@ public abstract class SafeRunnable implements Runnable {
   public void run() {
     try {
       safeRun();
-    } catch (NoConnectionDetailsException ex) {
+    } catch (FaultyConnectionDetailsException ex) {
       ExceptionsHandler.handleNoConnectionDetails(activity, ex);
     } catch (HttpHostConnectException ex) {
       ExceptionsHandler.handleHttpHostConnect(activity, ex);
@@ -41,13 +38,17 @@ public abstract class SafeRunnable implements Runnable {
     } catch (MalformedURLException ex) {
       ExceptionsHandler.handleNoConnectionDetails(activity, ex);
     } catch (HelloRequiredException ex) {
-      ExceptionsHandler.handleHelloRequiredException(activity, ex);
+      ExceptionsHandler.handleHelloRequired(activity, ex);
     } catch (IOException ex) {
       ExceptionsHandler.handleIO(activity, ex);
     } catch (PreferencesUninitializedException ex) {
       ExceptionsHandler.handlePreferencesUninitialized(activity, ex);
+    } catch (HelloFailedException ex) {
+      ExceptionsHandler.handleHelloFailed(activity, ex);
+    } catch (LoginRequiredException ex) {
+      ExceptionsHandler.handleLoginRequired(activity, ex);
     }
   }
 
-  public abstract void safeRun() throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException;
+  public abstract void safeRun() throws PreferencesUninitializedException, FaultyConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, LoginRequiredException, HttpHostConnectException, HelloFailedException;
 }

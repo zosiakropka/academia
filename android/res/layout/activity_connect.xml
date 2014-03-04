@@ -9,50 +9,50 @@
     tools:context=".ConnectActivity" >
 
     <TextView
-        android:id="@+id/label_server_url"
+        android:id="@+id/label_api_uri"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="@string/label_server_url"
+        android:text="@string/label_api_uri"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/conn_server_url"
+        android:id="@+id/conn_api_uri"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/label_server_url"
+        android:layout_below="@+id/label_api_uri"
         android:ems="10"
         android:inputType="textUri"
-        android:text="@string/conn_server_url" />
-
-    <EditText
-        android:id="@+id/conn_pad_port"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/conn_server_url"
-        android:layout_below="@+id/label_pad_port"
-        android:ems="10"
-        android:inputType="number"
-        android:text="@integer/conn_pad_port" />
+        android:text="@string/conn_api_uri" />
 
     <TextView
-        android:id="@+id/label_pad_port"
+        android:id="@+id/label_pad_uri"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/conn_pad_port"
-        android:layout_below="@+id/conn_server_url"
+        android:layout_alignLeft="@+id/conn_pad_uri"
+        android:layout_below="@+id/conn_api_uri"
         android:layout_marginTop="21dp"
-        android:text="@string/label_pad_port"
+        android:text="@string/label_pad_uri"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/conn_pad_uri"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/conn_api_uri"
+        android:layout_below="@+id/label_pad_uri"
+        android:ems="10"
+        android:inputType="textUri"
+        android:text="@string/conn_pad_uri" />
 
     <TextView
         android:id="@+id/label_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/conn_username"
-        android:layout_below="@+id/conn_pad_port"
+        android:layout_below="@+id/conn_pad_uri"
         android:layout_marginTop="20dp"
         android:text="@string/label_username"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -61,8 +61,8 @@
         android:id="@+id/conn_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/conn_pad_port"
-        android:layout_alignRight="@+id/conn_pad_port"
+        android:layout_alignLeft="@+id/conn_pad_uri"
+        android:layout_alignRight="@+id/conn_pad_uri"
         android:layout_below="@+id/label_username"
         android:ems="10"
         android:inputType="text"

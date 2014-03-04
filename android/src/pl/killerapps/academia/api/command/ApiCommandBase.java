@@ -12,7 +12,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
+import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
 import pl.killerapps.academia.utils.preferences.Preferences;
@@ -21,25 +23,17 @@ public abstract class ApiCommandBase {
 
   protected URI uri;
 
-  protected String base_url;
-  protected String command_path;
-
   HttpClient client = new DefaultHttpClient();
 
-  protected ApiCommandBase(String _base_url, String _command_path) throws URISyntaxException {
-    if (_base_url.endsWith("/")) {
-      base_url = (String) (_base_url.subSequence(0, _base_url.length() - 1));
-    } else {
-      base_url = _base_url;
+  protected ApiCommandBase(String command_path) throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
+
+    URI base_uri = Preferences.get().academiaApiUri();
+
+    if (!command_path.startsWith("/")) {
+      command_path = "/" + command_path;
     }
 
-    if (!_command_path.startsWith("/")) {
-      command_path = "/" + _command_path;
-    } else {
-      command_path = _command_path;
-    }
-
-    this.uri = new URI("http://" + base_url + "/api" + command_path);
+    this.uri = base_uri.resolve("/api" + command_path);
   }
 
   protected HttpResponse raw_post(HttpPost post, HttpContext localContext) throws ClientProtocolException, IOException {
@@ -48,7 +42,7 @@ public abstract class ApiCommandBase {
     return response;
   }
 
-  protected HttpResponse raw_post(HttpPost post) throws ClientProtocolException, IOException, HelloRequiredException, PreferencesUninitializedException {
+  protected HttpResponse raw_post(HttpPost post) throws ClientProtocolException, IOException, HelloRequiredException, LoginRequiredException, PreferencesUninitializedException {
     Log.d("Request path: ", uri.getHost() + ":" + uri.getPort() + uri.getPath());
     post.setURI(uri);
     Preferences.Getter prefs = Preferences.get();
@@ -58,7 +52,7 @@ public abstract class ApiCommandBase {
     return response;
   }
 
-  protected HttpResponse raw_get(HttpGet get, String params) throws ClientProtocolException, IOException, HelloRequiredException, URISyntaxException, PreferencesUninitializedException {
+  protected HttpResponse raw_get(HttpGet get, String params) throws ClientProtocolException, IOException, HelloRequiredException, LoginRequiredException, URISyntaxException, PreferencesUninitializedException {
     get.setURI(new URI(uri.toString() + "?" + params));
     get.addHeader("Cookie", "sessionid=" + Preferences.get().sessionId());
     HttpResponse response = client.execute(get);

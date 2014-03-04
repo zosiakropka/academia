@@ -13,13 +13,15 @@ import org.json.JSONObject;
 import pl.killerapps.academia.api.command.ApiCommandAsync;
 import pl.killerapps.academia.entities.Aktivity;
 import pl.killerapps.academia.entities.Subject;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.safe.SafeActivity;
 
 public abstract class SubjectsByAktivity extends ApiCommandAsync<List<Subject>> {
 
-  public SubjectsByAktivity(String base_url, SafeActivity activity)
-          throws URISyntaxException {
-    super(base_url, "/subject/list/", activity);
+  public SubjectsByAktivity(SafeActivity activity)
+          throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
+    super("/subject/list/", activity);
   }
 
   @Override

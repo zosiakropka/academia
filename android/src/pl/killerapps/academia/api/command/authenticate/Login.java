@@ -20,6 +20,7 @@ import android.util.Log;
 import java.io.UnsupportedEncodingException;
 
 import pl.killerapps.academia.api.command.ApiCommandBase;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.preferences.Preferences;
@@ -34,14 +35,16 @@ public class Login extends ApiCommandBase {
 
   Context context;
 
-  public Login(String base_url, Context context)
-          throws URISyntaxException {
-    super(base_url, "/auth/signin/");
+  public Login(Context context)
+          throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
+    super("/auth/signin/");
     this.context = context;
   }
 
-  public void login(final String username, final String password) throws HelloRequiredException, PreferencesUninitializedException, UnsupportedEncodingException, IOException {
-
+  public void login() throws HelloRequiredException, PreferencesUninitializedException, UnsupportedEncodingException, IOException, FaultyConnectionDetailsException {
+    Preferences.Getter prefs = Preferences.get();
+    final String username = prefs.username();
+    final String password = prefs.password();
     DefaultHttpClient httpclient = new DefaultHttpClient();
 
     String csrftoken = Preferences.get().csrfToken();

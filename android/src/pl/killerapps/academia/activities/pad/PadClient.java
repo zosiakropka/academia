@@ -11,6 +11,10 @@ import java.net.UnknownHostException;
 
 import android.text.TextUtils;
 import android.util.Log;
+import java.net.URI;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
+import pl.killerapps.academia.utils.preferences.Preferences;
 
 public abstract class PadClient implements Runnable {
 
@@ -25,9 +29,10 @@ public abstract class PadClient implements Runnable {
   Thread thread;
   boolean ready = true;
 
-  public PadClient(String ip, int port) {
-    this.ip = ip;
-    this.port = port;
+  public PadClient() throws PreferencesUninitializedException, FaultyConnectionDetailsException {
+    URI padUri = Preferences.get().academiaPadUri();
+    this.ip = padUri.getHost();
+    this.port = padUri.getPort();
   }
 
   private void init()

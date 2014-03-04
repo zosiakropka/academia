@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.killerapps.academia.utils.safe;
 
 import android.app.Activity;
@@ -13,7 +8,8 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import org.apache.http.conn.HttpHostConnectException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
-import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.HelloFailedException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
 /**
@@ -37,7 +33,7 @@ public abstract class SafeActivity extends Activity {
     Log.i("createdActivity", getActivityName());
     try {
       safeOnCreate(savedInstanceState);
-    } catch (NoConnectionDetailsException ex) {
+    } catch (FaultyConnectionDetailsException ex) {
       ExceptionsHandler.handleNoConnectionDetails(this, ex);
     } catch (HttpHostConnectException ex) {
       ExceptionsHandler.handleHttpHostConnect(this, ex);
@@ -46,15 +42,18 @@ public abstract class SafeActivity extends Activity {
     } catch (MalformedURLException ex) {
       ExceptionsHandler.handleNoConnectionDetails(this, ex);
     } catch (HelloRequiredException ex) {
-      ExceptionsHandler.handleHelloRequiredException(this, ex);
+      ExceptionsHandler.handleHelloRequired(this, ex);
     } catch (IOException ex) {
       ExceptionsHandler.handleIO(this, ex);
     } catch (PreferencesUninitializedException ex) {
       ExceptionsHandler.handlePreferencesUninitialized(this, ex);
+    } catch (HelloFailedException ex) {
+      ExceptionsHandler.handleHelloFailed(this, ex);
     }
   }
 
-  protected void safeOnCreate(Bundle savedInstanceState) throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException {}
+  protected void safeOnCreate(Bundle savedInstanceState) throws PreferencesUninitializedException, FaultyConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException, HelloFailedException {
+  }
 
   @Override
   protected void onResume() {
@@ -66,18 +65,20 @@ public abstract class SafeActivity extends Activity {
       ExceptionsHandler.handlePreferencesUninitialized(this, ex);
     } catch (HttpHostConnectException ex) {
       ExceptionsHandler.handleHttpHostConnect(this, ex);
-    } catch (NoConnectionDetailsException ex) {
+    } catch (FaultyConnectionDetailsException ex) {
       ExceptionsHandler.handleNoConnectionDetails(this, ex);
     } catch (URISyntaxException ex) {
       ExceptionsHandler.handleNoConnectionDetails(this, ex);
     } catch (MalformedURLException ex) {
       ExceptionsHandler.handleNoConnectionDetails(this, ex);
     } catch (HelloRequiredException ex) {
-      ExceptionsHandler.handleHelloRequiredException(this, ex);
+      ExceptionsHandler.handleHelloRequired(this, ex);
     } catch (IOException ex) {
       ExceptionsHandler.handleIO(this, ex);
+    } catch (HelloFailedException ex) {
+      ExceptionsHandler.handleHelloFailed(this, ex);
     }
   }
 
-  protected abstract void safeOnResume() throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException;
+  protected abstract void safeOnResume() throws PreferencesUninitializedException, FaultyConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException, HelloFailedException;
 }
