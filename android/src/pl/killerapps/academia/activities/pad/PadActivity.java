@@ -14,9 +14,11 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.NameValuePair;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.message.BasicNameValuePair;
 import pl.killerapps.academia.api.command.note.NoteGet;
 import pl.killerapps.academia.entities.Note;
+import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.safe.SafeActivity;
@@ -26,13 +28,16 @@ public class PadActivity extends SafeActivity {
   PadClient client;
 
   @Override
+  protected void safeOnCreate(Bundle savedInstanceState) throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException {
+    setContentView(R.layout.activity_pad);
+  }
+
+  @Override
   protected void safeOnResume() throws NoConnectionDetailsException, PreferencesUninitializedException, URISyntaxException, MalformedURLException {
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
       final int note_id = extras.getInt("NOTE_ID");
-
-      setContentView(R.layout.activity_pad);
 
       String url = Preferences.get().academiaUrl();
 

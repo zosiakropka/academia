@@ -8,7 +8,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import pl.killerapps.academia.R;
-import pl.killerapps.academia.activities.pad.PadActivity;
 import pl.killerapps.academia.api.command.note.NoteList;
 import pl.killerapps.academia.entities.Note;
 import pl.killerapps.academia.utils.preferences.Preferences;
@@ -20,6 +19,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import org.apache.http.conn.HttpHostConnectException;
+import pl.killerapps.academia.activities.note.NoteActivity;
+import pl.killerapps.academia.activities.pad.PadActivity;
+import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.safe.SafeActivity;
@@ -27,8 +32,12 @@ import pl.killerapps.academia.utils.safe.SafeActivity;
 public class AktivityActivity extends SafeActivity {
 
   @Override
-  protected void safeOnResume() throws NoConnectionDetailsException, PreferencesUninitializedException, URISyntaxException {
+  protected void safeOnCreate(Bundle savedInstanceState) throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException {
     setContentView(R.layout.activity_aktivity);
+  }
+
+  @Override
+  protected void safeOnResume() throws NoConnectionDetailsException, PreferencesUninitializedException, URISyntaxException {
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
