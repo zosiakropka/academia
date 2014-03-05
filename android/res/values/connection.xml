@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="conn_server_url"></string>
-    <integer name="conn_pad_port">5001</integer>
+    <string name="conn_api_uri"></string>
+    <string name="conn_pad_uri"></string>
 </resources>

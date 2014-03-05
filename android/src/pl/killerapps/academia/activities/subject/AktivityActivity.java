@@ -10,7 +10,6 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.killerapps.academia.R;
 import pl.killerapps.academia.api.command.note.NoteList;
 import pl.killerapps.academia.entities.Note;
-import pl.killerapps.academia.utils.preferences.Preferences;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -19,25 +18,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import org.apache.http.conn.HttpHostConnectException;
-import pl.killerapps.academia.activities.note.NoteActivity;
 import pl.killerapps.academia.activities.pad.PadActivity;
-import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
-import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.safe.SafeActivity;
 
 public class AktivityActivity extends SafeActivity {
 
   @Override
-  protected void safeOnCreate(Bundle savedInstanceState) throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException {
+  protected void safeOnResume() throws FaultyConnectionDetailsException, PreferencesUninitializedException, URISyntaxException {
     setContentView(R.layout.activity_aktivity);
-  }
-
-  @Override
-  protected void safeOnResume() throws NoConnectionDetailsException, PreferencesUninitializedException, URISyntaxException {
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
@@ -45,9 +35,7 @@ public class AktivityActivity extends SafeActivity {
 
       int aktivity_id = extras.getInt("AKTIVITY_ID");
 
-      String url;
-      url = Preferences.get().academiaUrl();
-      NoteList noteListCommand = new NoteList(url, this) {
+      NoteList noteListCommand = new NoteList(this) {
         @Override
         public void on_response(final List<Note> notes) {
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.killerapps.academia.api.command.note;
 
 import android.util.Log;
@@ -17,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import pl.killerapps.academia.api.command.ApiCommandAsync;
 import pl.killerapps.academia.entities.Note;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.safe.SafeActivity;
 
 /**
@@ -25,9 +22,9 @@ import pl.killerapps.academia.utils.safe.SafeActivity;
  */
 public abstract class NoteList extends ApiCommandAsync<List<Note>> {
 
-  public NoteList(String base_url, SafeActivity activity)
-          throws URISyntaxException {
-    super(base_url, "/note/list/", activity);
+  public NoteList(SafeActivity activity)
+          throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
+    super("/note/list/", activity);
   }
 
   @Override

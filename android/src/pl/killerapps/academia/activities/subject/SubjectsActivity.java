@@ -1,7 +1,6 @@
 package pl.killerapps.academia.activities.subject;
 
 import pl.killerapps.academia.R;
-import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,43 +12,30 @@ import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import java.net.URISyntaxException;
 import java.util.List;
-import org.apache.http.conn.HttpHostConnectException;
 import pl.killerapps.academia.api.command.subject.SubjectsByAktivity;
 import pl.killerapps.academia.entities.Aktivity;
 import pl.killerapps.academia.entities.Subject;
-import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
-import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
-import pl.killerapps.academia.utils.preferences.Preferences;
 import pl.killerapps.academia.utils.safe.SafeActivity;
+import pl.killerapps.academia.utils.safe.SafeRunnable;
 
 public class SubjectsActivity extends SafeActivity {
 
   @Override
-  protected void safeOnCreate(Bundle savedInstanceState) throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException {
+  protected void safeOnResume() throws PreferencesUninitializedException, FaultyConnectionDetailsException, URISyntaxException {
     setContentView(R.layout.activity_subjects);
     setupActionBar();
-  }
-
-  @Override
-  protected void safeOnResume() throws PreferencesUninitializedException, NoConnectionDetailsException, URISyntaxException {
-
-    String url;
-    url = Preferences.get().academiaUrl();
 
     SubjectsByAktivity subjectsByAktivityCommand;
-    final Activity ctx = this;
-    subjectsByAktivityCommand = new SubjectsByAktivity(url, this) {
+    final SafeActivity ctx = this;
+    subjectsByAktivityCommand = new SubjectsByAktivity(this) {
       @Override
       public void on_response(final List<Subject> subjects) {
-        ctx.runOnUiThread(new Runnable() {
-          public void run() {
+        ctx.runOnUiThread(new SafeRunnable(ctx) {
+          public void safeRun() {
             LinearLayout layout = (LinearLayout) findViewById(R.id.subjects_layout);
             for (Subject subject : subjects) {
               TextView tv = new TextView(ctx);

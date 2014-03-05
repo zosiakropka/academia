@@ -10,13 +10,15 @@ import android.util.Log;
 
 import pl.killerapps.academia.api.command.ApiCommandAsync;
 import pl.killerapps.academia.entities.Note;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.safe.SafeActivity;
 
 public abstract class NoteGet extends ApiCommandAsync<Note> {
 
-  public NoteGet(String base_url, SafeActivity activity)
-          throws URISyntaxException {
-    super(base_url, "/note/get/", activity);
+  public NoteGet(SafeActivity activity)
+          throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
+    super("/note/get/", activity);
   }
 
   @Override

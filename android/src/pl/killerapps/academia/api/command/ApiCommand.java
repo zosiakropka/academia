@@ -19,23 +19,25 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
+import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
 public abstract class ApiCommand<Entity> extends ApiCommandBase {
 
-  protected ApiCommand(String base_url, String method_path)
-          throws URISyntaxException {
-    super(base_url, method_path);
+  protected ApiCommand(String method_path)
+          throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
+    super(method_path);
   }
 
   public Entity get()
-          throws JSONException, ClientProtocolException, IOException, HelloRequiredException, URISyntaxException, PreferencesUninitializedException {
+          throws JSONException, ClientProtocolException, IOException, HelloRequiredException, URISyntaxException, PreferencesUninitializedException, LoginRequiredException {
     return get(new ArrayList<NameValuePair>());
   }
 
   public Entity get(List<NameValuePair> params)
-          throws ClientProtocolException, IOException, JSONException, HelloRequiredException, URISyntaxException, PreferencesUninitializedException {
+          throws ClientProtocolException, IOException, JSONException, HelloRequiredException, URISyntaxException, PreferencesUninitializedException, LoginRequiredException {
     String response = real_get(params);
     JSONArray json_array = new JSONArray(response);
     return process_json(json_array);
@@ -43,7 +45,7 @@ public abstract class ApiCommand<Entity> extends ApiCommandBase {
 
   public Entity post()
           throws JSONException,
-          ClientProtocolException, IOException, HelloRequiredException, PreferencesUninitializedException {
+          ClientProtocolException, IOException, HelloRequiredException, PreferencesUninitializedException, LoginRequiredException {
     return post(new ArrayList<NameValuePair>());
   }
 
@@ -57,7 +59,7 @@ public abstract class ApiCommand<Entity> extends ApiCommandBase {
    * @throws PreferencesUninitializedException
    */
   public Entity post(final List<NameValuePair> params)
-          throws JSONException, ClientProtocolException, IOException, HelloRequiredException, PreferencesUninitializedException {
+          throws JSONException, ClientProtocolException, IOException, HelloRequiredException, PreferencesUninitializedException, LoginRequiredException {
     String response = real_post(params);
     JSONArray json_array = new JSONArray(response);
     return process_json(json_array);
@@ -93,7 +95,7 @@ public abstract class ApiCommand<Entity> extends ApiCommandBase {
   }
 
   protected String real_get(List<NameValuePair> params)
-          throws ClientProtocolException, IOException, HelloRequiredException, URISyntaxException, PreferencesUninitializedException {
+          throws ClientProtocolException, IOException, HelloRequiredException, URISyntaxException, PreferencesUninitializedException, LoginRequiredException {
     HttpGet httpget = new HttpGet();
     String paramString = URLEncodedUtils.format(params, "utf-8");
 
@@ -103,7 +105,7 @@ public abstract class ApiCommand<Entity> extends ApiCommandBase {
   }
 
   protected String real_post(List<NameValuePair> params)
-          throws ClientProtocolException, IOException, HelloRequiredException, PreferencesUninitializedException {
+          throws ClientProtocolException, IOException, HelloRequiredException, PreferencesUninitializedException, LoginRequiredException {
 
     HttpPost httppost = new HttpPost();
     httppost.setEntity(new UrlEncodedFormEntity(params));

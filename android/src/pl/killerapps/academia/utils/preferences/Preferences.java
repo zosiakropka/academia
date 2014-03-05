@@ -5,8 +5,11 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import pl.killerapps.academia.utils.exceptions.NoConnectionDetailsException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
+import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
 public class Preferences {
@@ -15,8 +18,8 @@ public class Preferences {
   static String PASSWORD = "password";
   static String CSRF_TOKEN = "csrftoken";
   static String SESSION_ID = "sessionid";
-  static String ACADEMIA_URL = "academia-url";
-  static String ACADEMIA_PAD_PORT = "academia-pad-port";
+  static String ACADEMIA_API_URI = "academia-api-uri";
+  static String ACADEMIA_PAD_URI = "academia-pad-uri";
 
   private static SharedPreferences preferences = null;
 
@@ -60,52 +63,58 @@ public class Preferences {
       this.preferences = preferences;
     }
 
-    public String username() throws NoConnectionDetailsException {
-      String pref = preferences.getString(Preferences.USERNAME, null);
-      if (pref == null) {
-        throw new NoConnectionDetailsException();
+    public String username() throws FaultyConnectionDetailsException {
+      String username = preferences.getString(Preferences.USERNAME, null);
+      if (username == null) {
+        throw new FaultyConnectionDetailsException();
       }
-      return pref;
+      return username;
     }
 
-    public String password() throws NoConnectionDetailsException {
-      String pref = preferences.getString(Preferences.PASSWORD, null);
-      if (pref == null) {
-        throw new NoConnectionDetailsException();
+    public String password() throws FaultyConnectionDetailsException {
+      String password = preferences.getString(Preferences.PASSWORD, null);
+      if (password == null) {
+        throw new FaultyConnectionDetailsException();
       }
-      return pref;
+      return password;
     }
 
     public String csrfToken() throws HelloRequiredException {
-      String pref = preferences.getString(Preferences.CSRF_TOKEN, null);
-      if (pref == null) {
+      String csrftoken = preferences.getString(Preferences.CSRF_TOKEN, null);
+      if (csrftoken == null) {
         throw new HelloRequiredException();
       }
-      return pref;
+      return csrftoken;
     }
 
-    public String sessionId() throws HelloRequiredException {
-      String pref = preferences.getString(Preferences.SESSION_ID, null);
-      if (pref == null) {
-        throw new HelloRequiredException();
+    public String sessionId() throws LoginRequiredException {
+      String sid = preferences.getString(Preferences.SESSION_ID, null);
+      if (sid == null) {
+        throw new LoginRequiredException();
       }
-      return pref;
+      return sid;
     }
 
-    public String academiaUrl() throws NoConnectionDetailsException {
-      String pref = preferences.getString(Preferences.ACADEMIA_URL, null);
-      if (pref == null) {
-        throw new NoConnectionDetailsException();
+    public URI academiaApiUri() throws FaultyConnectionDetailsException {
+      String uri = preferences.getString(Preferences.ACADEMIA_API_URI, "");
+      if (uri != null && !uri.equals("")) {
+        try {
+          return new URI("http://" + uri);
+        } catch (URISyntaxException ex) {
+        }
       }
-      return pref;
+      throw new FaultyConnectionDetailsException();
     }
 
-    public int academiaPadPort() throws NoConnectionDetailsException {
-      int port = preferences.getInt(Preferences.ACADEMIA_PAD_PORT, -1);
-      if (port == -1) {
-        throw new NoConnectionDetailsException();
+    public URI academiaPadUri() throws FaultyConnectionDetailsException {
+      String uri = preferences.getString(Preferences.ACADEMIA_PAD_URI, "");
+      if (uri != null) {
+        try {
+          return new URI("http://" + uri);
+        } catch (URISyntaxException ex) {
+        }
       }
-      return port;
+      throw new FaultyConnectionDetailsException();
     }
   }
 
@@ -131,12 +140,12 @@ public class Preferences {
       return editor.putString(Preferences.SESSION_ID, sessionid).commit();
     }
 
-    public boolean academiaUrl(String academia_url) {
-      return editor.putString(Preferences.ACADEMIA_URL, academia_url).commit();
+    public boolean academiaApiUri(String academia_url) {
+      return editor.putString(Preferences.ACADEMIA_API_URI, academia_url).commit();
     }
 
-    public boolean academiaPadPort(int academia_pad_port) {
-      return editor.putInt(Preferences.ACADEMIA_PAD_PORT, academia_pad_port).commit();
+    public boolean academiaPadUri(String academia_pad_uri) {
+      return editor.putString(Preferences.ACADEMIA_PAD_URI, academia_pad_uri).commit();
     }
   }
 
@@ -153,8 +162,8 @@ public class Preferences {
       editor.remove(Preferences.SESSION_ID);
       editor.remove(Preferences.USERNAME);
       editor.remove(Preferences.PASSWORD);
-      editor.remove(Preferences.ACADEMIA_PAD_PORT);
-      editor.remove(Preferences.ACADEMIA_URL);
+      editor.remove(Preferences.ACADEMIA_PAD_URI);
+      editor.remove(Preferences.ACADEMIA_API_URI);
       return editor.commit();
     }
   }

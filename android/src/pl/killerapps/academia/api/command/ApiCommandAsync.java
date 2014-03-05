@@ -11,7 +11,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
+import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.safe.SafeActivity;
 import pl.killerapps.academia.utils.safe.SafeRunnable;
@@ -21,9 +23,9 @@ public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
   protected boolean get = false;
   protected SafeActivity activity;
 
-  public ApiCommandAsync(String base_url, String method_path, SafeActivity activity)
-          throws URISyntaxException {
-    super(base_url, method_path);
+  public ApiCommandAsync(String method_path, SafeActivity activity)
+          throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
+    super(method_path);
     this.activity = activity;
   }
 
@@ -57,7 +59,7 @@ public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
     Runnable thread;
     thread = new SafeRunnable(this.activity) {
 
-      public void safeRun() throws HelloRequiredException, URISyntaxException, PreferencesUninitializedException {
+      public void safeRun() throws HelloRequiredException, LoginRequiredException, URISyntaxException, PreferencesUninitializedException {
 
         try {
           Log.i("command", "Sending request.");
