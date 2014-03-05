@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package client.urls
+"""@package webapp.urls
 @author: Zosia Sobocinska
 @date Nov 26, 2013
 """
@@ -11,7 +11,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('')
-urlpatterns += patterns('client.views',
+urlpatterns += patterns('webapp.views',
     url(r'^$', 'subject_list'),
     url(r'^subject/(?P<subject_abbr>\w+)/$', 'subject_browse'),
     url(r'^note/new/(?P<access_type>[-\w]+)/activity/(?P<subject_abbr>\w+)-(?P<activity_type>\w+)/$', 'note_create'),

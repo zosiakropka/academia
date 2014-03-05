@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package client.views.subject
+"""@package webapp.views.subject
 @author: Zosia Sobocinska
 @date Nov 26, 2013
 """
@@ -19,7 +19,7 @@ def subject_list(user):
 
     subjects = Subject.objects.all()
 
-    return ('client/subject/list.html',
+    return ('webapp/subject/list.html',
                   {'subject_list': subjects})
 
 
@@ -36,5 +36,5 @@ def subject_browse(user, subject_abbr):
             "notes": Note.get_notes_for_open(by_user=user, activity=activity)
         })
 
-    return ('client/subject/browse.html',
+    return ('webapp/subject/browse.html',
                   {'subject': subject, 'activities': activities, 'user': user})

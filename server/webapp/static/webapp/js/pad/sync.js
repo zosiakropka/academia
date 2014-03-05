@@ -20,6 +20,7 @@ function getKey(dict, value) {
   };
   return null;
 };
+
 academia.codes = {
 	purpose: "\u0001",
 	login: "\u0002",
@@ -33,7 +34,7 @@ academia.INNER_DELIMTR = "\u001F";
 
 var VERSION = "\u0001";
 
-var TOKEN = academia.token;
+var TOKEN = academia.pad.TOKEN;
 
 function decode(message) {
 	data = {};
@@ -63,7 +64,7 @@ var diffs = {
 	prev: padContentElement.innerHTML,
 	schedule: function() {
 		diffs.curr = padContentElement.innerHTML.toString();
-		diffs.list = dmp.diff_main(diffs.prev, diffs.curr, true);
+		diffs.list = dmp.diff_main(diffs.prev, diffs.curr);
 		diffs.patches_text = dmp.patch_toText(dmp.patch_make(diffs.prev, diffs.curr, diffs.list));
 		if (diffs.patches_text) {
 			diffs.prev = diffs.curr;
@@ -110,10 +111,10 @@ var diffs = {
 		
 	}
 };
-var socket = new WebSocket("ws://" + window.location.hostname + ":" + academia.pad_port);
+var socket = new WebSocket("ws://" + window.location.hostname + ":" + academia.pad.PORT);
 
 socket.onopen = function() {
-	socket.send(encode({purpose: "pad", message: ""+academia.pad_id}));
+	socket.send(encode({purpose: "pad", message: ""+academia.pad.ID}));
 };
 
 socket.onmessage = function(response) {
