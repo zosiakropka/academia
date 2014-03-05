@@ -119,7 +119,7 @@ INSTALLED_APPS = (
 
     'account',
     'backbone',
-    'client',
+    'webapp',
     'pad',
     'utils'
 )

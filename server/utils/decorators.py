@@ -13,7 +13,7 @@ from django.core.exceptions import PermissionDenied
 
 def authenticate(user=False, admin=False):
     """
-    @todo move this to client utils
+    @todo move this to webapp utils
     """
     def _decorator(fun):
         allowed = {'user': user, 'admin': admin}
@@ -34,7 +34,7 @@ def authenticate(user=False, admin=False):
 
 def abstractor(fun):
     """
-    @todo move this to client utils
+    @todo move this to webapp utils
     """
     @wraps(fun)
     def _wrapper(user, request, **kwargs):
