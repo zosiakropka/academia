@@ -91,6 +91,7 @@ hs_err_pid*
 # Generated files
 bin/
 gen/
+BuildConfig.java
 
 # Gradle files
 .gradle/
