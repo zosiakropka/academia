@@ -15,7 +15,7 @@ MANAGERS = ADMINS
 ## Settings related to socket-based services responsible for real time
 #  collaboration between users.
 PADSERVERS = {
-    'wsserver': {
+    'wsproxy': {
         'host': 'example.com',
         'port': 5002
     },
