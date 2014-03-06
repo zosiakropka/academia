@@ -42,12 +42,10 @@ public class Hello {
     HttpResponse response;
     response = (new DefaultHttpClient()).execute(httpGet);
     Header[] set_cookie_headers = response.getHeaders("Set-Cookie");
-    Log.d("set_cookie headers", "headers len: " + set_cookie_headers.length);
     for (Header header : set_cookie_headers) {
       String[] units = header.getValue().split("; ");
       for (String unit : units) {
         String[] keyval = unit.split("=");
-        Log.d("header_unit", "content: " + unit);
         if (keyval[0].equals("csrftoken")) {
           String csrftoken = keyval[1];
           Preferences.set().csrfToken(csrftoken);

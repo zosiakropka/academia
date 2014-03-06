@@ -62,7 +62,7 @@ public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
       public void safeRun() throws HelloRequiredException, LoginRequiredException, URISyntaxException, PreferencesUninitializedException {
 
         try {
-          Log.i("command", "Sending request.");
+          Log.d("command", "Sending request.");
           String response;
           if (get) {
             response = real_get(params);
@@ -77,7 +77,6 @@ public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
             Entity entity = process_json(json_array);
             on_response(entity);
           } else {
-            Log.d("response", "command failed");
             on_failure();
           }
         } catch (JSONException e) {
