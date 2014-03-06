@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import pl.killerapps.academia.R;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.EditText;
 import java.net.URISyntaxException;
@@ -16,12 +17,37 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.killerapps.academia.api.command.note.NoteGet;
 import pl.killerapps.academia.entities.Note;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.HelloFailedException;
+import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.safe.SafeActivity;
 
 public class PadActivity extends SafeActivity {
 
   PadClient client;
+  PadMonitor monitor;
+
+  @Override
+  protected void safeOnCreate(Bundle savedInstanceState) throws PreferencesUninitializedException, FaultyConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException, HelloFailedException {
+    setContentView(R.layout.activity_pad);
+    monitor = new PadMonitor(this, (EditText) findViewById(R.id.pad_content)) {
+
+      @Override
+      public void on_patches(String patches_text) {
+        Log.i("patches", "sending");
+        PadMessage msg = new PadMessage();
+        msg.set_string("purpose", "patches");
+        msg.set_string("token", "todo:propertoken");
+        msg.set_string("message", patches_text);
+        try {
+          client.send(msg);
+        } catch (IOException ex) {
+          Log.e("patches", "cant send");
+          // @todo: queue patches
+        }
+      }
+    };
+  }
 
   @Override
   protected void safeOnResume() throws FaultyConnectionDetailsException, PreferencesUninitializedException, URISyntaxException, MalformedURLException {
@@ -29,8 +55,6 @@ public class PadActivity extends SafeActivity {
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
       final int note_id = extras.getInt("NOTE_ID");
-
-      setContentView(R.layout.activity_pad);
 
       NoteGet noteGetCommand;
       noteGetCommand = new NoteGet(this) {
@@ -40,6 +64,7 @@ public class PadActivity extends SafeActivity {
             public void run() {
               final EditText text = (EditText) findViewById(R.id.pad_content);
               text.setText(note.content);
+              monitor.start();
             }
           });
         }
@@ -57,9 +82,14 @@ public class PadActivity extends SafeActivity {
 
         @Override
         public void onMessage(PadMessage message) {
+          Log.i("message: ", message.get_string("message"));
           /**
            * @todo Apply changes
            */
+          if (message.get_string("purpose").equals("patches") && message.contains("message")) {
+            Log.i("message", "patches");
+            monitor.apply_patches(message.get_string("message"));
+          }
         }
 
         @Override

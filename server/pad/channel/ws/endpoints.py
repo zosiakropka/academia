@@ -20,6 +20,9 @@ class PadWSProxyWSEndpoint(WebSocket):
         self.tcp_endpoint.thread.start()
 
     def received_message(self, record):
+        """
+        Read from client and forward to server
+        """
         self.tcp_endpoint.forward(record)
 
     def forward(self, record, binary=False):
@@ -33,7 +36,7 @@ class PadWSProxyWSEndpoint(WebSocket):
 from asyncore import dispatcher_with_send
 from academia import settings
 from socket import SOCK_STREAM, AF_INET
-from pad.channel.tcp import DELIMITER
+from pad.channel.tcp import DELIMITER, CHUNK_SIZE
 import asyncore
 from threading import Thread
 from gevent import monkey
@@ -52,9 +55,12 @@ class PadWSProxyTCPEndpoint(dispatcher_with_send, Thread):
         self.thread = threading.Thread(target=self.run)
 
     def handle_read(self):
+        """
+        Read from server and forward to client
+        """
         rawdata = None
         try:
-            rawdata = self.recv(self.CHUNK_SIZE)
+            rawdata = self.recv(CHUNK_SIZE)
         except:
             pass
         if (rawdata):
