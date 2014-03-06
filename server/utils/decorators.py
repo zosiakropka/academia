@@ -44,9 +44,9 @@ def abstractor(fun):
         result = fun(user, **kwargs)
         try:
             template, data = result
-            return render(request, template, data)
         except:
             return result
+        return render(request, template, data)
     return _wrapper
 
 
