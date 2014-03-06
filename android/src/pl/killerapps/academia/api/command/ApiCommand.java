@@ -1,6 +1,5 @@
 package pl.killerapps.academia.api.command;
 
-import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,12 +18,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
+import pl.killerapps.academia.utils.Log;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
 public abstract class ApiCommand<Entity> extends ApiCommandBase {
+
+  protected Log log = new Log("ApiCommand");
 
   protected ApiCommand(String method_path)
           throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
@@ -56,7 +58,9 @@ public abstract class ApiCommand<Entity> extends ApiCommandBase {
    * @throws JSONException
    * @throws IOException
    * @throws ClientProtocolException
+   * @throws pl.killerapps.academia.utils.exceptions.HelloRequiredException
    * @throws PreferencesUninitializedException
+   * @throws pl.killerapps.academia.utils.exceptions.LoginRequiredException
    */
   public Entity post(final List<NameValuePair> params)
           throws JSONException, ClientProtocolException, IOException, HelloRequiredException, PreferencesUninitializedException, LoginRequiredException {
@@ -78,7 +82,7 @@ public abstract class ApiCommand<Entity> extends ApiCommandBase {
   protected String process_response(HttpResponse response)
           throws IOException {
     int statusCode = response.getStatusLine().getStatusCode();
-    Log.d("response", "Code: " + statusCode);
+    log.d("response code: " + statusCode);
     if (statusCode == 200) {
       StringBuilder builder = new StringBuilder();
       HttpEntity entity = response.getEntity();

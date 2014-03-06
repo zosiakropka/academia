@@ -42,7 +42,6 @@ class PadTCPConnection(dispatcher_with_send):
                 records = self.buffer.split(DELIMITER)
                 self.buffer = records.pop()
                 for record in records:
-                    print "RECORD: %s" % record
                     self.handle_message(record)
 
     def handle_message(self, record):
@@ -50,15 +49,13 @@ class PadTCPConnection(dispatcher_with_send):
         Try to decode messge record and process it adequately. Should be
         called by handle_read() when receiving single record is complete.
         """
-        print "NEW MESSAGE"
         data = decode(record)
         if data and "purpose" in data:
-            logging.debug("%s has data onboard." % (self.CHNL))
+            logging.debug("%s has data onboard, purpose: %s" % (self.CHNL, data["purpose"]))
             purpose = data["purpose"]
-            if purpose == "pad":
+            if purpose == "pad" and "message" in data:
                 self.pad = data.pop("message")
-            elif purpose == "patches" and self.pad:
-                print "PURPOSE: PATCHES"
+            elif purpose == "patches" and "message" in data and self.pad:
                 try:
                     token = data.pop("token", None)
                     tokens.validate(
@@ -77,9 +74,7 @@ class PadTCPConnection(dispatcher_with_send):
         """
         Broadcast message within current pad.
         """
-        print "PAD BROADCAST FROM TCP CONNECTION"
         self.pad_server.pad_broadcast(encode(data), self.pad, self.conn_id)
 
     def send_record(self, record):
-        print "SENDING RECORD"
         dispatcher_with_send.send(self, "%s%s%s" % (record, DELIMITER, '\n'))

@@ -17,7 +17,7 @@ import pl.killerapps.academia.utils.exceptions.HelloFailedException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
-import pl.killerapps.academia.utils.preferences.Preferences;
+import pl.killerapps.academia.utils.Preferences;
 import pl.killerapps.academia.utils.safe.SafeActivity;
 import pl.killerapps.academia.utils.safe.SafeOnClickListener;
 

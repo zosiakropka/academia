@@ -1,13 +1,13 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package client.views.note
+"""@package webapp.views.note
 @author: Zosia Sobocinska
 @date Nov 2, 2013
 """
 from django.shortcuts import get_object_or_404
 from backbone.models import Note, Activity, Subject
 from django.utils.timezone import now
-from utils.decorators import authenticate, abstractor
+from webapp.utils.decorators import authenticate, abstractor
 from django.core.exceptions import PermissionDenied
 from access_tokens import scope, tokens
 import logging
@@ -29,7 +29,7 @@ def note_edit(user, note_id):
     if not note:
         raise PermissionDenied()
     else:
-        return ('client/note/pad.html',
+        return ('webapp/note/pad.html',
                 {"note_id": note.id, "content": note.content, "pad_port": wsproxy["port"], "token": token})
 
 
@@ -45,7 +45,7 @@ def note_create(user, access_type, subject_abbr, activity_type):
     token = tokens.generate(
         scope.access_obj(note, "edit"),
     )
-    return ('client/note/pad.html',
+    return ('webapp/note/pad.html',
             {"note_id": note.id, "content": "Editable pad", "pad_port": wsproxy["port"], "token": token})
 
 
@@ -57,5 +57,5 @@ def note_open(user, note_id):
     if not note:
         raise PermissionDenied()
     else:
-        return ('client/note/open.html',
+        return ('webapp/note/open.html',
                 {"note_id": note.id, "content": note.content})

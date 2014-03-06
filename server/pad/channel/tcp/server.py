@@ -47,10 +47,8 @@ class PadTCPServer(asyncore.dispatcher):
             self.connections[connection.conn_id].pad_server = self
 
     def pad_broadcast(self, record, pad, broadcaster_id):
-        print "PAD BROADCAST FROM TCP SERVER"
         for conn_id, connection in self.connections.iteritems():
             if conn_id != broadcaster_id and connection.pad == pad:
-                print "    NXT CONNECTION"
                 connection.send_record(record)
 
     def start_server(self):

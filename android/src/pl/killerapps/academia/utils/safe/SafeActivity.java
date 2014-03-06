@@ -2,11 +2,11 @@ package pl.killerapps.academia.utils.safe;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import org.apache.http.conn.HttpHostConnectException;
+import pl.killerapps.academia.utils.Log;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloFailedException;
@@ -18,7 +18,14 @@ import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException
  */
 public abstract class SafeActivity extends Activity {
 
-  public String getActivityName() {
+  protected Log log;
+
+  public SafeActivity() {
+    super();
+    log = new Log(getActivityName());
+  }
+
+  public final String getActivityName() {
     Class<?> enclosingClass = getClass().getEnclosingClass();
     if (enclosingClass != null) {
       return enclosingClass.getName();
@@ -30,7 +37,7 @@ public abstract class SafeActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Log.i("createdActivity", getActivityName());
+    log.i("createdActivity");
     try {
       safeOnCreate(savedInstanceState);
     } catch (FaultyConnectionDetailsException ex) {
@@ -58,7 +65,7 @@ public abstract class SafeActivity extends Activity {
   @Override
   protected void onResume() {
     super.onResume();
-    Log.i("resumedActivity", getActivityName());
+    log.i("resumedActivity");
     try {
       safeOnResume();
     } catch (PreferencesUninitializedException ex) {

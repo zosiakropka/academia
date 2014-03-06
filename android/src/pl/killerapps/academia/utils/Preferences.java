@@ -1,4 +1,4 @@
-package pl.killerapps.academia.utils.preferences;
+package pl.killerapps.academia.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -25,7 +25,7 @@ public class Preferences {
 
   public static void init(Context context) {
     if (preferences == null) {
-      Log.d("prefs", "initializing preferences");
+      Log.i("prefs", "initializing preferences");
       preferences = PreferenceManager.getDefaultSharedPreferences(context);
       preferences.edit().clear();
     }

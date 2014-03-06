@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""@package client.views
+"""@package webapp.tests
 @author: Zosia Sobocinska
 @date Nov 26, 2013
+
+@todo: tests
 """
-from subject import *
-from note import *

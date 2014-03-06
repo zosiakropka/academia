@@ -20,7 +20,7 @@ urlpatterns += patterns('',
 
     url(r'^api/', include('api.urls')),
 
-    url(r'^', include('client.urls')),
+    url(r'^', include('webapp.urls')),
     (r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
 )
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import org.apache.http.conn.HttpHostConnectException;
+import pl.killerapps.academia.utils.Log;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloFailedException;
@@ -18,12 +19,16 @@ public abstract class SafeOnClickListener implements View.OnClickListener {
 
   SafeActivity activity;
 
+  protected Log log;
+
+
   public String getActivityName() {
     return activity.getActivityName();
   }
 
   public SafeOnClickListener(SafeActivity activity) {
     this.activity = activity;
+    log = new Log(activity.getActivityName());
   }
 
   public void onClick(View arg0) {

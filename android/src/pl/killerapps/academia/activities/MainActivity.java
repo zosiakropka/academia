@@ -2,7 +2,7 @@ package pl.killerapps.academia.activities;
 
 import pl.killerapps.academia.R;
 import pl.killerapps.academia.activities.subject.SubjectsActivity;
-import pl.killerapps.academia.utils.preferences.Preferences;
+import pl.killerapps.academia.utils.Preferences;
 import android.os.Bundle;
 import android.content.Intent;
 import android.view.Menu;
