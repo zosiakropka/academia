@@ -16,10 +16,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
-import android.util.Log;
 import java.io.UnsupportedEncodingException;
 
 import pl.killerapps.academia.api.command.ApiCommandBase;
+import pl.killerapps.academia.utils.Log;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
@@ -34,6 +34,7 @@ import pl.killerapps.academia.utils.Preferences;
 public class Login extends ApiCommandBase {
 
   Context context;
+  Log log = new Log("LoginCommand");
 
   public Login(Context context)
           throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
@@ -42,14 +43,15 @@ public class Login extends ApiCommandBase {
   }
 
   public void login() throws HelloRequiredException, PreferencesUninitializedException, UnsupportedEncodingException, IOException, FaultyConnectionDetailsException {
+
+    log.i("Signing in.");
+
     Preferences.Getter prefs = Preferences.get();
     final String username = prefs.username();
     final String password = prefs.password();
     DefaultHttpClient httpclient = new DefaultHttpClient();
 
     String csrftoken = Preferences.get().csrfToken();
-
-    Log.i("login", "csrftoken");
 
     HttpPost post = new HttpPost(uri);
     post.addHeader("Cookie", "csrftoken=" + csrftoken);

@@ -1,7 +1,5 @@
 package pl.killerapps.academia.api.command.note;
 
-import android.util.Log;
-
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import pl.killerapps.academia.api.command.ApiCommandAsync;
 import pl.killerapps.academia.entities.Note;
+import pl.killerapps.academia.utils.Log;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.safe.SafeActivity;
@@ -21,6 +20,8 @@ import pl.killerapps.academia.utils.safe.SafeActivity;
  * @author zosia
  */
 public abstract class NoteList extends ApiCommandAsync<List<Note>> {
+
+  Log log = new Log("NoteList");
 
   public NoteList(SafeActivity activity)
           throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
@@ -41,9 +42,9 @@ public abstract class NoteList extends ApiCommandAsync<List<Note>> {
         note.title = note_json.getString("title");
         notes.add(note);
       } catch (JSONException ex) {
-        Log.e("academia_api", "cant parse json", ex);
+        log.e("Can't parse json", ex);
       } catch (ParseException ex) {
-        Log.e("academia_api", "cant parse date", ex);
+        log.e("Can't parse date", ex);
       }
     }
     return notes;

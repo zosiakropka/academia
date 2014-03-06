@@ -5,7 +5,6 @@ import java.net.MalformedURLException;
 import pl.killerapps.academia.R;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.EditText;
 import java.net.URISyntaxException;
@@ -41,7 +40,7 @@ public class PadActivity extends SafeActivity {
         try {
           client.send(msg);
         } catch (IOException ex) {
-          Log.e("patches", "cant send");
+          log.e("cant send patches");
           // @todo: queue patches
         }
       }
@@ -81,12 +80,11 @@ public class PadActivity extends SafeActivity {
 
         @Override
         public void onMessage(PadMessage message) {
-          Log.i("message: ", message.get_string("message"));
+          log.i("message: " + message.get_string("message"));
           /**
            * @todo Apply changes
            */
           if (message.get_string("purpose").equals("patches") && message.contains("message")) {
-            Log.i("message", "patches");
             monitor.push_patches_text(message.get_string("message"));
           }
         }

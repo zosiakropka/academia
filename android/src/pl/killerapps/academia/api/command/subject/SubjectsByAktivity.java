@@ -1,7 +1,5 @@
 package pl.killerapps.academia.api.command.subject;
 
-import android.util.Log;
-
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +59,7 @@ public abstract class SubjectsByAktivity extends ApiCommandAsync<List<Subject>> 
         }
         subjects.add(subject);
       } catch (JSONException ex) {
-        Log.e("academia_api", "Can't parse", ex);
+        log.e("Can't parse", ex);
       }
     }
     return subjects;

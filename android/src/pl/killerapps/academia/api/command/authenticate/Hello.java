@@ -1,7 +1,6 @@
 package pl.killerapps.academia.api.command.authenticate;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.IOException;
 import java.net.URI;
@@ -13,6 +12,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
+import pl.killerapps.academia.utils.Log;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloFailedException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
@@ -27,16 +27,18 @@ public class Hello {
   URI uri;
   Context context;
 
+  Log log = new Log("HalloCommand");
+
   public Hello(Context context)
           throws URISyntaxException, PreferencesUninitializedException, FaultyConnectionDetailsException {
     URI base_uri = Preferences.get().academiaApiUri();
     this.uri = base_uri.resolve("/api/auth/csrf");
-    Log.d("csrftoken", "Path: " + this.uri.toString());
     this.context = context;
   }
 
   public void hello()
           throws HttpHostConnectException, ClientProtocolException, IOException, PreferencesUninitializedException, HelloFailedException {
+    log.i("Sayig hello.");
     HttpGet httpGet = new HttpGet(this.uri);
     httpGet.setHeader("", null);
     HttpResponse response;

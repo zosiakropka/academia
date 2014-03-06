@@ -1,6 +1,5 @@
 package pl.killerapps.academia.api.command;
 
-import android.util.Log;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,6 +11,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
+import pl.killerapps.academia.utils.Log;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
@@ -20,8 +20,9 @@ import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException
 import pl.killerapps.academia.utils.Preferences;
 
 public abstract class ApiCommandBase {
-
+  
   protected URI uri;
+  protected Log log = new Log("ApiCommandBase");
 
   HttpClient client = new DefaultHttpClient();
 
@@ -43,7 +44,7 @@ public abstract class ApiCommandBase {
   }
 
   protected HttpResponse raw_post(HttpPost post) throws ClientProtocolException, IOException, HelloRequiredException, LoginRequiredException, PreferencesUninitializedException {
-    Log.d("Request path: ", uri.getHost() + ":" + uri.getPort() + uri.getPath());
+    log.d("Request path: " + uri.getHost() + ":" + uri.getPort() + uri.getPath());
     post.setURI(uri);
     Preferences.Getter prefs = Preferences.get();
     post.addHeader("Cookie", "csrftoken=" + prefs.csrfToken() + "; " + "sessionid=" + prefs.sessionId());
