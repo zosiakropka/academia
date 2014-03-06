@@ -127,8 +127,6 @@ socket.onopen = function() {
 
 socket.onmessage = function(message) {
 	var data = decode(message.data);
-	console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	console.log(data);
 	if (data && data.purpose && data.message) {
 		switch (data.purpose) {
 			case "patches": 
