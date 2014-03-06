@@ -17,7 +17,7 @@ import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
-import pl.killerapps.academia.utils.preferences.Preferences;
+import pl.killerapps.academia.utils.Preferences;
 
 public abstract class ApiCommandBase {
 

@@ -17,7 +17,7 @@ import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloFailedException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
-import pl.killerapps.academia.utils.preferences.Preferences;
+import pl.killerapps.academia.utils.Preferences;
 
 /**
  * s * @author zosia

@@ -1,4 +1,4 @@
-package pl.killerapps.academia.utils.preferences;
+package pl.killerapps.academia.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -23,7 +23,7 @@ import pl.killerapps.academia.api.command.ApiCommandBase;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
-import pl.killerapps.academia.utils.preferences.Preferences;
+import pl.killerapps.academia.utils.Preferences;
 
 /**
  *
