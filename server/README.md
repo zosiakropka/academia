@@ -41,9 +41,9 @@ has the right to write to that directory.
 
 ### Database
 
-Django-supported database server needs to be installed. Then database (with
-settings consistent with those listed in config.py file) needs to be created,
-eg.:
+Django-supported database server engine needs to be installed. Then database
+(with settings consistent with those listed in config.py file) needs to be
+manually created, eg.:
 
 ```mysql
 CREATE USER 'academia'@'localhost' IDENTIFIED BY 'password';
@@ -53,19 +53,14 @@ GRANT ALL ON academia.* TO 'academia'@'localhost';
 
 To create required tables in database:
 
-- navigate to academia/server directory:
+- navigate to `academia/server` directory and execute `syncdb` command:
 
 ```bash
 cd academia/server
-```
-
-- run:
-
-```bash
 python manage.py syncdb
 ```
 
-- if you need example data (eg. for system demo), run:
+- if you need some example data (eg. for system demo), issue following:
 
 ```bash
 python manage.py exampledb
@@ -92,8 +87,8 @@ cd academia/server
 
 ```bash
 python manage.py runserver [<host>:<port_number>] &
-python manage.py padtcpserver
-python manage.py padwsserver
+python manage.py padtcpserver &
+python manage.py padwsproxy &
 ```
 
 ### Production server
@@ -101,12 +96,11 @@ python manage.py padwsserver
 Docs on production server shall be written down as soon as Academia is capable
 of being used in production.
 
-Only web browser interface shall be ran the other way. TCP and WebSocket
-servers for realtime collaboration are supposed to be launched the way these
-where launched under development phase:
+Only academia server providing API and WebApp shall be ran the other way. TCP
+pad server and its WebSocket-based proxy for realtime collaboration are
+supposed to be launched the way these where launched under development phase:
 
 ```bash
-python manage.py padwsserver [<host>:<port_number>]
-python manage.py padtcpserver
-python manage.py padwsserver
+python manage.py padtcpserver &
+python manage.py padwsproxy &
 ```
