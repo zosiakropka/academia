@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
 import name.fraser.neil.plaintext.DiffMatchPatch;
@@ -25,9 +26,11 @@ import pl.killerapps.academia.utils.safe.SafeRunnable;
  */
 public abstract class PadMonitor {
 
-  private boolean running = false;
+  private final Queue<String> patches_fifo = new LinkedList<String>();
 
-  static long PERIOD = 5000; // [ms]
+  private boolean busy = false;
+
+  static long PERIOD = 500; // [ms]
 
   private final EditText editor;
   private final SafeActivity activity;
@@ -42,37 +45,54 @@ public abstract class PadMonitor {
   }
 
   public void start() {
-    this.running = true;
+    this.busy = false;
 
     prev = editor.getText().toString();
     timer.scheduleAtFixedRate(new TimerTask() {
 
       @Override
       public void run() {
-        if (running) {
-          String curr = editor.getText().toString();
-          LinkedList<DiffMatchPatch.Diff> diffs = dmp.diff_main(prev, curr);
-          String patches_text = dmp.patch_toText(dmp.patch_make(diffs));
-          if (!patches_text.equals("")) {
-            on_patches(patches_text);
-            prev = curr;
+        if (!busy) {
+          if (patches_fifo.size() > 0) {
+            while (!patches_fifo.isEmpty()) {
+              apply_patches(patches_fifo.remove());
+            }
+          } else {
+            busy = true;
+            String curr = editor.getText().toString();
+            LinkedList<DiffMatchPatch.Diff> diffs = dmp.diff_main(prev, curr);
+            String patches_text = dmp.patch_toText(dmp.patch_make(diffs));
+            if (!patches_text.equals("")) {
+              on_local_patches(patches_text);
+              prev = curr;
+            }
           }
+          busy = false;
         }
       }
     }, PERIOD, PERIOD);
   }
 
   public void pause() {
-    this.running = false;
+    this.busy = true;
   }
 
   public void resume() {
-    this.running = true;
+    this.busy = false;
   }
 
-  public abstract void on_patches(String patches_text);
+  /**
+   * What should be done if diffs were detected within currently edited pad.
+   *
+   * @param patches_text
+   */
+  public abstract void on_local_patches(String patches_text);
 
-  public void apply_patches(String patches_text) {
+  public void push_patches_text(String patches_text) {
+    this.patches_fifo.add(patches_text);
+  }
+
+  private void apply_patches(String patches_text) {
     pause();
     final String curr = editor.getText().toString();
     List<DiffMatchPatch.Patch> patches = (LinkedList<DiffMatchPatch.Patch>) dmp.patch_fromText(patches_text);

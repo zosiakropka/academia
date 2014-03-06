@@ -33,8 +33,7 @@ public class PadActivity extends SafeActivity {
     monitor = new PadMonitor(this, (EditText) findViewById(R.id.pad_content)) {
 
       @Override
-      public void on_patches(String patches_text) {
-        Log.i("patches", "sending");
+      public void on_local_patches(String patches_text) {
         PadMessage msg = new PadMessage();
         msg.set_string("purpose", "patches");
         msg.set_string("token", "todo:propertoken");
@@ -88,7 +87,7 @@ public class PadActivity extends SafeActivity {
            */
           if (message.get_string("purpose").equals("patches") && message.contains("message")) {
             Log.i("message", "patches");
-            monitor.apply_patches(message.get_string("message"));
+            monitor.push_patches_text(message.get_string("message"));
           }
         }
 
