@@ -8,7 +8,6 @@
 
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from django.views.generic.base import RedirectView
 from academia import settings
 admin.autodiscover()
 
@@ -22,7 +21,6 @@ urlpatterns += patterns('',
             url(r'^api/', include('api.urls')),
 
             url(r'^', include('webapp.urls')),
-            (r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
         )
     ))
 )

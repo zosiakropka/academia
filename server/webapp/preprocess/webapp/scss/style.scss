@@ -1,0 +1,22 @@
+@import "reset";
+
+@media screen {
+  html, body {
+    height: 100%;
+  }
+  #page-wrapper {
+    min-height:100%;
+    position:relative;
+  }
+  #page-footer {
+    width:100%;
+    position:absolute;
+    bottom:0;
+    left:0;
+  }
+  
+  @import "nav";
+  @import "notes";
+  @import "footer";
+  @import "header";
+}
