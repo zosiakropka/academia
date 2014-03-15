@@ -1,41 +1,44 @@
-
 // ---------------------------------- Utils ----------------------------------
 (function() {
-    if (!HTMLDivElement.prototype.setSelectionRange) {
-        HTMLDivElement.prototype.setSelectionRange = function(start, end) {
-            if (this.createTextRange) {
-                var range = this.createTextRange();
-                this.collapse(true);
-                this.moveEnd('character', end);
-                this.moveStart('character', start);
-                this.select();
-            }
+	if (!HTMLDivElement.prototype.setSelectionRange) {
+		HTMLDivElement.prototype.setSelectionRange = function(start, end) {
+			if (this.createTextRange) {
+				var range = this.createTextRange();
+				this.collapse(true);
+				this.moveEnd('character', end);
+				this.moveStart('character', start);
+				this.select();
+			}
 		};
-    }
+	}
 })();
 function getKey(dict, value) {
-  for(var key in dict){
-    if(dict[key] == value){
-      return key;
-    }
-  };
-  return null;
+	for (var key in dict) {
+		if (dict[key] == value) {
+			return key;
+		}
+	};
+	return null;
 };
 
 // --------------------------------- Classes ---------------------------------
 function PadMessage(data) {
-	if (data) for (var i in data) this[i] = data[i];
+	if (data)
+		for (var i in data)
+		this[i] = data[i];
 }
+
 PadMessage.__CODES__ = {
-	purpose: "\u0001",
-	login: "\u0002",
-	password: "\u0003",
-	token: "\u0004",
-	message: "\u0005",
+	purpose : "\u0001",
+	login : "\u0002",
+	password : "\u0003",
+	token : "\u0004",
+	message : "\u0005",
 };
 PadMessage.__UNIT_DELIMTR__ = "\u001F\u001F";
 PadMessage.__INNER_DELIMTR__ = "\u001F";
 PadMessage.__VERSION__ = "\u0001";
+
 /**
  * Decodes single message record encoded with algorithm used by Academia
  * PadServer, Academia Android Client and Academia WebApp
@@ -68,8 +71,8 @@ PadMessage.prototype.encode = function() {
 PadMessage.encode = function(data) {
 	var units = [];
 	for (var key in PadMessage.__CODES__) {
-		if (key in data) {
-			units.push(PadMessage.__CODES__[key] + ((data[key] === true)?"":(PadMessage.__INNER_DELIMTR__ + B64.encode(data[key]))));
+		if ( key in data) {
+			units.push(PadMessage.__CODES__[key] + ((data[key] === true) ? "" : (PadMessage.__INNER_DELIMTR__ + B64.encode(data[key]))));
 		}
 	}
 	return units.join(PadMessage.__UNIT_DELIMTR__);
@@ -80,13 +83,15 @@ PadMessage.encode = function(data) {
 /**
  * @todo Shall be further used in auth
  */
-academia.pad.TOKEN;
+academia.pad.TOKEN
+academia.pad.PERIOD = 500;
 
 // ---------------------------------- Logic ----------------------------------
 (function() {
 	padContentElement = $('#pad-content')[0];
 	var dmp = new diff_match_patch();
-	var prev = padContentElement.textContent; // for now it's better to process textContent instead of innerHtml
+	var prev = padContentElement.textContent;
+	// for now it's better to process textContent instead of innerHtml
 	var curr = "";
 
 	/**
@@ -104,26 +109,31 @@ academia.pad.TOKEN;
 	 * those. Should be invoked periodically (with quite hight frequency,
 	 * 	eg 2Hz)
 	 */
-	monitor = function(on_local_patches) {return (function() {
-		if (!monitoring) {
-			monitoring = true;
-			if (patches.length > 0) {
-				count = patches.length;
-				for (var i=0; i<count; i++) {
-					/* @todo newline handling in messages */
-					apply(patches.pop(i));
+	monitor = function(on_local_patches) {
+		return (function() {
+			if (!monitoring) {
+				monitoring = true;
+				if (patches.length > 0) {
+					count = patches.length;
+					for (var i = 0; i < count; i++) {
+						/* @todo newline handling in messages */
+						apply(patches.pop(i));
+					}
+					highlight();
+				} else {
+					curr = padContentElement.textContent;
+					// for now it's better to process text content
+					var patches_text = dmp.patch_toText(dmp.patch_make(prev, curr, dmp.diff_main(prev, curr)));
+					if (patches_text) {
+						prev = curr;
+						on_local_patches(patches_text);
+					}
+					// highlight();
 				}
-			} else {
-				curr = padContentElement.textContent; // for now it's better to process text content
-				var patches_text = dmp.patch_toText(dmp.patch_make(prev, curr, dmp.diff_main(prev, curr)));
-				if (patches_text) {
-					prev = curr;
-					on_local_patches(patches_text);
-				}
+				monitoring = false;
 			}
-			monitoring = false;
-		}
-	});};
+		});
+	};
 
 	/**
 	 * Applies all changes stored in single patch package.
@@ -171,7 +181,10 @@ academia.pad.TOKEN;
 	 * Open send humble request to server to get involved in cooperation.
 	 */
 	socket.onopen = function() {
-		socket.send(PadMessage.encode({purpose: "pad", message: "" + academia.pad.ID}));
+		socket.send(PadMessage.encode({
+			purpose : "pad",
+			message : "" + academia.pad.ID
+		}));
 	};
 
 	/**
@@ -206,10 +219,24 @@ academia.pad.TOKEN;
 	 * @param {String} patches_text
 	 */
 	function on_local_patches(patches_text) {
-		message = PadMessage.encode({purpose: "patches", message: patches_text, token: academia.pad.TOKEN});
+		message = PadMessage.encode({
+			purpose : "patches",
+			message : patches_text,
+			token : academia.pad.TOKEN
+		});
 		socket.send(message);
 	}
 
 	interval = setInterval(monitor(on_local_patches), academia.pad.PERIOD);
+
+	function highlight() {
+		$('#pad-content').each(function(i, e) {
+			hljs.highlightBlock(e);
+		});
+	}
+
+	hljs.initHighlightingOnLoad();
+	hljs.configure({languages: ["markdown"]});
+	highlight();
 })();
 
