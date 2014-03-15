@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.util.Log;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.http.conn.HttpHostConnectException;
 import pl.killerapps.academia.activities.ConnectActivity;
 import pl.killerapps.academia.api.command.authenticate.Hello;

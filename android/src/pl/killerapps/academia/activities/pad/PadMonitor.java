@@ -28,7 +28,7 @@ public abstract class PadMonitor {
 
   private final Queue<String> patches_fifo = new LinkedList<String>();
 
-  private boolean busy = false;
+  private boolean paused = false;
 
   static long PERIOD = 500; // [ms]
 
@@ -45,20 +45,20 @@ public abstract class PadMonitor {
   }
 
   public void start() {
-    this.busy = false;
+    this.paused = false;
 
     prev = editor.getText().toString();
     timer.scheduleAtFixedRate(new TimerTask() {
 
       @Override
       public void run() {
-        if (!busy) {
+        if (!paused) {
           if (patches_fifo.size() > 0) {
             while (!patches_fifo.isEmpty()) {
               apply_patches(patches_fifo.remove());
             }
           } else {
-            busy = true;
+            paused = true;
             String curr = editor.getText().toString();
             LinkedList<DiffMatchPatch.Diff> diffs = dmp.diff_main(prev, curr);
             String patches_text = dmp.patch_toText(dmp.patch_make(diffs));
@@ -67,22 +67,23 @@ public abstract class PadMonitor {
               prev = curr;
             }
           }
-          busy = false;
+          paused = false;
         }
       }
     }, PERIOD, PERIOD);
   }
 
   public void pause() {
-    this.busy = true;
+    this.paused = true;
   }
 
   public void resume() {
-    this.busy = false;
+    this.paused = false;
   }
 
   /**
-   * What should be done if diffs were detected within currently edited pad.
+   * Implement what should be done if diffs were detected within currently
+   * edited pad.
    *
    * @param patches_text
    */
@@ -95,13 +96,24 @@ public abstract class PadMonitor {
   private void apply_patches(String patches_text) {
     pause();
     final String curr = editor.getText().toString();
-    List<DiffMatchPatch.Patch> patches = (LinkedList<DiffMatchPatch.Patch>) dmp.patch_fromText(patches_text);
+    List<DiffMatchPatch.Patch> patches;
+    patches = (LinkedList<DiffMatchPatch.Patch>) dmp.patch_fromText(patches_text);
     Log.i("patches_len", "Patches length: " + patches.size());
     final String next = (String) ((dmp.patch_apply((LinkedList<DiffMatchPatch.Patch>) patches, curr))[0]);
     activity.runOnUiThread(new SafeRunnable(activity) {
       @Override
-      public void safeRun() throws PreferencesUninitializedException, FaultyConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, LoginRequiredException, HttpHostConnectException, HelloFailedException {
-        editor.setText(next);
+      public void safeRun()
+              throws PreferencesUninitializedException,
+              FaultyConnectionDetailsException, URISyntaxException,
+              MalformedURLException, IOException, HelloRequiredException,
+              LoginRequiredException, HttpHostConnectException,
+              HelloFailedException {
+        synchronized (editor) {
+          editor.setText(next);
+        }
+        synchronized (prev) {
+          prev = next;
+        }
       }
 
     });

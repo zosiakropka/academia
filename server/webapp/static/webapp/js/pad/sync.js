@@ -66,7 +66,8 @@ academia.pad.TOKEN;
 	padContentElement = document.getElementById('pad-content');
 	var dmp = new diff_match_patch();
 	var diffs = {
-		prev: padContentElement.innerHTML,
+		prev: padContentElement.textContent, // for now it's better to process text content
+		// prev: padContentElement.innerHTML,
 		monitoring: false,
 		monitor: function(on_local_patches) {return (function() {
 			if (!diffs.monitoring) {
@@ -78,7 +79,7 @@ academia.pad.TOKEN;
 						diffs.apply(patches.pop(i));
 					}
 				} else {
-					diffs.curr = padContentElement.innerHTML.toString();
+					diffs.curr = padContentElement.textContent; // for now it's better to process text content
 					diffs.list = dmp.diff_main(diffs.prev, diffs.curr);
 					diffs.patches_text = dmp.patch_toText(dmp.patch_make(diffs.prev, diffs.curr, diffs.list));
 					if (diffs.patches_text) {
@@ -108,7 +109,7 @@ academia.pad.TOKEN;
 					}
 				}
 				var result = dmp.patch_apply(patches, padContentElement.innerHTML.toString());
-				padContentElement.innerHTML = result[0];
+				padContentElement.innerHTML = result[0].replace(" ", "&nbsp;");
 				diffs.prev = result[0];
 				if (move_cursor) {
 					var position = cursor_offset;

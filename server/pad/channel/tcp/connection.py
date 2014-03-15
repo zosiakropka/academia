@@ -9,6 +9,7 @@ from pad.channel.endec import encode, decode
 from access_tokens import tokens, scope
 from backbone.models import Note
 from pad.channel.tcp import DELIMITER, CHUNK_SIZE
+from pad import Pad
 
 
 class PadTCPConnection(dispatcher_with_send):
@@ -17,14 +18,16 @@ class PadTCPConnection(dispatcher_with_send):
 
     def __init__(self, *args, **kwargs):
         logging.info("%s client" % (self.CHNL))
+
+        self.buffer = ""
+        self.pad_server = kwargs.pop('pad_server')
+        self.pad_id = None
+        self.pad = None
+        self.conn_id = None
+
         sock = kwargs['sock'] if 'sock' in kwargs else args[0]
         dispatcher_with_send.__init__(self, *args, **kwargs)
         sock.setblocking(0)
-
-        self.buffer = ""
-        self.pad_server = None
-        self.pad = None
-        self.conn_id = None
 
     def handle_read(self):
         """
@@ -36,7 +39,7 @@ class PadTCPConnection(dispatcher_with_send):
             data = self.recv(CHUNK_SIZE)
         except:
             pass
-        if (data):
+        if data:
             self.buffer += data
             if DELIMITER in self.buffer:
                 records = self.buffer.split(DELIMITER)
@@ -54,14 +57,17 @@ class PadTCPConnection(dispatcher_with_send):
             logging.debug("%s has data onboard, purpose: %s" % (self.CHNL, data["purpose"]))
             purpose = data["purpose"]
             if purpose == "pad" and "message" in data:
-                self.pad = data.pop("message")
-            elif purpose == "patches" and "message" in data and self.pad:
+                self.pad_id = data.pop("message")
+                self.pad = Pad(self.pad_id)
+            elif purpose == "patches" and "message" in data and self.pad_id:
                 try:
                     token = data.pop("token", None)
                     tokens.validate(
                         token,
-                        scope.access_obj(Note.objects.get(pk=self.pad), "edit"),
+                        scope.access_obj(Note.objects.get(pk=self.pad_id), "edit"),
                     )
+                    data["message"] = self.pad.process(data["message"])
+
                     self.pad_broadcast(data)
                 except Exception:
                     response = {
@@ -74,7 +80,7 @@ class PadTCPConnection(dispatcher_with_send):
         """
         Broadcast message within current pad.
         """
-        self.pad_server.pad_broadcast(encode(data), self.pad, self.conn_id)
+        self.pad_server.pad_broadcast(encode(data), self.pad_id, self.conn_id)
 
     def send_record(self, record):
         dispatcher_with_send.send(self, "%s%s%s" % (record, DELIMITER, '\n'))
