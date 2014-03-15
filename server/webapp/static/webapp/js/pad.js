@@ -46,6 +46,7 @@ PadMessage.__VERSION__ = "\u0001";
  * @returns {PadMessage}
  */
 PadMessage.prototype.decode = function(message) {
+	// var units = message.split(PadMessage.__UNIT_DELIMTR__);
 	var units = message.replace(/\n/g, '').split(PadMessage.__UNIT_DELIMTR__);
 	for (var i in units) {
 		var pair = units[i].split(PadMessage.__INNER_DELIMTR__);
@@ -84,21 +85,21 @@ PadMessage.encode = function(data) {
  * @todo Shall be further used in auth
  */
 academia.pad.TOKEN
-academia.pad.PERIOD = 500;
+academia.pad.MONITORING_PERIOD = 500;
+academia.pad.HIGHLIGHT_PERIOD = 1000;
 
 // ---------------------------------- Logic ----------------------------------
 (function() {
 	padContentElement = $('#pad-content')[0];
 	var dmp = new diff_match_patch();
-	var prev = padContentElement.textContent;
-	// for now it's better to process textContent instead of innerHtml
-	var curr = "";
-
+	var prev = padContentElement.innerText;
+	// for now it's better to process innerText instead of innerHtml
+	var update_highlight = true;
 	/**
 	 * Patches fifo
 	 */
 	patches = [];
-	var monitoring = false;
+	var lock = false;
 	/**
 	 * Get changes monitor with on_local_patches callback set.
 	 * This monitor watches for patches packages stored in patches fifo
@@ -111,26 +112,26 @@ academia.pad.PERIOD = 500;
 	 */
 	monitor = function(on_local_patches) {
 		return (function() {
-			if (!monitoring) {
-				monitoring = true;
+			if (!lock) {
+				lock = true;
 				if (patches.length > 0) {
 					count = patches.length;
 					for (var i = 0; i < count; i++) {
 						/* @todo newline handling in messages */
 						apply(patches.pop(i));
 					}
-					highlight();
+					update_highlight = true;
 				} else {
-					curr = padContentElement.textContent;
+					var curr = padContentElement.innerText;
 					// for now it's better to process text content
 					var patches_text = dmp.patch_toText(dmp.patch_make(prev, curr, dmp.diff_main(prev, curr)));
 					if (patches_text) {
 						prev = curr;
+						update_highlight = true;
 						on_local_patches(patches_text);
 					}
-					// highlight();
 				}
-				monitoring = false;
+				lock = false;
 			}
 		});
 	};
@@ -156,18 +157,24 @@ academia.pad.PERIOD = 500;
 					}
 				}
 			}
-			var result = dmp.patch_apply(patches, padContentElement.textContent.toString());
+			var curr = padContentElement.innerText;
+			console.log(curr);
+			var result = dmp.patch_apply(patches, curr);
 			prev = result[0];
-			padContentElement.textContent = prev;
+			console.log(prev);
+			padContentElement.innerText = prev;
 			if (move_cursor) {
-				var position = cursor_offset;
-				var range = document.createRange();
-				range.setStart(padContentElement.childNodes[0], position);
-				range.setEnd(padContentElement.childNodes[0], position);
-				range.collapse(false);
-				var sel = window.getSelection();
-				sel.removeAllRanges();
-				sel.addRange(range);
+				try {
+					var position = cursor_offset;
+					var range = document.createRange();
+					range.setStart(padContentElement.childNodes[0], position);
+					range.setEnd(padContentElement.childNodes[0], position);
+					range.collapse(false);
+					var sel = window.getSelection();
+					sel.removeAllRanges();
+					sel.addRange(range);
+				} catch (e) {
+				}
 			}
 		}
 	};
@@ -227,16 +234,22 @@ academia.pad.PERIOD = 500;
 		socket.send(message);
 	}
 
-	interval = setInterval(monitor(on_local_patches), academia.pad.PERIOD);
+	monitoring_interval = setInterval(monitor(on_local_patches), academia.pad.MONITORING_PERIOD);
 
 	function highlight() {
-		$('#pad-content').each(function(i, e) {
-			hljs.highlightBlock(e);
-		});
+		if (update_highlight) {
+			$('#pad-content').each(function(i, e) {
+				hljs.highlightBlock(e);
+			});
+			update_highlight = false;
+		}
 	}
 
 	hljs.initHighlightingOnLoad();
-	hljs.configure({languages: ["markdown"]});
-	highlight();
-})();
+	hljs.configure({
+		useBR: true,
+		languages : ["markdown"]
+	});
+	monitoring_interval = setInterval(highlight, academia.pad.MONITORING_PERIOD);
 
+})();
