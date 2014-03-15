@@ -1,0 +1,20 @@
+{% extends "empty.html" %}
+{% load webapp %}
+
+{% block body %}
+<div id="page-wrapper">
+    <nav id="nav-top">
+        {% block sidebar %}
+        <ul>
+            <li><a href="{% url "webapp.views.subject_list" %}">Home</a></li>
+            {% if user.is_authenticated %}<li><a href="{% url "webapp.views.signout" %}">Logout</a></li>{% endif %}
+        </ul>
+        {% endblock %}
+    </nav>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+	<footer id="page-footer">{% copyright_notice %}</footer>
+</div>
+{% endblock %}

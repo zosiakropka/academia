@@ -14,7 +14,7 @@ import android.util.Log;
 import java.net.URI;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
-import pl.killerapps.academia.utils.preferences.Preferences;
+import pl.killerapps.academia.utils.Preferences;
 
 public abstract class PadClient implements Runnable {
 

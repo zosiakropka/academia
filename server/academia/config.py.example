@@ -42,6 +42,10 @@ DATABASES = {
 #  See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['example.com']
 
+## What follows host/domain_name in Academia root URL, eg. if Academia root is
+#  `example.com/academia`, then URL_PREFIX should be `academia/`.
+URL_PREFIX = ""
+
 ## Local time zone for this installation. Choices can be found here:
 #  http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 #  although not all choices may be available on all operating systems.

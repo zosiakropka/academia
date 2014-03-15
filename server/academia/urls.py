@@ -8,20 +8,21 @@
 
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from django.views.generic.base import RedirectView
 from academia import settings
 admin.autodiscover()
 
 urlpatterns = patterns('')
+
 urlpatterns += patterns('',
+    url((r'^%s' % settings.URL_PREFIX), include(
+        patterns('',
+            url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^account/', include('account.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+            url(r'^api/', include('api.urls')),
 
-    url(r'^api/', include('api.urls')),
-
-    url(r'^', include('webapp.urls')),
-    (r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
+            url(r'^', include('webapp.urls')),
+        )
+    ))
 )
 
 if settings.DEBUG:

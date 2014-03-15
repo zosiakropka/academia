@@ -2,15 +2,15 @@
 @author Zosia Sobocinska
 @date Dec 14, 2013
 """
-from utils.decorators import api, api_auth
+from api.utils.decorators import abstractor, authenticate
 from backbone.models import Activity, Note
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from utils.serializer import jsonize
 
 
-@api_auth(user=True, admin=True)
-@api
+@authenticate(user=True, admin=True)
+@abstractor
 def note_create(user, admin=False, note_access=None, subject_abbr=None, activity_type=None):
     note_access = note_access.pop()
     subject_abbr = subject_abbr.pop()
@@ -22,9 +22,10 @@ def note_create(user, admin=False, note_access=None, subject_abbr=None, activity
     return jsonize([note])
 
 
-@api_auth(user=True, admin=True)
-@api
-def note_list(user, admin=False, subject_name=None, subject_abbr=None, activity_type=None, activity_id=None, note_access=None):
+@authenticate(user=True, admin=True)
+@abstractor
+def note_list(user, admin=False,
+              subject_name=None, subject_abbr=None, activity_type=None, activity_id=None, note_access=None):
 
     notes = None
 
@@ -54,8 +55,8 @@ def note_list(user, admin=False, subject_name=None, subject_abbr=None, activity_
     return jsonize(notes, relations=relations, excludes=excludes)
 
 
-@api_auth(user=True, admin=True)
-@api
+@authenticate(user=True, admin=True)
+@abstractor
 def note_get(user, admin=False, note_id=None, edit="False"):
     note = get_object_or_404(Note, pk__in=note_id)
     if edit == "True":

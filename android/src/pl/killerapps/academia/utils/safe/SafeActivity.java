@@ -2,14 +2,15 @@ package pl.killerapps.academia.utils.safe;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import org.apache.http.conn.HttpHostConnectException;
+import pl.killerapps.academia.utils.Log;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloFailedException;
+import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
 /**
@@ -18,7 +19,14 @@ import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException
  */
 public abstract class SafeActivity extends Activity {
 
-  public String getActivityName() {
+  protected Log log;
+
+  public SafeActivity() {
+    super();
+    log = new Log(getActivityName());
+  }
+
+  public final String getActivityName() {
     Class<?> enclosingClass = getClass().getEnclosingClass();
     if (enclosingClass != null) {
       return enclosingClass.getName();
@@ -30,55 +38,73 @@ public abstract class SafeActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Log.i("createdActivity", getActivityName());
+    log.i("createdActivity");
     try {
-      safeOnCreate(savedInstanceState);
-    } catch (FaultyConnectionDetailsException ex) {
-      ExceptionsHandler.handleNoConnectionDetails(this, ex);
-    } catch (HttpHostConnectException ex) {
-      ExceptionsHandler.handleHttpHostConnect(this, ex);
-    } catch (URISyntaxException ex) {
-      ExceptionsHandler.handleNoConnectionDetails(this, ex);
-    } catch (MalformedURLException ex) {
-      ExceptionsHandler.handleNoConnectionDetails(this, ex);
-    } catch (HelloRequiredException ex) {
-      ExceptionsHandler.handleHelloRequired(this, ex);
-    } catch (IOException ex) {
-      ExceptionsHandler.handleIO(this, ex);
+      try {
+        safeOnCreate(savedInstanceState);
+      } catch (FaultyConnectionDetailsException ex) {
+        ExceptionsHandler.handleNoConnectionDetails(this, ex);
+      } catch (HttpHostConnectException ex) {
+        ExceptionsHandler.handleHttpHostConnect(this, ex);
+      } catch (URISyntaxException ex) {
+        ExceptionsHandler.handleNoConnectionDetails(this, ex);
+      } catch (MalformedURLException ex) {
+        ExceptionsHandler.handleNoConnectionDetails(this, ex);
+      } catch (HelloRequiredException ex) {
+        ExceptionsHandler.handleHelloRequired(this, ex);
+      } catch (IOException ex) {
+        ExceptionsHandler.handleIO(this, ex);
+      } catch (HelloFailedException ex) {
+        ExceptionsHandler.handleHelloFailed(this, ex);
+      } catch (LoginRequiredException ex) {
+        ExceptionsHandler.handleLoginRequired(this, ex);
+      }
     } catch (PreferencesUninitializedException ex) {
       ExceptionsHandler.handlePreferencesUninitialized(this, ex);
-    } catch (HelloFailedException ex) {
-      ExceptionsHandler.handleHelloFailed(this, ex);
     }
   }
 
-  protected void safeOnCreate(Bundle savedInstanceState) throws PreferencesUninitializedException, FaultyConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException, HelloFailedException {
+  protected void safeOnCreate(Bundle savedInstanceState)
+          throws PreferencesUninitializedException,
+          FaultyConnectionDetailsException, URISyntaxException,
+          MalformedURLException, IOException, HelloRequiredException,
+          LoginRequiredException, HttpHostConnectException,
+          HelloFailedException {
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-    Log.i("resumedActivity", getActivityName());
+    log.i("resumedActivity");
     try {
-      safeOnResume();
+      try {
+        safeOnResume();
+      } catch (FaultyConnectionDetailsException ex) {
+        ExceptionsHandler.handleNoConnectionDetails(this, ex);
+      } catch (HttpHostConnectException ex) {
+        ExceptionsHandler.handleHttpHostConnect(this, ex);
+      } catch (URISyntaxException ex) {
+        ExceptionsHandler.handleNoConnectionDetails(this, ex);
+      } catch (MalformedURLException ex) {
+        ExceptionsHandler.handleNoConnectionDetails(this, ex);
+      } catch (HelloRequiredException ex) {
+        ExceptionsHandler.handleHelloRequired(this, ex);
+      } catch (IOException ex) {
+        ExceptionsHandler.handleIO(this, ex);
+      } catch (HelloFailedException ex) {
+        ExceptionsHandler.handleHelloFailed(this, ex);
+      } catch (LoginRequiredException ex) {
+        ExceptionsHandler.handleLoginRequired(this, ex);
+      }
     } catch (PreferencesUninitializedException ex) {
       ExceptionsHandler.handlePreferencesUninitialized(this, ex);
-    } catch (HttpHostConnectException ex) {
-      ExceptionsHandler.handleHttpHostConnect(this, ex);
-    } catch (FaultyConnectionDetailsException ex) {
-      ExceptionsHandler.handleNoConnectionDetails(this, ex);
-    } catch (URISyntaxException ex) {
-      ExceptionsHandler.handleNoConnectionDetails(this, ex);
-    } catch (MalformedURLException ex) {
-      ExceptionsHandler.handleNoConnectionDetails(this, ex);
-    } catch (HelloRequiredException ex) {
-      ExceptionsHandler.handleHelloRequired(this, ex);
-    } catch (IOException ex) {
-      ExceptionsHandler.handleIO(this, ex);
-    } catch (HelloFailedException ex) {
-      ExceptionsHandler.handleHelloFailed(this, ex);
     }
   }
 
-  protected abstract void safeOnResume() throws PreferencesUninitializedException, FaultyConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, HttpHostConnectException, HelloFailedException;
+  protected abstract void safeOnResume()
+          throws PreferencesUninitializedException,
+          FaultyConnectionDetailsException, URISyntaxException,
+          MalformedURLException, IOException, HelloRequiredException,
+          LoginRequiredException, HttpHostConnectException,
+          HelloFailedException;
 }

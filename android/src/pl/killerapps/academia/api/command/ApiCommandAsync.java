@@ -1,7 +1,5 @@
 package pl.killerapps.academia.api.command;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -11,6 +9,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
+import pl.killerapps.academia.utils.Log;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
@@ -19,6 +18,8 @@ import pl.killerapps.academia.utils.safe.SafeActivity;
 import pl.killerapps.academia.utils.safe.SafeRunnable;
 
 public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
+
+  protected Log log = new Log("ApiCommandAsync");
 
   protected boolean get = false;
   protected SafeActivity activity;
@@ -62,14 +63,14 @@ public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
       public void safeRun() throws HelloRequiredException, LoginRequiredException, URISyntaxException, PreferencesUninitializedException {
 
         try {
-          Log.i("command", "Sending request.");
+          log.d("Sending request.");
           String response;
           if (get) {
             response = real_get(params);
-            Log.d("command", "get.");
+            log.d("get command");
           } else {
             response = real_post(params);
-            Log.d("command", "post.");
+            log.d("post command");
           }
           if (response != null) {
             JSONArray json_array = new JSONArray(response);
@@ -77,15 +78,14 @@ public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
             Entity entity = process_json(json_array);
             on_response(entity);
           } else {
-            Log.d("response", "command failed");
             on_failure();
           }
-        } catch (JSONException e) {
-          Log.e("academia_api", e.getLocalizedMessage());
-        } catch (ClientProtocolException e) {
-          Log.e("academia_api", e.getLocalizedMessage());
-        } catch (IOException e) {
-          Log.e("academia_api", e.getLocalizedMessage());
+        } catch (JSONException ex) {
+          log.e(ex);
+        } catch (ClientProtocolException ex) {
+          log.e(ex);
+        } catch (IOException ex) {
+          log.e(ex);
         }
       }
     };

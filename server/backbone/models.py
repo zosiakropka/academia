@@ -12,6 +12,14 @@ from django.utils.text import slugify
 from utils import utimestamp
 
 
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    email = models.EmailField("Email", unique=True)
+
+
+User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+
+
 class Subject(models.Model):
     name = models.CharField(max_length=200, unique=True)
     abbr = models.SlugField(max_length=10, blank=True, null=False, unique=True)

@@ -12,6 +12,13 @@ from academia.defs import PROJECT_DIR
 
 PADSERVERS = config.PADSERVERS
 
+COPYRIGHT = {
+    "AUTHOR": "Zosia Sobocińska",
+    "ADDRESS": "mailto:sobocinska.zosia@gmail.com",
+    "SINCE": 2014,
+    "SHORT_NOTICE": "&#169; %(AUTHOR)s %(TIME)s",
+}
+
 DEBUG = config.DEBUG
 
 TEMPLATE_DEBUG = DEBUG
@@ -23,6 +30,8 @@ MANAGERS = config.MANAGERS
 DATABASES = config.DATABASES
 
 ALLOWED_HOSTS = config.ALLOWED_HOSTS
+
+URL_PREFIX = config.URL_PREFIX
 
 TIME_ZONE = config.TIME_ZONE
 
@@ -117,7 +126,6 @@ INSTALLED_APPS = (
 
     'access_tokens',
 
-    'account',
     'backbone',
     'webapp',
     'pad',
@@ -130,6 +138,6 @@ if not os.path.isdir(logs.LOGS_DIR):
     os.mkdir(logs.LOGS_DIR)
 
 ## Where to redirect unauthorized
-LOGIN_URL = "/account/signin"
+LOGIN_URL = "/%(URL_PREFIX)saccount/signin" % {'URL_PREFIX': URL_PREFIX}
 
 AUTH_PROFILE_MODULE = "account.UserProfile"

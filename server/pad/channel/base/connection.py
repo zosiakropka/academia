@@ -11,14 +11,15 @@ from backbone.models import Note
 
 
 class PadBaseConnection():
-    CHUNK_SIZE = 1024
-    CHNL = ""
-    buffer = ""
-    pad_server = None
-    pad = None
-    conn_id = None
 
     def __init__(self):
+        self.CHUNK_SIZE = 1024
+        self.CHNL = ""
+        self.buffer = ""
+        self.pad_server = None
+        self.pad_id = None
+        self.conn_id = None
+
         logging.info("%s client" % (self.CHNL))
 
     def set_server(self, server):
@@ -33,13 +34,13 @@ class PadBaseConnection():
             logging.debug("%s has data onboard." % (self.CHNL))
             purpose = data["purpose"]
             if purpose == "pad":
-                self.pad = data.pop("message")
-            elif purpose == "patches" and self.pad:
+                self.pad_id = data.pop("message")
+            elif purpose == "patches" and self.pad_id:
                 try:
                     token = data.pop("token", None)
                     tokens.validate(
                         token,
-                        scope.access_obj(Note.objects.get(pk=self.pad), "edit"),
+                        scope.access_obj(Note.objects.get(pk=self.pad_id), "edit"),
                     )
                     self.pad_broadcast(data)
                 except Exception:
@@ -53,4 +54,4 @@ class PadBaseConnection():
         self.close()
 
     def pad_broadcast(self, data):
-        self.pad_server.pad_broadcast(encode(data), self.pad, self.conn_id)
+        self.pad_server.pad_broadcast(encode(data), self.pad_id, self.conn_id)

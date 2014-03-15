@@ -17,7 +17,7 @@ import pl.killerapps.academia.utils.exceptions.HelloFailedException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
-import pl.killerapps.academia.utils.preferences.Preferences;
+import pl.killerapps.academia.utils.Preferences;
 import pl.killerapps.academia.utils.safe.SafeActivity;
 import pl.killerapps.academia.utils.safe.SafeOnClickListener;
 
@@ -71,28 +71,25 @@ public class ConnectActivity extends SafeActivity {
   }
 
   @Override
-  protected void safeOnResume() {
+  protected void safeOnResume() throws PreferencesUninitializedException {
 
+    Preferences.Getter prefs = Preferences.get();
     try {
-      Preferences.Getter prefs = Preferences.get();
-      try {
-        URI apiUri = prefs.academiaApiUri();
-        String apiUriStr = apiUri.toString().replace(Defaults.HTTP_PREFIX, "");
-        apiUriEdit().setText(apiUriStr);
-      } catch (FaultyConnectionDetailsException e) {
-      }
-      try {
-        URI padUri = prefs.academiaPadUri();
-        String padUriStr = padUri.toString().replace(Defaults.HTTP_PREFIX, "");
-        padUriEdit().setText(padUriStr);
-      } catch (FaultyConnectionDetailsException e) {
-      }
-      try {
-        String username = prefs.username();
-        usernameEdit().setText(username);
-      } catch (FaultyConnectionDetailsException e) {
-      }
-    } catch (PreferencesUninitializedException e) {
+      URI apiUri = prefs.academiaApiUri();
+      String apiUriStr = apiUri.toString().replace(Defaults.HTTP_PREFIX, "");
+      apiUriEdit().setText(apiUriStr);
+    } catch (FaultyConnectionDetailsException e) {
+    }
+    try {
+      URI padUri = prefs.academiaPadUri();
+      String padUriStr = padUri.toString().replace(Defaults.HTTP_PREFIX, "");
+      padUriEdit().setText(padUriStr);
+    } catch (FaultyConnectionDetailsException e) {
+    }
+    try {
+      String username = prefs.username();
+      usernameEdit().setText(username);
+    } catch (FaultyConnectionDetailsException e) {
     }
   }
 

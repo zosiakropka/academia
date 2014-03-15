@@ -7,7 +7,7 @@
 
 from backbone.models import Subject, Note
 from django.shortcuts import get_object_or_404
-from utils.decorators import authenticate, abstractor
+from webapp.utils.decorators import authenticate, abstractor
 import logging
 
 logger = logging.getLogger(__name__)
