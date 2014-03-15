@@ -8,6 +8,8 @@
 from django.conf.urls import patterns, url
 
 from django.contrib import admin
+from django.views.generic.base import RedirectView
+from django.conf import settings
 admin.autodiscover()
 
 urlpatterns = patterns('')
@@ -19,4 +21,5 @@ urlpatterns += patterns('webapp.views',
     url(r'^note/new/(?P<access_type>[-\w]+)/activity/(?P<subject_abbr>\w+)-(?P<activity_type>\w+)/$', 'note_create'),
     url(r'^note/(?P<note_id>\d+)/edit/$', 'note_edit'),
     url(r'^note/(?P<note_id>\d+)/$', 'note_open'),
+    (r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'webapp/images/favicon.ico')),
 )
