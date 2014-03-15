@@ -12,6 +12,13 @@ from academia.defs import PROJECT_DIR
 
 PADSERVERS = config.PADSERVERS
 
+COPYRIGHT = {
+    "AUTHOR": "Zosia Sobocińska",
+    "ADDRESS": "mailto:sobocinska.zosia@gmail.com",
+    "SINCE": 2014,
+    "SHORT_NOTICE": "&#169; %(AUTHOR)s %(TIME)s",
+}
+
 DEBUG = config.DEBUG
 
 TEMPLATE_DEBUG = DEBUG
