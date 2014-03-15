@@ -7,9 +7,8 @@
 
 from django.core.management.base import BaseCommand
 import subprocess
-from backbone.models import Subject, Note, Activity, Supervisor
+from backbone.models import Subject, Note, Activity, Supervisor, User
 from random import choice
-from account.models import User
 from django.utils.text import slugify
 
 

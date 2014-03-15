@@ -17,7 +17,6 @@ urlpatterns = patterns('')
 urlpatterns += patterns('',
     url((r'^%s' % settings.URL_PREFIX), include(
         patterns('',
-            url(r'^account/', include('account.urls')),
             url(r'^admin/', include(admin.site.urls)),
 
             url(r'^api/', include('api.urls')),
