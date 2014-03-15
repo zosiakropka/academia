@@ -1,6 +1,6 @@
-from config import LOGS_DIR, DEBUG
+from config import LOGS_DIR
 from os import path
-LOGS_PATH = path.join(LOGS_DIR, "%s.log") if DEBUG else None
+LOGS_PATH = path.join(LOGS_DIR, "%s.log")
 
 LOGS_FORMAT_JSON = """{
   "time": "%(asctime)s",

@@ -12,7 +12,6 @@ import logging
 class PadWSProxyWSEndpoint(WebSocket):
 
     def __init__(self, sock, protocols=None, extensions=None, environ=None, heartbeat_freq=None):
-
         WebSocket.__init__(self, sock, protocols=protocols, extensions=extensions, environ=environ,
                            heartbeat_freq=heartbeat_freq)
 
@@ -21,14 +20,22 @@ class PadWSProxyWSEndpoint(WebSocket):
 
     def received_message(self, record):
         """
-        Read from client and forward to server
+        Reads from client and forwards to server. Should not ever be called
+        manually.
         """
         self.tcp_endpoint.forward(record)
 
     def forward(self, record, binary=False):
+        """
+        This should be called by TCP endpoint when it gets message record from
+        PadServer so that it's passed to client via WebSocket.
+        """
         self.send(record, binary)
 
     def closed(self, code, reason=None):
+        """
+        Is called on WS endpoint closed. Should not be called manually.
+        """
         self.tcp_endpoint.close()
 
 ##############################################################################
@@ -56,14 +63,15 @@ class PadWSProxyTCPEndpoint(dispatcher_with_send, Thread):
 
     def handle_read(self):
         """
-        Read from server and forward to client
+        Reads from server and forwards to client. Should not ever be called
+        manually.
         """
         rawdata = None
         try:
             rawdata = self.recv(CHUNK_SIZE)
         except:
             pass
-        if (rawdata):
+        if rawdata:
             self.buffer += rawdata
             if DELIMITER in self.buffer:
                 records = self.buffer.split(DELIMITER)
@@ -73,19 +81,19 @@ class PadWSProxyTCPEndpoint(dispatcher_with_send, Thread):
 
     def handle_close(self):
         """
-        @todo Close corresponding connection
+        Is called on TCP endpoint closed. Should not be called manually.
         """
+        # @todo Close corresponding connection
         self.ws_endpoint.close(self)
 
     def forward(self, record):
         """
-        Should be called by PadWSConnection when it receives a complete record.
+        This should be called by WS endpoint when it gets message record from
+        WebSocket client so that it's passed to PadServer via TCP socket.
         """
         dispatcher_with_send.send(self, "%s%s" % (record, DELIMITER))
 
     def run(self):
-
-        self.tcp_endpoint = PadWSProxyTCPEndpoint(self)
         try:
             asyncore.loop()
         except Exception, e:

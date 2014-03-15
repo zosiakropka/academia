@@ -6,7 +6,7 @@
         {% block sidebar %}
         <ul>
             <li><a href="{% url "webapp.views.subject_list" %}">Home</a></li>
-            {% if user.is_authenticated %}<li><a href="{% url "account.views.signout" %}">Logout</a></li>{% endif %}
+            {% if user.is_authenticated %}<li><a href="{% url "webapp.views.signout" %}">Logout</a></li>{% endif %}
         </ul>
         {% endblock %}
     </nav>

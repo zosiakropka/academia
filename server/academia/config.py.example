@@ -15,7 +15,7 @@ MANAGERS = ADMINS
 ## Settings related to socket-based services responsible for real time
 #  collaboration between users.
 PADSERVERS = {
-    'wsserver': {
+    'wsproxy': {
         'host': 'example.com',
         'port': 5002
     },
@@ -41,6 +41,10 @@ DATABASES = {
 ## Hosts/domain names that are valid for this site; required if DEBUG is False
 #  See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['example.com']
+
+## What follows host/domain_name in Academia root URL, eg. if Academia root is
+#  `example.com/academia`, then URL_PREFIX should be `academia/`.
+URL_PREFIX = ""
 
 ## Local time zone for this installation. Choices can be found here:
 #  http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

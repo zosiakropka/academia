@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.util.Log;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.http.conn.HttpHostConnectException;
 import pl.killerapps.academia.activities.ConnectActivity;
 import pl.killerapps.academia.api.command.authenticate.Hello;
@@ -75,22 +73,18 @@ public class ExceptionsHandler {
     activity.finish();
   }
 
-  static void handleLoginRequired(SafeActivity activity, LoginRequiredException ex) {
+  static void handleLoginRequired(SafeActivity activity, LoginRequiredException ex) throws PreferencesUninitializedException {
     Log.e("LoginRequiredException", ex.getMessage(), ex);
     try {
-      try {
-        (new Login(activity.getBaseContext())).login();
-      } catch (HelloRequiredException ex1) {
-        Logger.getLogger(ExceptionsHandler.class.getName()).log(Level.SEVERE, null, ex1);
-      } catch (PreferencesUninitializedException ex1) {
-        Logger.getLogger(ExceptionsHandler.class.getName()).log(Level.SEVERE, null, ex1);
-      } catch (IOException ex1) {
-        Logger.getLogger(ExceptionsHandler.class.getName()).log(Level.SEVERE, null, ex1);
-      } catch (FaultyConnectionDetailsException ex1) {
-        Logger.getLogger(ExceptionsHandler.class.getName()).log(Level.SEVERE, null, ex1);
-      }
+      (new Login(activity.getBaseContext())).login();
+    } catch (HelloRequiredException ex1) {
+      handleHelloRequired(activity, ex1);
+    } catch (IOException ex1) {
+      handleIO(activity, ex1);
+    } catch (FaultyConnectionDetailsException ex1) {
+      handleNoConnectionDetails(activity, ex1);
     } catch (URISyntaxException ex1) {
-      Logger.getLogger(ExceptionsHandler.class.getName()).log(Level.SEVERE, null, ex1);
+      handleNoConnectionDetails(activity, ex1);
     }
     activity.finish();
   }

@@ -24,6 +24,8 @@ DATABASES = config.DATABASES
 
 ALLOWED_HOSTS = config.ALLOWED_HOSTS
 
+URL_PREFIX = config.URL_PREFIX
+
 TIME_ZONE = config.TIME_ZONE
 
 LANGUAGE_CODE = config.LANGUAGE_CODE
@@ -117,7 +119,6 @@ INSTALLED_APPS = (
 
     'access_tokens',
 
-    'account',
     'backbone',
     'webapp',
     'pad',
@@ -130,6 +131,6 @@ if not os.path.isdir(logs.LOGS_DIR):
     os.mkdir(logs.LOGS_DIR)
 
 ## Where to redirect unauthorized
-LOGIN_URL = "/account/signin"
+LOGIN_URL = "/%(URL_PREFIX)saccount/signin" % {'URL_PREFIX': URL_PREFIX}
 
 AUTH_PROFILE_MODULE = "account.UserProfile"

@@ -13,6 +13,8 @@ admin.autodiscover()
 urlpatterns = patterns('')
 urlpatterns += patterns('webapp.views',
     url(r'^$', 'subject_list'),
+    url(r'^account/signin/$', 'signin'),
+    url(r'^account/signout/$', 'signout'),
     url(r'^subject/(?P<subject_abbr>\w+)/$', 'subject_browse'),
     url(r'^note/new/(?P<access_type>[-\w]+)/activity/(?P<subject_abbr>\w+)-(?P<activity_type>\w+)/$', 'note_create'),
     url(r'^note/(?P<note_id>\d+)/edit/$', 'note_edit'),

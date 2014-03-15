@@ -14,7 +14,6 @@ from threading import Thread
 
 class PadTCPServer(asyncore.dispatcher):
 
-    PadConnection = PadTCPConnection
     CHNL = "TCP"
 
     def __init__(self, hostname, port):
@@ -41,14 +40,14 @@ class PadTCPServer(asyncore.dispatcher):
         accept_pair = self.accept()
         if accept_pair is not None:
             newSocket = accept_pair[0]  # newSocket, address = accept_pair
-            connection = self.PadConnection(newSocket)
+            connection = PadTCPConnection(newSocket, pad_server=self)
             connection.conn_id = newSocket.fileno()
             self.connections[connection.conn_id] = connection
             self.connections[connection.conn_id].pad_server = self
 
-    def pad_broadcast(self, record, pad, broadcaster_id):
+    def pad_broadcast(self, record, pad_id, broadcaster_id):
         for conn_id, connection in self.connections.iteritems():
-            if conn_id != broadcaster_id and connection.pad == pad:
+            if conn_id != broadcaster_id and connection.pad_id == pad_id:
                 connection.send_record(record)
 
     def start_server(self):

@@ -32,27 +32,34 @@ public abstract class SafeRunnable implements Runnable {
 
   public void run() {
     try {
-      safeRun();
-    } catch (FaultyConnectionDetailsException ex) {
-      ExceptionsHandler.handleNoConnectionDetails(activity, ex);
-    } catch (HttpHostConnectException ex) {
-      ExceptionsHandler.handleHttpHostConnect(activity, ex);
-    } catch (URISyntaxException ex) {
-      ExceptionsHandler.handleNoConnectionDetails(activity, ex);
-    } catch (MalformedURLException ex) {
-      ExceptionsHandler.handleNoConnectionDetails(activity, ex);
-    } catch (HelloRequiredException ex) {
-      ExceptionsHandler.handleHelloRequired(activity, ex);
-    } catch (IOException ex) {
-      ExceptionsHandler.handleIO(activity, ex);
+      try {
+        safeRun();
+      } catch (FaultyConnectionDetailsException ex) {
+        ExceptionsHandler.handleNoConnectionDetails(activity, ex);
+      } catch (HttpHostConnectException ex) {
+        ExceptionsHandler.handleHttpHostConnect(activity, ex);
+      } catch (URISyntaxException ex) {
+        ExceptionsHandler.handleNoConnectionDetails(activity, ex);
+      } catch (MalformedURLException ex) {
+        ExceptionsHandler.handleNoConnectionDetails(activity, ex);
+      } catch (HelloRequiredException ex) {
+        ExceptionsHandler.handleHelloRequired(activity, ex);
+      } catch (IOException ex) {
+        ExceptionsHandler.handleIO(activity, ex);
+      } catch (HelloFailedException ex) {
+        ExceptionsHandler.handleHelloFailed(activity, ex);
+      } catch (LoginRequiredException ex) {
+        ExceptionsHandler.handleLoginRequired(activity, ex);
+      }
     } catch (PreferencesUninitializedException ex) {
       ExceptionsHandler.handlePreferencesUninitialized(activity, ex);
-    } catch (HelloFailedException ex) {
-      ExceptionsHandler.handleHelloFailed(activity, ex);
-    } catch (LoginRequiredException ex) {
-      ExceptionsHandler.handleLoginRequired(activity, ex);
     }
   }
 
-  public abstract void safeRun() throws PreferencesUninitializedException, FaultyConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, LoginRequiredException, HttpHostConnectException, HelloFailedException;
+  public abstract void safeRun()
+          throws PreferencesUninitializedException,
+          FaultyConnectionDetailsException, URISyntaxException,
+          MalformedURLException, IOException, HelloRequiredException,
+          LoginRequiredException, HttpHostConnectException,
+          HelloFailedException;
 }
