@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'access_tokens',
 
     'backbone',
+    'api',
     'webapp',
     'pad',
     'utils'
