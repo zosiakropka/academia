@@ -1,0 +1,159 @@
+@mixin highlight ($background, $emphasis, $color, $bullet, $strong, $keyword,
+  $header, $link, $comment, $title, $prefix) {
+
+  .#{$prefix}.hljs {
+    background: $background;
+    color: $color;
+
+    .hljs-tag,
+    .css .hljs-rules,
+    .css .hljs-value,
+    .css .hljs-function
+    .hljs-preprocessor,
+    .hljs-pragma {
+    }
+  
+    .hljs-strongemphasis,
+    .hljs-emphasis {
+      color: $emphasis;
+    }
+  
+    .hljs-bullet,
+    .hljs-blockquote,
+    .hljs-horizontal_rule,
+    .hljs-number,
+    .hljs-regexp,
+    .alias .hljs-keyword,
+    .hljs-literal,
+    .hljs-hexcolor {
+      color: $bullet;
+    }
+    .hljs-bullet {
+      font-weight: bold;
+    }
+    
+    .hljs-strong,
+    .hljs-tag .hljs-value,
+    .hljs-code,
+    .hljs-title,
+    .css .hljs-class,
+    .hljs-class .hljs-title:last-child {
+      color: $strong;
+    }
+    
+    .hljs-link_url {
+      font-size: 80%;
+    }
+    
+    .hljs-strong,
+    .hljs-strongemphasis {
+      font-weight: bold;
+    }
+    
+    .hljs-emphasis,
+    .hljs-strongemphasis,
+    .hljs-class .hljs-title:last-child {
+      font-style: italic;
+    }
+    
+    .hljs-keyword,
+    .hljs-function,
+    .hljs-change,
+    .hljs-winutils,
+    .hljs-flow,
+    .lisp .hljs-title,
+    .clojure .hljs-built_in,
+    .nginx .hljs-title,
+    .tex .hljs-special,
+    .hljs-attribute,
+    .hljs-symbol,
+    .hljs-symbol .hljs-string,
+    .hljs-tag .hljs-title,
+    .hljs-value,
+    .alias .hljs-keyword:first-child,
+    .css .hljs-tag,
+    .css .unit,
+    .css .hljs-important {
+      color: $keyword;
+    }
+    
+    .hljs-header,
+    .hljs-function .hljs-keyword,
+    .hljs-class .hljs-keyword:first-child,
+    .hljs-constant,
+    .css .hljs-attribute {
+      color: $header;
+    }
+    .hljs-header {
+      font-weight: bold;
+    }
+    
+    .hljs-variable,
+    .hljs-params,
+    .hljs-class .hljs-title {
+      color: $title;
+    }
+    
+    .hljs-string,
+    .css .hljs-id,
+    .hljs-subst,
+    .haskell .hljs-type,
+    .ruby .hljs-class .hljs-parent,
+    .hljs-built_in,
+    .sql .hljs-aggregate,
+    .django .hljs-template_tag,
+    .django .hljs-variable,
+    .smalltalk .hljs-class,
+    .django .hljs-filter .hljs-argument,
+    .smalltalk .hljs-localvars,
+    .smalltalk .hljs-array,
+    .hljs-attr_selector,
+    .hljs-pseudo,
+    .hljs-addition,
+    .hljs-stream,
+    .hljs-envvar,
+    .apache .hljs-tag,
+    .apache .hljs-cbracket,
+    .tex .hljs-command,
+    .hljs-prompt,
+    .hljs-link_label,
+    .hljs-link_url {
+      color: $link;
+    }
+    
+    .hljs-comment,
+    .hljs-javadoc,
+    .java .hljs-annotation,
+    .python .hljs-decorator,
+    .hljs-template_comment,
+    .hljs-pi,
+    .hljs-doctype,
+    .hljs-deletion,
+    .hljs-shebang,
+    .apache .hljs-sqbracket,
+    .tex .hljs-formula {
+      color: $comment;
+    }
+    
+    .coffeescript .javascript,
+    .javascript .xml,
+    .tex .hljs-formula,
+    .xml .javascript,
+    .xml .vbscript,
+    .xml .css,
+    .xml .hljs-cdata,
+    .xml .php,
+    .php .xml {
+      opacity: 0.5;
+    }
+  }
+}
+
+@include highlight($background: #23241f, $color: #f8f8f2, $emphasis: #F92672,
+  $bullet: #ae81ff,$strong: #a6e22e, $keyword: #a8a8a2, $header: #66d9ef,
+  $link: #e6db74, $comment: #75715e, $title: #f8f8f2, $prefix: "highlight-dark");
+
+@include highlight($background: #FDFDFD, $color: #29220E, $emphasis: #FF003D,
+  $bullet: #ae81ff, $strong: #8DCE0C, $keyword: #a8a8a2, $header: #1BC5C5,
+  $link: #e6db74, $comment: #75715e, $title: #f8f8f2, $prefix: "highlight-light");
+

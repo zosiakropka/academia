@@ -2,7 +2,6 @@
 {% load staticfiles %}
 
 {% block scripts %}
-<link rel="stylesheet" href="{% static "webapp/js/libs/highlight/styles/monokai_sublime.css" %}" />
 <script src="{% static "webapp/js/libs/jquery-2.0.3.js" %}"></script>
 <script src="{% static "webapp/js/libs/base64v1_0.js" %}"></script>
 <script src="{% static "webapp/js/libs/diff-match-patch/diff_match_patch_uncompressed.js" %}"></script>
@@ -14,9 +13,9 @@
 	<script>
 		academia.pad = {
 			ID: {{ note_id }},
-			PORT: {{ pad_port }},
+			CONNSTRING: "{{ pad_connstring }}",
 			TOKEN: "{{ token }}"
 		};
 	</script>
-	<div contenteditable="true" id="pad-content">{{ content|linebreaksbr }}</div>
+	<div id="pad-content" class="highlight-light">{{ content|linebreaksbr }}</div>
 {% endblock %}

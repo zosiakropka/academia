@@ -1,0 +1,57 @@
+@mixin create-font-faces($name, $path, $format, $regular, $bold: false, $italic: false, $bold-italic: false) {
+  @font-face
+  {
+    font-family: $name;
+    src: url(../fonts/#{$path}/#{$regular}.#{$format});
+  }
+  @if $bold {
+    @font-face
+    {
+      font-family: $name;
+      src: url(../fonts/#{$path}/#{$bold}.#{$format});
+      font-family: bold;
+    }
+  }
+  @if $italic {
+    @font-face
+    {
+      font-family: $name;
+      src: url(../fonts/#{$path}/#{$italic}.#{$format});
+      font-family: italic;
+    }
+  }
+  @if $bold-italic {
+    @font-face
+    {
+      font-family: $name;
+      src: url(../fonts/#{$path}/#{$bold-italic}.#{$format});
+      font-family: bold-italic;
+    }
+  }
+}
+@include create-font-faces(AnonymousPro, anonymous-pro, $format: ttf, $regular: Anonymous_Pro);
+@include create-font-faces(NotCourierSans, notcouriersans, $format: otf, $regular: NotCourierSans, $bold: NotCourierSans-Bold);
+
+@mixin font-family-mono {
+  font-family: NotCourierSans;
+}
+@mixin font-family-base {
+  font-family: AnonymousPro;
+}
+@mixin font-family-deco {
+}
+.font-family-base {
+  @include font-family-base;
+}
+.font-family-mono {
+  @include font-family-mono;
+}
+.font-family-deco {
+  @include font-family-deco;
+}
+html, body {
+  @include font-family-base;
+}
+h1, h2, h3, h4, h5, h6 {
+  @include font-family-deco;
+}

@@ -10,6 +10,7 @@ import subprocess
 from backbone.models import Subject, Note, Activity, Supervisor, User
 from random import choice
 from django.utils.text import slugify
+import random
 
 
 class Command(BaseCommand):
@@ -49,7 +50,7 @@ class Command(BaseCommand):
                     for user in users:
                         for access, dummy in Note.NOTE_ACCESS:
                             note_title = get_nonsense_title()
-                            note_content = get_nonsense_content(10)
+                            note_content = get_nonsense_content(lines_count=10)
                             note = Note(access=access, owner=user, activity=activity, title=note_title,
                                         content=note_content)
                             note.save()
@@ -59,7 +60,7 @@ class Command(BaseCommand):
 
 def get_nonsense(parameter):
     nonsense_path = "libs/nonsense-0.6/"
-    command = "cd " + nonsense_path + " ; ./nonsense %s"
+    command = "cd " + nonsense_path + " ; perl nonsense %s"
     return subprocess.check_output(command % parameter, shell=True)
 
 
@@ -72,5 +73,27 @@ def get_nonsense_title(count=None):
     return result if count == None else result.split('\n')[0:-1]
 
 
-def get_nonsense_content(lines):
-    return get_nonsense("-f stupidlaws.data -n %s" % lines)
+def get_nonsense_content(lines_count):
+
+    title = get_nonsense_title()
+    title = "%s%s\n\n" % (title, "-"*len(title))
+
+    text = get_nonsense("-f newspaper.data -n %s" % lines_count)
+    lines = text.split('\n')
+
+    for line_no, line in enumerate(lines):
+        words = line.split(' ')
+        if len(words) > 1:
+
+            bold_word_no = random.randrange(len(words))
+            words[bold_word_no] = "**%s**" % words[bold_word_no]
+    
+            italic_word_no = random.randrange(len(words))
+            if italic_word_no != bold_word_no:
+                words[italic_word_no] = "*%s*" % words[italic_word_no]
+    
+            lines[line_no] = ' '.join(words)
+
+    text = '\n\n'.join(lines)
+    
+    return title + text

@@ -176,29 +176,41 @@ academia.pad.HIGHLIGHT_PERIOD = 1000;
 				} catch (e) {
 				}
 			}
-		}
-	};
-	/**
-	 * Pad websocket itself
-	 */
-	var socket = new WebSocket("ws://" + window.location.hostname + ":" + academia.pad.PORT);
+		}	};
 
+	var socket;
+	var reconnect_interval = false
+	function reconnect() {
+		if (!socket || socket.readyState != WebSocket.OPEN) {
+			padContentElement.setAttribute("contenteditable", false);
+			connect();
+		}
+	}
+	function connect() {
+		if (!reconnect_interval) {
+			var new_socket = new WebSocket(academia.pad.CONNSTRING);
+			new_socket.onopen = onopen;
+			new_socket.onmessage = onmessage;
+			new_socket.onclose = reconnect;
+			socket = new_socket;
+		} 
+	}
 	/**
 	 * On websocket:
 	 * Open send humble request to server to get involved in cooperation.
 	 */
-	socket.onopen = function() {
-		socket.send(PadMessage.encode({
+	function onopen() {
+		this.send(PadMessage.encode({
 			purpose : "pad",
 			message : "" + academia.pad.ID
 		}));
-	};
-
+		padContentElement.setAttribute("contenteditable", true);
+	}
 	/**
 	 * On websocket message:
 	 * Test what to do with the message and just do it :)
 	 */
-	socket.onmessage = function(message) {
+	function onmessage(message) {
 		var data = (new PadMessage()).decode(message.data);
 		if (data && data.purpose && data.message) {
 			switch (data.purpose) {
@@ -220,7 +232,9 @@ academia.pad.HIGHLIGHT_PERIOD = 1000;
 					break;
 			}
 		}
-	};
+	}
+	connect();
+
 	/**
 	 * What should be done if diffs were detected within currently edited pad.
 	 * @param {String} patches_text
@@ -234,7 +248,7 @@ academia.pad.HIGHLIGHT_PERIOD = 1000;
 		socket.send(message);
 	}
 
-	monitoring_interval = setInterval(monitor(on_local_patches), academia.pad.MONITORING_PERIOD);
+	var monitoring_interval = setInterval(monitor(on_local_patches), academia.pad.MONITORING_PERIOD);
 
 	function highlight() {
 		if (update_highlight) {
@@ -247,9 +261,9 @@ academia.pad.HIGHLIGHT_PERIOD = 1000;
 
 	hljs.initHighlightingOnLoad();
 	hljs.configure({
-		useBR: true,
+		useBR : true,
 		languages : ["markdown"]
 	});
-	monitoring_interval = setInterval(highlight, academia.pad.MONITORING_PERIOD);
+	var highlight_interval = setInterval(highlight, academia.pad.MONITORING_PERIOD);
 
 })();

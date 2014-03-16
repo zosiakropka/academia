@@ -15,8 +15,11 @@
     left:0;
   }
 
+  @import "typography";
   @import "nav";
-  @import "notes";
   @import "footer";
   @import "header";
+  @import "notes";
+  @import "pad";
+  @import "highlight";
 }
