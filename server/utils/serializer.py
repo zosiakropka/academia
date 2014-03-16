@@ -4,10 +4,12 @@
 """
 from django.core import serializers
 from json.encoder import JSONEncoder
+from wadofstuff.django.serializers import jsonizer
 
 
 def jsonize(queryset, *args, **kwargs):
-    data = serializers.serialize("json", queryset, *args, **kwargs)
+    serializer = jsonizer.Serializer()
+    data = serializer.serialize(queryset, *args, **kwargs)
     return JsonEncoder().encode(data)
 
 

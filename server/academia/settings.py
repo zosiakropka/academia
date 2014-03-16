@@ -62,7 +62,8 @@ MEDIA_URL = config.MEDIA_URL
 ## Non-default serializer that enables including custom fields to / excluding
 # specified fields from serialized JSON
 SERIALIZATION_MODULES = {
-    'json': 'wadofstuff.django.serializers.jsonizer'
+# not used since doesn't play nicely with Django build in features
+#     'json': 'wadofstuff.django.serializers.jsonizer'
 }
 
 ## Absolute path to the directory static files should be collected to.
