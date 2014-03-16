@@ -75,6 +75,28 @@ a:visited {
     bottom: 0;
     left: 0; }
 
+  @font-face {
+    font-family: AnonymousPro;
+    src: url(../fonts/anonymous-pro/Anonymous_Pro.ttf); }
+
+  @font-face {
+    font-family: NotCourierSans;
+    src: url(../fonts/notcouriersans/NotCourierSans.otf); }
+
+  @font-face {
+    font-family: NotCourierSans;
+    src: url(../fonts/notcouriersans/NotCourierSans-Bold.otf);
+    font-family: bold; }
+
+  .font-family-base {
+    font-family: AnonymousPro; }
+
+  .font-family-mono {
+    font-family: NotCourierSans; }
+
+  html, body {
+    font-family: AnonymousPro; }
+
   #nav-top, #page-footer {
     height: 2rem;
     line-height: 2rem;
@@ -93,4 +115,232 @@ a:visited {
     padding-bottom: 3rem; }
 
   #page-footer {
-    text-align: center; } }
+    text-align: center; }
+
+  #pad-content {
+    font-family: NotCourierSans;
+    padding: 10px; }
+
+  .highlight-dark.hljs {
+    background: #23241f;
+    color: #f8f8f2; }
+    .highlight-dark.hljs .hljs-strongemphasis,
+    .highlight-dark.hljs .hljs-emphasis {
+      color: #f92672; }
+    .highlight-dark.hljs .hljs-bullet,
+    .highlight-dark.hljs .hljs-blockquote,
+    .highlight-dark.hljs .hljs-horizontal_rule,
+    .highlight-dark.hljs .hljs-number,
+    .highlight-dark.hljs .hljs-regexp,
+    .highlight-dark.hljs .alias .hljs-keyword,
+    .highlight-dark.hljs .hljs-literal,
+    .highlight-dark.hljs .hljs-hexcolor {
+      color: #ae81ff; }
+    .highlight-dark.hljs .hljs-bullet {
+      font-weight: bold; }
+    .highlight-dark.hljs .hljs-strong,
+    .highlight-dark.hljs .hljs-tag .hljs-value,
+    .highlight-dark.hljs .hljs-code,
+    .highlight-dark.hljs .hljs-title,
+    .highlight-dark.hljs .css .hljs-class,
+    .highlight-dark.hljs .hljs-class .hljs-title:last-child {
+      color: #a6e22e; }
+    .highlight-dark.hljs .hljs-link_url {
+      font-size: 80%; }
+    .highlight-dark.hljs .hljs-strong,
+    .highlight-dark.hljs .hljs-strongemphasis {
+      font-weight: bold; }
+    .highlight-dark.hljs .hljs-emphasis,
+    .highlight-dark.hljs .hljs-strongemphasis,
+    .highlight-dark.hljs .hljs-class .hljs-title:last-child {
+      font-style: italic; }
+    .highlight-dark.hljs .hljs-keyword,
+    .highlight-dark.hljs .hljs-function,
+    .highlight-dark.hljs .hljs-change,
+    .highlight-dark.hljs .hljs-winutils,
+    .highlight-dark.hljs .hljs-flow,
+    .highlight-dark.hljs .lisp .hljs-title,
+    .highlight-dark.hljs .clojure .hljs-built_in,
+    .highlight-dark.hljs .nginx .hljs-title,
+    .highlight-dark.hljs .tex .hljs-special,
+    .highlight-dark.hljs .hljs-attribute,
+    .highlight-dark.hljs .hljs-symbol,
+    .highlight-dark.hljs .hljs-symbol .hljs-string,
+    .highlight-dark.hljs .hljs-tag .hljs-title,
+    .highlight-dark.hljs .hljs-value,
+    .highlight-dark.hljs .alias .hljs-keyword:first-child,
+    .highlight-dark.hljs .css .hljs-tag,
+    .highlight-dark.hljs .css .unit,
+    .highlight-dark.hljs .css .hljs-important {
+      color: #a8a8a2; }
+    .highlight-dark.hljs .hljs-header,
+    .highlight-dark.hljs .hljs-function .hljs-keyword,
+    .highlight-dark.hljs .hljs-class .hljs-keyword:first-child,
+    .highlight-dark.hljs .hljs-constant,
+    .highlight-dark.hljs .css .hljs-attribute {
+      color: #66d9ef; }
+    .highlight-dark.hljs .hljs-header {
+      font-weight: bold; }
+    .highlight-dark.hljs .hljs-variable,
+    .highlight-dark.hljs .hljs-params,
+    .highlight-dark.hljs .hljs-class .hljs-title {
+      color: #f8f8f2; }
+    .highlight-dark.hljs .hljs-string,
+    .highlight-dark.hljs .css .hljs-id,
+    .highlight-dark.hljs .hljs-subst,
+    .highlight-dark.hljs .haskell .hljs-type,
+    .highlight-dark.hljs .ruby .hljs-class .hljs-parent,
+    .highlight-dark.hljs .hljs-built_in,
+    .highlight-dark.hljs .sql .hljs-aggregate,
+    .highlight-dark.hljs .django .hljs-template_tag,
+    .highlight-dark.hljs .django .hljs-variable,
+    .highlight-dark.hljs .smalltalk .hljs-class,
+    .highlight-dark.hljs .django .hljs-filter .hljs-argument,
+    .highlight-dark.hljs .smalltalk .hljs-localvars,
+    .highlight-dark.hljs .smalltalk .hljs-array,
+    .highlight-dark.hljs .hljs-attr_selector,
+    .highlight-dark.hljs .hljs-pseudo,
+    .highlight-dark.hljs .hljs-addition,
+    .highlight-dark.hljs .hljs-stream,
+    .highlight-dark.hljs .hljs-envvar,
+    .highlight-dark.hljs .apache .hljs-tag,
+    .highlight-dark.hljs .apache .hljs-cbracket,
+    .highlight-dark.hljs .tex .hljs-command,
+    .highlight-dark.hljs .hljs-prompt,
+    .highlight-dark.hljs .hljs-link_label,
+    .highlight-dark.hljs .hljs-link_url {
+      color: #e6db74; }
+    .highlight-dark.hljs .hljs-comment,
+    .highlight-dark.hljs .hljs-javadoc,
+    .highlight-dark.hljs .java .hljs-annotation,
+    .highlight-dark.hljs .python .hljs-decorator,
+    .highlight-dark.hljs .hljs-template_comment,
+    .highlight-dark.hljs .hljs-pi,
+    .highlight-dark.hljs .hljs-doctype,
+    .highlight-dark.hljs .hljs-deletion,
+    .highlight-dark.hljs .hljs-shebang,
+    .highlight-dark.hljs .apache .hljs-sqbracket,
+    .highlight-dark.hljs .tex .hljs-formula {
+      color: #75715e; }
+    .highlight-dark.hljs .coffeescript .javascript,
+    .highlight-dark.hljs .javascript .xml,
+    .highlight-dark.hljs .tex .hljs-formula,
+    .highlight-dark.hljs .xml .javascript,
+    .highlight-dark.hljs .xml .vbscript,
+    .highlight-dark.hljs .xml .css,
+    .highlight-dark.hljs .xml .hljs-cdata,
+    .highlight-dark.hljs .xml .php,
+    .highlight-dark.hljs .php .xml {
+      opacity: 0.5; }
+
+  .highlight-light.hljs {
+    background: #fdfdfd;
+    color: #29220e; }
+    .highlight-light.hljs .hljs-strongemphasis,
+    .highlight-light.hljs .hljs-emphasis {
+      color: #ff003d; }
+    .highlight-light.hljs .hljs-bullet,
+    .highlight-light.hljs .hljs-blockquote,
+    .highlight-light.hljs .hljs-horizontal_rule,
+    .highlight-light.hljs .hljs-number,
+    .highlight-light.hljs .hljs-regexp,
+    .highlight-light.hljs .alias .hljs-keyword,
+    .highlight-light.hljs .hljs-literal,
+    .highlight-light.hljs .hljs-hexcolor {
+      color: #ae81ff; }
+    .highlight-light.hljs .hljs-bullet {
+      font-weight: bold; }
+    .highlight-light.hljs .hljs-strong,
+    .highlight-light.hljs .hljs-tag .hljs-value,
+    .highlight-light.hljs .hljs-code,
+    .highlight-light.hljs .hljs-title,
+    .highlight-light.hljs .css .hljs-class,
+    .highlight-light.hljs .hljs-class .hljs-title:last-child {
+      color: #8dce0c; }
+    .highlight-light.hljs .hljs-link_url {
+      font-size: 80%; }
+    .highlight-light.hljs .hljs-strong,
+    .highlight-light.hljs .hljs-strongemphasis {
+      font-weight: bold; }
+    .highlight-light.hljs .hljs-emphasis,
+    .highlight-light.hljs .hljs-strongemphasis,
+    .highlight-light.hljs .hljs-class .hljs-title:last-child {
+      font-style: italic; }
+    .highlight-light.hljs .hljs-keyword,
+    .highlight-light.hljs .hljs-function,
+    .highlight-light.hljs .hljs-change,
+    .highlight-light.hljs .hljs-winutils,
+    .highlight-light.hljs .hljs-flow,
+    .highlight-light.hljs .lisp .hljs-title,
+    .highlight-light.hljs .clojure .hljs-built_in,
+    .highlight-light.hljs .nginx .hljs-title,
+    .highlight-light.hljs .tex .hljs-special,
+    .highlight-light.hljs .hljs-attribute,
+    .highlight-light.hljs .hljs-symbol,
+    .highlight-light.hljs .hljs-symbol .hljs-string,
+    .highlight-light.hljs .hljs-tag .hljs-title,
+    .highlight-light.hljs .hljs-value,
+    .highlight-light.hljs .alias .hljs-keyword:first-child,
+    .highlight-light.hljs .css .hljs-tag,
+    .highlight-light.hljs .css .unit,
+    .highlight-light.hljs .css .hljs-important {
+      color: #a8a8a2; }
+    .highlight-light.hljs .hljs-header,
+    .highlight-light.hljs .hljs-function .hljs-keyword,
+    .highlight-light.hljs .hljs-class .hljs-keyword:first-child,
+    .highlight-light.hljs .hljs-constant,
+    .highlight-light.hljs .css .hljs-attribute {
+      color: #1bc5c5; }
+    .highlight-light.hljs .hljs-header {
+      font-weight: bold; }
+    .highlight-light.hljs .hljs-variable,
+    .highlight-light.hljs .hljs-params,
+    .highlight-light.hljs .hljs-class .hljs-title {
+      color: #f8f8f2; }
+    .highlight-light.hljs .hljs-string,
+    .highlight-light.hljs .css .hljs-id,
+    .highlight-light.hljs .hljs-subst,
+    .highlight-light.hljs .haskell .hljs-type,
+    .highlight-light.hljs .ruby .hljs-class .hljs-parent,
+    .highlight-light.hljs .hljs-built_in,
+    .highlight-light.hljs .sql .hljs-aggregate,
+    .highlight-light.hljs .django .hljs-template_tag,
+    .highlight-light.hljs .django .hljs-variable,
+    .highlight-light.hljs .smalltalk .hljs-class,
+    .highlight-light.hljs .django .hljs-filter .hljs-argument,
+    .highlight-light.hljs .smalltalk .hljs-localvars,
+    .highlight-light.hljs .smalltalk .hljs-array,
+    .highlight-light.hljs .hljs-attr_selector,
+    .highlight-light.hljs .hljs-pseudo,
+    .highlight-light.hljs .hljs-addition,
+    .highlight-light.hljs .hljs-stream,
+    .highlight-light.hljs .hljs-envvar,
+    .highlight-light.hljs .apache .hljs-tag,
+    .highlight-light.hljs .apache .hljs-cbracket,
+    .highlight-light.hljs .tex .hljs-command,
+    .highlight-light.hljs .hljs-prompt,
+    .highlight-light.hljs .hljs-link_label,
+    .highlight-light.hljs .hljs-link_url {
+      color: #e6db74; }
+    .highlight-light.hljs .hljs-comment,
+    .highlight-light.hljs .hljs-javadoc,
+    .highlight-light.hljs .java .hljs-annotation,
+    .highlight-light.hljs .python .hljs-decorator,
+    .highlight-light.hljs .hljs-template_comment,
+    .highlight-light.hljs .hljs-pi,
+    .highlight-light.hljs .hljs-doctype,
+    .highlight-light.hljs .hljs-deletion,
+    .highlight-light.hljs .hljs-shebang,
+    .highlight-light.hljs .apache .hljs-sqbracket,
+    .highlight-light.hljs .tex .hljs-formula {
+      color: #75715e; }
+    .highlight-light.hljs .coffeescript .javascript,
+    .highlight-light.hljs .javascript .xml,
+    .highlight-light.hljs .tex .hljs-formula,
+    .highlight-light.hljs .xml .javascript,
+    .highlight-light.hljs .xml .vbscript,
+    .highlight-light.hljs .xml .css,
+    .highlight-light.hljs .xml .hljs-cdata,
+    .highlight-light.hljs .xml .php,
+    .highlight-light.hljs .php .xml {
+      opacity: 0.5; } }
