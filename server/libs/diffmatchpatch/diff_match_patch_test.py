@@ -26,6 +26,7 @@ import diff_match_patch as dmp_module
 # without leaving the Python interpreter.
 reload(dmp_module)
 
+
 class DiffMatchPatchTest(unittest.TestCase):
 
     def setUp(self):

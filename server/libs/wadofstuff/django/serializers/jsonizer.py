@@ -3,7 +3,7 @@ from wadofstuff.django.serializers.utils import process_item_or_list
 
 """New base serializer class to handle full serialization of model objects."""
 import json
-from django.utils import simplejson
+# from django.utils import simplejson
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -12,6 +12,7 @@ except ImportError:
 from wadofstuff.django.serializers import pythonizer
 from django.utils.encoding import smart_unicode
 from django.db.models.fields.related import OneToOneField
+
 
 class Serializer(pythonizer.Serializer):
     def serialize(self, queryset, **options):
@@ -76,7 +77,7 @@ class Serializer(pythonizer.Serializer):
                 if isinstance(self.relations, dict):
                     if isinstance(self.relations[fname], dict):
                         options = self.relations[fname]
-                self._fields[fname] = process_item_or_list(serialize_relation, related, **options)        
+                self._fields[fname] = process_item_or_list(serialize_relation, related, **options)
             else:
                 # emulate the original behaviour and serialize the pk value
                 if self.use_natural_keys and hasattr(related, 'natural_key'):
@@ -89,11 +90,11 @@ class Serializer(pythonizer.Serializer):
             self._fields[fname] = smart_unicode(related, strings_only=True)
 
     def handle_reverse_fk_relation(self, obj, relation):
-        fname = relation.field.rel.related_name 
+        fname = relation.field.rel.related_name
         fname = fname if fname else (relation.var_name + '_set')
         for related in getattr(obj, fname).all():
             self.__handle_reverse_relation(fname, [related for related in getattr(obj, fname).all()])
-            
+
     def handle_reverse_o2o_relation(self, obj, relation):
         """
         Called to handle a reverse relations.
@@ -158,7 +159,7 @@ class Serializer(pythonizer.Serializer):
                     serializer.serialize([related], **options)[0]
                     for related in getattr(obj, fname).iterator()]
             else:
-                # emulate the original behaviour and serialize to a list of 
+                # emulate the original behaviour and serialize to a list of
                 # primary key values
                 if self.use_natural_keys and hasattr(field.rel.to, 'natural_key'):
                     m2m_value = lambda value: value.natural_key()
@@ -173,8 +174,8 @@ class Serializer(pythonizer.Serializer):
         Called when serializing of an object ends.
         """
         fields = {
-            "model"  : smart_unicode(obj._meta),
-            "pk"     : smart_unicode(obj._get_pk_val(), strings_only=True)}
+            "model": smart_unicode(obj._meta),
+            "pk": smart_unicode(obj._get_pk_val(), strings_only=True)}
         fields.update(self._fields)
 
         self.objects.append(fields)

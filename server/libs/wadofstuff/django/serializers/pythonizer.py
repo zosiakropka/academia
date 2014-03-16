@@ -49,9 +49,9 @@ class Serializer(base.Serializer):
         Called when serializing of an object ends.
         """
         self.objects.append({
-            "model"  : smart_unicode(obj._meta),
-            "pk"     : smart_unicode(obj._get_pk_val(), strings_only=True),
-            "fields" : self._fields
+            "model": smart_unicode(obj._meta),
+            "pk": smart_unicode(obj._get_pk_val(), strings_only=True),
+            "fields": self._fields
         })
         if self._extras:
             self.objects[-1]["extras"] = self._extras
