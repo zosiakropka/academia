@@ -8,7 +8,7 @@ Requirements
 
     git clone https://github.com/zosiakropka/academia.git
 
-### Python packages
+### Dependencies
 
 - python-django
 - python-gevent
@@ -18,6 +18,10 @@ Requirements
 	https://github.com/JoshData/diff_match_patch-python
 
 - python-m2crypto
+
+#### Production
+
+- libapache2-mod-wsgi
 
 ### Academia server settings
 
