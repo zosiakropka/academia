@@ -140,4 +140,4 @@ if not os.path.isdir(logs.LOGS_DIR):
 ## Where to redirect unauthorized
 LOGIN_URL = "/%(URL_PREFIX)saccount/signin" % {'URL_PREFIX': URL_PREFIX}
 
-AUTH_PROFILE_MODULE = "account.UserProfile"
+AUTH_PROFILE_MODULE = "webapp.UserProfile"
