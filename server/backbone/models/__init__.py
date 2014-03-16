@@ -11,6 +11,8 @@ import re
 from django.utils.text import slugify
 from utils import utimestamp
 
+from backbone.models import admin
+
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)

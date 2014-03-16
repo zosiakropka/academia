@@ -10,6 +10,15 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+## In case you need automatically generated admin user, eg for tests, fill
+#  this setting accordingly. ``./manage.py syncdb`` command shall not ask for
+#  admin login and password anymore. This won't be used in production!
+DEBUG_ADMIN = {
+    'login': 'test',
+    'email': 'text@example.com',
+    'password': 'pass'
+}
+
 MANAGERS = ADMINS
 
 ## Settings related to socket-based services responsible for real time
