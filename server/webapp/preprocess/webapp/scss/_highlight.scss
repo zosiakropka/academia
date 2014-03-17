@@ -1,7 +1,7 @@
-@mixin highlight ($background, $emphasis, $color, $bullet, $strong, $keyword,
-  $header, $link, $comment, $title, $prefix) {
+@mixin highlight ($background, $emphasis, $color, $bullet, $ruler, $strong, $keyword,
+  $header, $label, $link, $comment, $title, $name) {
 
-  .#{$prefix}.hljs {
+  .pad-theme-#{$name} .hljs {
     background: $background;
     color: $color;
 
@@ -20,13 +20,16 @@
   
     .hljs-bullet,
     .hljs-blockquote,
-    .hljs-horizontal_rule,
     .hljs-number,
     .hljs-regexp,
     .alias .hljs-keyword,
     .hljs-literal,
     .hljs-hexcolor {
       color: $bullet;
+    }
+    .hljs-horizontal_rule {
+      color: $ruler;
+      width: 100%;
     }
     .hljs-bullet {
       font-weight: bold;
@@ -42,7 +45,8 @@
     }
     
     .hljs-link_url {
-      font-size: 80%;
+      font-weight: bold;
+      text-decoration: underline;
     }
     
     .hljs-strong,
@@ -116,7 +120,9 @@
     .apache .hljs-cbracket,
     .tex .hljs-command,
     .hljs-prompt,
-    .hljs-link_label,
+    .hljs-link_label {
+      color: $label;
+    }
     .hljs-link_url {
       color: $link;
     }
@@ -148,12 +154,11 @@
     }
   }
 }
-
 @include highlight($background: #23241f, $color: #f8f8f2, $emphasis: #F92672,
-  $bullet: #ae81ff,$strong: #a6e22e, $keyword: #a8a8a2, $header: #66d9ef,
-  $link: #e6db74, $comment: #75715e, $title: #f8f8f2, $prefix: "highlight-dark");
+  $bullet: #ae81ff, $ruler: lightgray, $strong: #a6e22e, $keyword: #a8a8a2, $header: #66d9ef,
+  $label: #59AFCF, $link: #008ABE, $comment: #75715e, $title: #f8f8f2, $name: "dark");
 
 @include highlight($background: #FDFDFD, $color: #29220E, $emphasis: #FF003D,
-  $bullet: #ae81ff, $strong: #8DCE0C, $keyword: #a8a8a2, $header: #1BC5C5,
-  $link: #e6db74, $comment: #75715e, $title: #f8f8f2, $prefix: "highlight-light");
+  $bullet: #ae81ff, $ruler: lightgray, $strong: #8DCE0C, $keyword: #a8a8a2, $header: #1BC5C5,
+  $label: #0075A2, $link: #0075A2, $comment: #75715e, $title: #f8f8f2, $name: "light");
 

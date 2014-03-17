@@ -49,8 +49,25 @@
 .font-family-deco {
   @include font-family-deco;
 }
+
+@mixin font-size($size-ratio: 1) {
+  @include any-size(font-size, $size-ratio);
+}
+$line-height-standard: $size-standard;
+$font-size-standard: 0.67 * $size-standard;
+@mixin font-size-standard {
+  @include font-size($font-size-standard);
+  @include any-size(line-height, $line-height-standard);
+}
+$font-size-bigger: 0.83 * $size-standard;
+@mixin font-size-bigger {
+  @include font-size($font-size-bigger);
+  @include any-size(line-height, $line-height-standard);
+}
+
 html, body {
   @include font-family-base;
+  @include font-size-standard;
 }
 h1, h2, h3, h4, h5, h6 {
   @include font-family-deco;

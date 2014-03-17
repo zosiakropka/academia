@@ -1,0 +1,8 @@
+@mixin any-size($attribute, $size-ratio: 1) {
+  #{$attribute}: ($size-ratio * 10) + px;
+  #{$attribute}: ($size-ratio) + rem;
+}
+
+$size-standard: 1.5;
+$size-huge: 2;
+$size-enormous: 4;

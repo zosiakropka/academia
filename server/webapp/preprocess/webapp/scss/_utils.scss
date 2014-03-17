@@ -1,0 +1,15 @@
+@mixin vendorize($property, $value, $venvalue: false) {
+  @if $venvalue {
+    #{$property}: #{$value};
+    -moz-#{$property}: -moz-#{$value};
+    -webkit-#{$property}: -webkit-#{$value};
+    -ms-#{$property}: -ms-#{$value};
+    -o-#{$property}: -o-#{$value};
+  } @else {
+    #{$property}: #{$value};
+    -moz-#{$property}: #{$value};
+    -webkit-#{$property}: #{$value};
+    -ms-#{$property}: #{$value};
+    -o-#{$property}: #{$value};
+  }
+}
