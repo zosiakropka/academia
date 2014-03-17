@@ -30,7 +30,9 @@ def note_edit(user, note_id):
         raise PermissionDenied()
     else:
         return ('webapp/note/pad.html',
-                {"note_id": note.id, "content": note.content, "pad_connstring": "ws://%s:%d" % (wsproxy["host"], wsproxy["port"]), "token": token})
+                {"note_id": note.id, "content": note.content,
+                 "pad_connstring": "ws://%s:%d" % (wsproxy["host"], wsproxy["port"]),
+                 "token": token})
 
 
 @authenticate(user=True)
@@ -46,7 +48,9 @@ def note_create(user, access_type, subject_abbr, activity_type):
         scope.access_obj(note, "edit"),
     )
     return ('webapp/note/pad.html',
-            {"note_id": note.id, "content": "Editable pad", "pad_connstring": "ws://%s:%d" % (wsproxy["host"], wsproxy["port"]), "token": token})
+            {"note_id": note.id, "content": "Editable pad",
+             "pad_connstring": "ws://%s:%d" % (wsproxy["host"], wsproxy["port"]),
+             "token": token})
 
 
 @authenticate(user=True)
