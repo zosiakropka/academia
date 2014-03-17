@@ -176,10 +176,11 @@ academia.pad.HIGHLIGHT_PERIOD = 1000;
 				} catch (e) {
 				}
 			}
-		}	};
+		}	
+	};
 
 	var socket;
-	var reconnect_interval = false
+	var reconnect_interval = false;
 	function reconnect() {
 		if (!socket || socket.readyState != WebSocket.OPEN) {
 			padContentElement.setAttribute("contenteditable", false);
@@ -253,6 +254,9 @@ academia.pad.HIGHLIGHT_PERIOD = 1000;
 	function highlight() {
 		if (update_highlight) {
 			$('#pad-content').each(function(i, e) {
+				e.innerHTML = e.innerHTML.replace(/<div>/g, "<br/>").replace(/<\/div>/g, "");
+				e.classList.remove("hljs");
+				e.innerText = getPlainText(e);
 				hljs.highlightBlock(e);
 			});
 			update_highlight = false;
@@ -262,7 +266,7 @@ academia.pad.HIGHLIGHT_PERIOD = 1000;
 	hljs.initHighlightingOnLoad();
 	hljs.configure({
 		useBR : true,
-		languages : ["markdown"]
+		languages : ["markdown"],
 	});
 	var highlight_interval = setInterval(highlight, academia.pad.MONITORING_PERIOD);
 
