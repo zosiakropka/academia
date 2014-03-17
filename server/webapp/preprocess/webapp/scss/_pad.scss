@@ -1,4 +1,40 @@
 #pad-content {
   @include font-family-mono;
-  padding: 10px;
+  @include font-size-bigger;
+  @include any-size(padding, $size-standard);
+  position: fixed;
+  @include any-size(padding-top, $size-enormous + $size-standard);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}
+#pad-menu {
+  @include vendorize(transition, top 0.2s ease, true);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  @include any-size(padding-right, $size-enormous);
+  @include any-size(min-height, $size-enormous);
+  box-shadow: 0 0 10px black;
+  
+  #pad-menu-switch {
+    position: fixed;
+    top: 0;
+    right: 0;
+    @include any-size(width, $size-enormous);
+    @include any-size(height, $size-enormous);
+  }
+}
+
+#pad-menu.collapsed {
+  @include any-size(top, - $size-enormous);
+}
+
+.pad-theme-light {
+  #pad-menu, #pad-menu-switch {
+    background-color: white;
+  }
 }

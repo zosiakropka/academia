@@ -17,5 +17,13 @@
 			TOKEN: "{{ token }}"
 		};
 	</script>
-	<div id="pad-content" class="highlight-light">{{ content|linebreaksbr }}</div>
+	<div id="pad" class="pad-theme-light">
+		<div id="pad-content">{{ content|linebreaksbr }}</div>
+		<div id="pad-menu">
+			menu
+			<div id="pad-menu-switch">
+				switch
+			</div>
+		</div>
+	</div>
 {% endblock %}

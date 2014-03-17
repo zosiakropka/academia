@@ -267,3 +267,15 @@ academia.pad.HIGHLIGHT_PERIOD = 1000;
 	var highlight_interval = setInterval(highlight, academia.pad.MONITORING_PERIOD);
 
 })();
+
+// ---------------------------------- UI ----------------------------------
+
+var switchElement = $("#pad-menu-switch");
+var menuElement = $("#pad-menu");
+switchElement.click(function() {
+	if (menuElement.hasClass("collapsed")) {
+		menuElement.removeClass("collapsed");
+	} else {
+		menuElement.addClass("collapsed");
+	}
+});
