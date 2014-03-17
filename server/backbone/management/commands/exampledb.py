@@ -30,6 +30,9 @@ class Command(BaseCommand):
             login = slugify(lastname)
             try:
                 user = User(username=login, password="pass")
+                user.first_name = firstname
+                user.last_name = lastname
+                user.email = "%s@%s.com" % (firstname, lastname)
                 user.save()
             except:
                 pass
@@ -76,7 +79,7 @@ def get_nonsense_title(count=None):
 def get_nonsense_content(lines_count):
 
     title = get_nonsense_title()
-    title = "%s%s\n\n" % (title, "-"*len(title))
+    title = "%s%s\n\n" % (title, "-" * len(title))
 
     text = get_nonsense("-f newspaper.data -n %s" % lines_count)
     lines = text.split('\n')
@@ -87,13 +90,12 @@ def get_nonsense_content(lines_count):
 
             bold_word_no = random.randrange(len(words))
             words[bold_word_no] = "**%s**" % words[bold_word_no]
-    
+
             italic_word_no = random.randrange(len(words))
             if italic_word_no != bold_word_no:
                 words[italic_word_no] = "*%s*" % words[italic_word_no]
-    
+
             lines[line_no] = ' '.join(words)
 
     text = '\n\n'.join(lines)
-    
     return title + text
