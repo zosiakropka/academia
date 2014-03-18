@@ -87,6 +87,7 @@ PadMessage.encode = function(data) {
 academia.pad.TOKEN
 academia.pad.MONITORING_PERIOD = 500;
 academia.pad.HIGHLIGHT_PERIOD = 1000;
+academia.pad.RECONNECT_PERIOD = 2000;
 
 // ---------------------------------- Logic ----------------------------------
 (function() {
@@ -184,7 +185,7 @@ academia.pad.HIGHLIGHT_PERIOD = 1000;
 	function reconnect(event) {
 		if (!socket || socket.readyState != WebSocket.OPEN) {
 			padContentElement.setAttribute("contenteditable", false);
-			connect();
+			setTimeout(connect, academia.pad.RECONNECT_PERIOD);
 		}
 	}
 	function connect() {
@@ -194,7 +195,7 @@ academia.pad.HIGHLIGHT_PERIOD = 1000;
 			new_socket.onmessage = onmessage;
 			new_socket.onclose = reconnect;
 			socket = new_socket;
-		} 
+		}
 	}
 	/**
 	 * On websocket:
