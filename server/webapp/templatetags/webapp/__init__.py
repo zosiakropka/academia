@@ -6,6 +6,9 @@
 from django import template
 from django.core import urlresolvers
 from academia.settings import URL_PREFIX, COPYRIGHT
+from django.template.defaultfilters import stringfilter
+from django.utils.html import conditional_escape
+from django.utils.safestring import mark_safe
 register = template.Library()
 
 from datetime import date
@@ -41,3 +44,14 @@ def copyright_notice(*args, **kwargs):
         return COPYRIGHT["SHORT_NOTICE"] % {"AUTHOR": author, "TIME": time}
     except:
         return "&#169; %(AUTHOR)s %(TIME)s" % {"AUTHOR": author, "TIME": time}
+
+
+@stringfilter
+def spacify(value, autoescape=None):
+    if autoescape:
+        esc = conditional_escape
+    else:
+        esc = lambda x: x
+    return mark_safe(esc(value).replace('\n ', '\n&nbsp;').replace(' \n', '&nbsp;\n').replace('  ',  ' &nbsp;'))
+spacify.needs_autoescape = True
+register.filter(spacify)

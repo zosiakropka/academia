@@ -1,5 +1,6 @@
 {% extends "empty.html" %}
 {% load staticfiles %}
+{% load webapp %}
 
 {% block scripts %}
 <script src="{% static "webapp/js/libs/jquery-2.0.3.js" %}"></script>
@@ -19,7 +20,7 @@
 		};
 	</script>
 	<div id="pad" class="pad-theme-light">
-		<div id="pad-content">{{ content|linebreaksbr }}</div>
+		<div id="pad-content">{{ content|spacify|linebreaksbr }}</div>
 		<div id="pad-menu">
 			menu
 			<div id="pad-menu-switch">
