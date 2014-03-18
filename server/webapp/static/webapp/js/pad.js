@@ -257,7 +257,7 @@ academia.pad.RECONNECT_PERIOD = 2000;
 			$('#pad-content').each(function(i, e) {
 				e.innerHTML = e.innerHTML.replace(/<div>/g, "<br/>").replace(/<\/div>/g, "");
 				e.classList.remove("hljs");
-				e.innerText = getPlainText(e);
+				e.innerText = e.innerText;
 				hljs.highlightBlock(e);
 			});
 			update_highlight = false;
