@@ -181,7 +181,7 @@ academia.pad.HIGHLIGHT_PERIOD = 1000;
 
 	var socket;
 	var reconnect_interval = false;
-	function reconnect() {
+	function reconnect(event) {
 		if (!socket || socket.readyState != WebSocket.OPEN) {
 			padContentElement.setAttribute("contenteditable", false);
 			connect();
