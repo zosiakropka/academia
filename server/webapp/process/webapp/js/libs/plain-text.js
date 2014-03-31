@@ -20,6 +20,8 @@
 //      Zosia Sobocinska
 //      Since don't want whitespaces and newlines be removed from the
 //      beginning and the end of the text.
+//
+
 var getPlainText = function(node) {
 	// used for testing:
 	//return node.innerText || node.textContent;
