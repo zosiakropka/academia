@@ -174,7 +174,7 @@ class Serializer(pythonizer.Serializer):
         Called when serializing of an object ends.
         """
         fields = {
-            "model": smart_unicode(obj._meta),
+            # "model": smart_unicode(obj._meta),
             "pk": smart_unicode(obj._get_pk_val(), strings_only=True)}
         fields.update(self._fields)
 
