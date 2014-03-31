@@ -21,6 +21,10 @@ def subject_list(user, admin=False, subject_id=None, subject_name=None, subject_
     if activity_type:
         subjects = subjects.filter(activities__type=activity_type)
 
-    relations = {'activities': {'relations': {'supervisor': {},
-                                              'notes': {'fields': ('pk', 'owner')}}}}
+    relations = {
+        'activities': {
+            'excludes': ('notes'),
+            'relations': {
+                'supervisor': {
+                    'fields': ('firstname', 'lastname', 'pk')}}}}
     return jsonize(subjects, relations=relations)
