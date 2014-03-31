@@ -24,6 +24,20 @@ def prefixed_url(url, *args, **kwargs):
         return reverse
 
 
+@register.simple_tag(name='{}')
+def braces(value):
+    start = '{'
+    end = '}'
+    return "%s%s%s" % (start, value, end)
+
+
+@register.simple_tag(name='{{}}')
+def doublebraces(value):
+    start = '{{'
+    end = '}}'
+    return "%s%s%s" % (start, value, end)
+
+
 @register.simple_tag(name='copyright_notice')
 def copyright_notice():
     try:
