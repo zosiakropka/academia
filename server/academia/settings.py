@@ -133,7 +133,7 @@ INSTALLED_APPS = (
     'api',
     'webapp',
     'pad',
-    'utils'
+    'utils',
 )
 
 from academia import logs
