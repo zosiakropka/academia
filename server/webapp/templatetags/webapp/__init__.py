@@ -25,7 +25,7 @@ def prefixed_url(url, *args, **kwargs):
 
 
 @register.simple_tag(name='copyright_notice')
-def copyright_notice(*args, **kwargs):
+def copyright_notice():
     try:
         try:
             author = "<a href='%(ADDRESS)s'>%(AUTHOR)s</a>" % COPYRIGHT
