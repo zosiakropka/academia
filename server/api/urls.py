@@ -7,9 +7,6 @@
 
 from django.conf.urls import patterns, url
 
-from django.contrib import admin
-admin.autodiscover()
-
 urlpatterns = patterns('')
 urlpatterns += patterns('api.views',
 
