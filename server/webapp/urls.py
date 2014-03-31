@@ -14,7 +14,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('')
 urlpatterns += patterns('webapp.views',
-    url(r'^$', 'subject_list'),
+    url(r'^$', 'application'),
+    url(r'^subjects$', 'subject_list'),
     url(r'^account/signin/$', 'signin'),
     url(r'^account/signout/$', 'signout'),
     url(r'^subject/(?P<subject_abbr>\w+)/$', 'subject_browse'),
