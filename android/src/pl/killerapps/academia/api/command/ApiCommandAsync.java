@@ -10,6 +10,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import pl.killerapps.academia.utils.Log;
+import pl.killerapps.academia.utils.exceptions.ApiPermissionDeniedException;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
 import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
@@ -60,7 +61,7 @@ public abstract class ApiCommandAsync<Entity> extends ApiCommand<Entity> {
     Runnable thread;
     thread = new SafeRunnable(this.activity) {
 
-      public void safeRun() throws HelloRequiredException, LoginRequiredException, URISyntaxException, PreferencesUninitializedException {
+      public void safeRun() throws HelloRequiredException, LoginRequiredException, URISyntaxException, PreferencesUninitializedException, ApiPermissionDeniedException {
 
         try {
           log.d("Sending request.");

@@ -9,6 +9,7 @@ import org.apache.http.conn.HttpHostConnectException;
 import pl.killerapps.academia.activities.ConnectActivity;
 import pl.killerapps.academia.api.command.authenticate.Hello;
 import pl.killerapps.academia.api.command.authenticate.Login;
+import pl.killerapps.academia.utils.exceptions.ApiPermissionDeniedException;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
 import pl.killerapps.academia.utils.exceptions.HelloFailedException;
 import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
@@ -94,7 +95,25 @@ public class ExceptionsHandler {
     activity.finish();
   }
 
+  static void handleApiPermissionDenied(SafeActivity activity, ApiPermissionDeniedException ex) throws PreferencesUninitializedException {
+    // @todo Better handler
+    Log.e("ApiPermissionDeniedException", ex.getMessage(), ex);
+    try {
+      (new Login(activity.getBaseContext())).login();
+    } catch (HelloRequiredException ex1) {
+      handleHelloRequired(activity, ex1);
+    } catch (IOException ex1) {
+      handleIO(activity, ex1);
+    } catch (FaultyConnectionDetailsException ex1) {
+      handleNoConnectionDetails(activity, ex1);
+    } catch (URISyntaxException ex1) {
+      handleNoConnectionDetails(activity, ex1);
+    }
+    activity.finish();
+  }
+
   private static void startActivity(Activity activity, Class<?> cls) {
     activity.startActivity(new Intent(activity, cls));
+
   }
 }

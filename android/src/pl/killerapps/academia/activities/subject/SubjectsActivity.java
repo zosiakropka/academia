@@ -61,7 +61,6 @@ public class SubjectsActivity extends SafeActivity {
 
           }
         });
-//                        NavUtils.navigateUpFromSameTask(curr_activity);
       }
 
       @Override
