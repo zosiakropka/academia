@@ -7,5 +7,4 @@ package pl.killerapps.academia.utils.exceptions;
 public class PreferencesUninitializedException extends Exception {
 
   private static final long serialVersionUID = 1L;
-
 }

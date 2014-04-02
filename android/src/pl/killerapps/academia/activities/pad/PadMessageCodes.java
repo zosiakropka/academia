@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 public class PadMessageCodes {
 
   private static PadMessageCodes mc = null;
-  private HashMap<String, Integer> CODES = new HashMap<String, Integer>();
+  private final HashMap<String, Integer> CODES = new HashMap<String, Integer>();
 
   private PadMessageCodes() {
     CODES.put("purpose", 1);

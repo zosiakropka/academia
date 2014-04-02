@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pl.killerapps.academia.utils.exceptions;
 
 /**
@@ -11,5 +10,5 @@ package pl.killerapps.academia.utils.exceptions;
  * @author zosia
  */
 public class ApiPermissionDeniedException extends Exception {
-  
+
 }

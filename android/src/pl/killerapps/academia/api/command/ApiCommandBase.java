@@ -20,7 +20,7 @@ import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException
 import pl.killerapps.academia.utils.Preferences;
 
 public abstract class ApiCommandBase {
-  
+
   protected URI uri;
   protected Log log = new Log("ApiCommandBase");
 
