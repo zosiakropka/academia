@@ -6,4 +6,9 @@ from django.shortcuts import render_to_response
 
 
 def application(request):
-    return render_to_response("webapp/application/index.html")
+    data = {
+        "partials": {
+             "menu/main-menu": "webapp/application/partials/menus/main-menu.phtml",
+         }
+    }
+    return render_to_response("webapp/application/index.html", data)

@@ -13,3 +13,13 @@
     -o-#{$property}: #{$value};
   }
 }
+
+@mixin list-unformat($inline: false) {
+    margin: 0;
+    list-style-type: none;
+    @if $inline {
+      li {
+        display: inline;
+      }
+    }
+}

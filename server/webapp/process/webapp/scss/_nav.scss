@@ -1,6 +1,7 @@
+// TOP
 $elems-height: 2rem;
 $elems-margin: 1rem;
-#nav-top, #page-footer {
+#nav-top {
   height: $elems-height;
   line-height: $elems-height;
   font-size: 1rem;
@@ -17,7 +18,4 @@ $elems-margin: 1rem;
 }
 #nav-top {
   margin-bottom: $elems-margin;
-}
-#page-wrapper {
-  padding-bottom: $elems-height + $elems-margin;
 }

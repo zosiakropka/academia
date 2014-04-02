@@ -18,6 +18,14 @@ module.exports = function(grunt) {
     		files: [{
     			'src': [SCSS_IN_PREFIX + 'style.scss'],
     			'dest': CSS_OUT_PREFIX + 'style.css'
+    		},
+    		{
+    			'src': [SCSS_IN_PREFIX + 'style.scss'],
+    			'dest': CSS_OUT_PREFIX + 'pad.css'
+    		},
+    		{
+    			'src': [SCSS_IN_PREFIX + 'application.scss'],
+    			'dest': CSS_OUT_PREFIX + 'application.css'
     		}]
     	}
     },
@@ -29,7 +37,10 @@ module.exports = function(grunt) {
           files: [{
           	// Application
           	'src': [
-          		JS_IN_PREFIX + 'application/**/*.js'
+          		JS_IN_PREFIX + 'libs/angular/angular.js',
+          		JS_IN_PREFIX + 'libs/angular/angular-route.js',
+          		JS_IN_PREFIX + 'application/application.js',
+          		JS_IN_PREFIX + 'application/*/**/*.js'
           	],
           	'dest': JS_OUT_PREFIX + 'application.js',
           },

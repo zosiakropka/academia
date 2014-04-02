@@ -1,9 +1,10 @@
 {% extends "empty.html" %}
 {% load staticfiles %}
 {% load webapp %}
+{% load staticfiles %}
 
-{% block scripts %}
-<script src="{% static "webapp/js/pad.js" %}"></script>
+{% block styles %}
+<link rel="stylesheet" href="{% static "webapp/css/pad.css" %}" />
 {% endblock %}
 
 {% block body %}
@@ -23,4 +24,8 @@
 			</div>
 		</div>
 	</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static "webapp/js/pad.js" %}"></script>
 {% endblock %}

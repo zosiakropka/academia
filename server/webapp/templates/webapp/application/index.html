@@ -1,13 +1,26 @@
 {% extends "empty.html" %}
 {% load webapp %}
+{% load staticfiles %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static "webapp/css/application.css" %}" />
+{% endblock %}
 
 {% block body %}
-<div id="page-wrapper" data-ng-app="AcademiaApp">
-    <nav id="nav-top">
-    </nav>
+<div id="page-wrapper" ng-app="AcademiaApp">
 
     <div id="content">
+		<ng-include src="'menu/main-menu'"/>
     </div>
 	<footer id="page-footer">{% copyright_notice %}</footer>
+	{%for partial, path in partials.items %}
+	<script type="text/ng-template" id="{{ partial }}">
+		{% include path %}
+	</script>
+	{% endfor %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static "webapp/js/application.js" %}"></script>
 {% endblock %}
