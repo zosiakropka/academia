@@ -18,6 +18,8 @@ Requirements
 	https://github.com/JoshData/diff_match_patch-python
 
 - python-m2crypto
+- google-api-python-client
+- python-gflags
 
 #### Production
 
