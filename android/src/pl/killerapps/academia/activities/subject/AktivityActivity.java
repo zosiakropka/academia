@@ -18,10 +18,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import org.apache.http.conn.HttpHostConnectException;
 import pl.killerapps.academia.activities.pad.PadActivity;
+import pl.killerapps.academia.utils.Preferences;
+import pl.killerapps.academia.utils.exceptions.ApiPermissionDeniedException;
 import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.HelloFailedException;
+import pl.killerapps.academia.utils.exceptions.HelloRequiredException;
+import pl.killerapps.academia.utils.exceptions.LoginRequiredException;
 import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 import pl.killerapps.academia.utils.safe.SafeActivity;
+import pl.killerapps.academia.utils.safe.SafeRunnable;
 
 public class AktivityActivity extends SafeActivity {
 
@@ -31,7 +40,7 @@ public class AktivityActivity extends SafeActivity {
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
-      final Activity ctx = this;
+      final SafeActivity ctx = this;
 
       int aktivity_id = extras.getInt("AKTIVITY_ID");
 
@@ -39,21 +48,28 @@ public class AktivityActivity extends SafeActivity {
         @Override
         public void on_response(final List<Note> notes) {
 
-          ctx.runOnUiThread(new Runnable() {
-            public void run() {
+          ctx.runOnUiThread(new SafeRunnable(ctx) {
+
+            @Override
+            public void safeRun() throws PreferencesUninitializedException, FaultyConnectionDetailsException, URISyntaxException, MalformedURLException, IOException, HelloRequiredException, LoginRequiredException, HttpHostConnectException, HelloFailedException, ApiPermissionDeniedException {
+
               final LinearLayout layout = (LinearLayout) findViewById(R.id.aktivity_layout);
               for (final Note note : notes) {
                 TextView tv = new TextView(ctx);
                 tv.setText(note.title);
-                tv.setOnClickListener(new OnClickListener() {
+                if (note.canEdit()) {
+                  tv.setOnClickListener(new OnClickListener() {
 
-                  @Override
-                  public void onClick(View v) {
-                    Intent padActivityIntent = new Intent(ctx, PadActivity.class);
-                    padActivityIntent.putExtra("NOTE_ID", note.id);
-                    startActivity(padActivityIntent);
-                  }
-                });
+                    @Override
+                    public void onClick(View v) {
+                      Intent padActivityIntent = new Intent(ctx, PadActivity.class);
+                      padActivityIntent.putExtra("NOTE_ID", note.id);
+                      startActivity(padActivityIntent);
+                    }
+                  });
+                } else {
+                  tv.setTextAppearance(ctx, android.R.style.TextAppearance_Inverse);
+                }
                 layout.addView(tv);
               }
             }

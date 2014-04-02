@@ -2,6 +2,9 @@ package pl.killerapps.academia.entities;
 
 import java.util.Date;
 import java.util.HashMap;
+import pl.killerapps.academia.utils.Preferences;
+import pl.killerapps.academia.utils.exceptions.FaultyConnectionDetailsException;
+import pl.killerapps.academia.utils.exceptions.PreferencesUninitializedException;
 
 public class Note {
 
@@ -36,6 +39,11 @@ public class Note {
   public static final String PUBLIC = "public";
   public static final String PRIVATE = "private";
   public static final HashMap<String, String> NOTE_ACCESS = new HashMap<String, String>();
+
+  public boolean canEdit() throws PreferencesUninitializedException, FaultyConnectionDetailsException {
+    Preferences.Getter prefs = Preferences.get();
+    return this.owner.equals(prefs.username()) || this.access.equals("open");
+  }
 
   {
     NOTE_ACCESS.put(OPEN, "Open");

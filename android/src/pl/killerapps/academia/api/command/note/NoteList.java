@@ -40,6 +40,7 @@ public abstract class NoteList extends ApiCommandAsync<List<Note>> {
         note.date = (new SimpleDateFormat("yyyy-mm-dd")).parse(note_json.getString("date"));
         note.slug = note_json.getString("slug");
         note.title = note_json.getString("title");
+        note.owner = note_json.getJSONObject("owner").getString("username");
         notes.add(note);
       } catch (JSONException ex) {
         log.e("Can't parse json", ex);
