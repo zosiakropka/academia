@@ -11,6 +11,7 @@ from backbone.models import Subject, Note, Activity, Supervisor, User
 from random import choice
 from django.utils.text import slugify
 import random
+from backbone.models.schedule import Schedule
 
 
 class Command(BaseCommand):
@@ -18,6 +19,9 @@ class Command(BaseCommand):
     help = 'Fills db with example entries'
 
     def handle(self, *args, **options):
+
+        schedule = Schedule(name="Default", description="default schedule for tests & stuff")
+        schedule.save()
 
         subjects_count = 4
         activities_count = 3
@@ -43,10 +47,13 @@ class Command(BaseCommand):
             for i in range(0, activities_count):
                 try:
                     supervisor_firstname, supervisor_lastname = get_nonsense_person()
-                    supervisor = Supervisor(firstname=supervisor_firstname, lastname=supervisor_lastname)
+                    supervisor = Supervisor(firstname=supervisor_firstname,
+                                            lastname=supervisor_lastname)
                     supervisor.save()
                     activity_type, dummy = choice(Activity.ACTIVITY_TYPES)
-                    activity = Activity(type=activity_type, supervisor=supervisor, subject=subject)
+                    activity = Activity(type=activity_type, subject=subject,
+                                        supervisor=supervisor,
+                                        schedule=schedule)
                     activity.save()
 
                     users = User.objects.all()

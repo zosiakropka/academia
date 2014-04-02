@@ -51,6 +51,25 @@ DATABASES = {
 #  See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['example.com']
 
+## Obtain your credentials in Google Developers Console. You need to enable
+#  Calendar API to make use of Google Calendar-based school schedule.
+#  Visit https://console.developers.google.com to create project for Academia.
+#  Next you should click "APIs & auth" to enable Calendar API and check the
+#  "Credentials" section for details required by this section.
+GOOGLE_API = {
+    'DEVELOPER_KEY': '<Google Developer Key>'
+    'APIS': {
+        'CALENDAR': {
+            'ID_PREFIX': 'academia',
+            'CREDENTIALS': {
+		        'CLIENT_ID': '<some_client_id>.apps.googleusercontent.com',
+		        'CLIENT_SECRET': '<some_client_secret>'
+            },
+            'CREDENTIALS_FILE': "calendar.dat"
+        }
+    }
+}
+
 ## What follows host/domain_name in Academia root URL, eg. if Academia root is
 #  `example.com/academia`, then URL_PREFIX should be `academia/`.
 URL_PREFIX = ""

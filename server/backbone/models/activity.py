@@ -5,6 +5,7 @@
 from django.db import models
 from backbone.models.subject import Subject
 from backbone.models.supervisor import Supervisor
+from backbone.models.schedule import Schedule
 
 
 class Activity(models.Model):
@@ -28,6 +29,7 @@ class Activity(models.Model):
     type = models.CharField(max_length=200, choices=ACTIVITY_TYPES)
     subject = models.ForeignKey(Subject, related_name="activities")
     supervisor = models.ForeignKey(Supervisor, related_name="acitivities")
+    schedule = models.ForeignKey(Schedule, related_name="activities")
 
     def __unicode__(self):
         return '[' + self.subject.abbr + '] ' + dict(self.ACTIVITY_TYPES)[self.type] + \
