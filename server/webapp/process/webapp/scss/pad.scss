@@ -1,8 +1,53 @@
 @import "reset";
-@import "common";
 
 @media screen {
   @import "common";
-  @import "pad";
   @import "highlight";
+
+  $pad-menu-height: $size-enormous;
+  $pad-padding: $size-standard;
+
+  #pad-content {
+    @include font-family-mono;
+    @include font-size-bigger;
+    @include any-size(padding, $pad-padding * 0.5);
+    position: fixed;
+    @include any-size(padding-top, $pad-menu-height + $pad-padding);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+  
+    @media (min-width: 600px) {
+      @include any-size(padding, $pad-padding);
+      @include any-size(padding-top, $pad-menu-height + $pad-padding);
+    }
+  }
+  #pad-menu {
+    @include vendorize(transition, top 0.2s ease, true);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    @include any-size(padding-right, $pad-menu-height);
+    @include any-size(min-height, $pad-menu-height);
+    box-shadow: 0 0 10px black;
+    
+    #pad-menu-switch {
+      position: fixed;
+      top: 0;
+      right: 0;
+      @include any-size(width, $pad-menu-height);
+      @include any-size(height, $pad-menu-height);
+    }
+  }
+  #pad-menu.collapsed {
+    @include any-size(top, - $pad-menu-height);
+  }
+  .pad-theme-light {
+    #pad-menu, #pad-menu-switch {
+      background-color: white;
+    }
+  }
 }

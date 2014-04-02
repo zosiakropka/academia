@@ -12,7 +12,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     sass: {
     	options: {
-    	  style: "compressed"
+    	  // style: "compressed"
     	},
     	dist: {
     		files: [{
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
     			'dest': CSS_OUT_PREFIX + 'style.css'
     		},
     		{
-    			'src': [SCSS_IN_PREFIX + 'style.scss'],
+    			'src': [SCSS_IN_PREFIX + 'pad.scss'],
     			'dest': CSS_OUT_PREFIX + 'pad.css'
     		},
     		{

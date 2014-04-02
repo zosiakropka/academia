@@ -154,6 +154,7 @@
     }
   }
 }
+
 @include highlight($background: #23241f, $color: #f8f8f2, $emphasis: #F92672,
   $bullet: #ae81ff, $ruler: lightgray, $strong: #a6e22e, $keyword: #a8a8a2, $header: #66d9ef,
   $label: #59AFCF, $link: #008ABE, $comment: #75715e, $title: #f8f8f2, $name: "dark");
@@ -161,4 +162,3 @@
 @include highlight($background: #FDFDFD, $color: #29220E, $emphasis: #FF003D,
   $bullet: #ae81ff, $ruler: lightgray, $strong: #8DCE0C, $keyword: #a8a8a2, $header: #1BC5C5,
   $label: #0075A2, $link: #0075A2, $comment: #75715e, $title: #f8f8f2, $name: "light");
-
