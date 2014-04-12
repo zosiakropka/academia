@@ -50,9 +50,12 @@ class GoogleCalendar(models.Model):
 
     @classproperty
     def service(self):
-        if not self.__service__:
-            self.__initialize__()
-        return self.__service__
+        try:
+            if not self.__service__:
+                self.__initialize__()
+            return self.__service__
+        except:
+            return None
 
 #     @classproperty
 #     def decorator(self):
