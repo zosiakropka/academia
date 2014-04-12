@@ -11,4 +11,5 @@ package pl.killerapps.academia.utils.exceptions;
  */
 public class ApiPermissionDeniedException extends Exception {
 
+	private static final long serialVersionUID = 1L;
 }
