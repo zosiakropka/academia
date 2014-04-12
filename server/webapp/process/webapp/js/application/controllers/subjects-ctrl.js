@@ -1,6 +1,8 @@
 'use strict';
 
-SubjectsCtrl = Application.Controllers.controller('SubjectsCtrl', ['$scope', 'SubjectsSrvc', function($scope, SubjectsSrvc){
-	$scope.subjects = SubjectsSrvc.get();
-	alert($scope.subjects);
+var SubjectsCtrl = Application.Controllers.controller('SubjectsCtrl', ['$scope', 'SubjectsSrvc', function($scope, SubjectsSrvc){
+	var subjects_promise = SubjectsSrvc.get();
+	subjects_promise.then(function(subjects) {
+		$scope.subjects = subjects;
+	});
 }]);

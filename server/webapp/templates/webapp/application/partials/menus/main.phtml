@@ -1,0 +1,6 @@
+{% load webapp %}
+<ul id="elements" ng-controller="MenuCtrl">
+	<li ng-repeat="item in items" ng-click="open(item);">
+		<ng-include src="item.partial"></ng-include>
+	</li>
+</ul>

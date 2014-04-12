@@ -6,9 +6,18 @@ from django.shortcuts import render_to_response
 
 
 def application(request):
+
+    def set_partial(partials, key):
+        partials[key] = "webapp/application/partials/%s.phtml" % key
+
+    partials = {}
+    set_partial(partials, "menus/main")
+    set_partial(partials, "miniatures/schedule")
+    set_partial(partials, "miniatures/subjects")
+    set_partial(partials, "miniatures/recent-notes")
+
     data = {
-        "partials": {
-             "menu/main-menu": "webapp/application/partials/menus/main-menu.phtml",
-         }
+        "partials": partials
     }
+
     return render_to_response("webapp/application/index.html", data)

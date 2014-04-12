@@ -1,26 +1,28 @@
 'use strict';
 
 var MenuSrvc = Application.Services.factory('MenuSrvc', ["$q", "$rootScope", function($q, $rootScope) { 
-		var items = [
-			{
-				title: "tesciuch",
-				controller: SubjectsCtrl,
-				tile_partial: ""
-			},
-			{
-				title: "schedule",
-				controller: ScheduleCtrl,
-				tile_partial: ""
-			},
-		];
-		return {
+	var items = [
+		{
+			partial: "miniatures/subjects",
+			slug: "subjects"
+		},
+		{
+			partial: "miniatures/schedule",
+			slug: "schedule"
+		},
+		{
+			partial: "miniatures/recent-notes",
+			slug: "recent-notes"
+		},
+	];
+	return {
 
-			/**
-			* Retrieves menu Items
-			* @return {Object} Array of menu items.
-			*/
-			get : function(){
-				return items;
-			},
+		/**
+		* Retrieves menu Items
+		* @return {Object} Array of menu items.
+		*/
+		get : function(){
+			return items;
+		},
 	};
 }]);

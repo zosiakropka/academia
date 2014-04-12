@@ -22115,48 +22115,52 @@ angular.module('AcademiaApp', ['ngRoute', 'application.filters', 'application.se
       when('/:id/', {templateUrl: 'details/details-partial.html'}).
       otherwise({templateUrl: 'error/error-partial.html'});
   }]);
-;'use strict';
-
-MenuCtrl = Application.Controllers.controller('MenuCtrl', ['$scope', "MenuSrvc", function($scope, MenuSrvc){
+;var MenuCtrl = Application.Controllers.controller('MenuCtrl', ['$scope', "MenuSrvc", function($scope, MenuSrvc){
 	var context = $scope.context;
 	$scope.items = MenuSrvc.get();
-}]);
 
-console.log(MenuCtrl.controller);
+	$scope.open = function(item) {
+		console.log(item);
+	}
+}]);
+;var RecentNotesCtrl = Application.Controllers.controller('RecentNotesCtrl', ['$scope', function($scope){
+}]);
+;var ScheduleCtrl = Application.Controllers.controller('ScheduleCtrl', ['$scope', function($scope){
+}]);
 ;'use strict';
 
-ScheduleCtrl = Application.Controllers.controller('ScheduleCtrl', ['$scope', 'ScheduleSrvc', function($scope, ScheduleSrvc){
-}]);
-;'use strict';
-
-SubjectsCtrl = Application.Controllers.controller('SubjectsCtrl', ['$scope', 'SubjectsSrvc', function($scope, SubjectsSrvc){
-	$scope.subjects = SubjectsSrvc.get();
-	alert($scope.subjects);
+var SubjectsCtrl = Application.Controllers.controller('SubjectsCtrl', ['$scope', 'SubjectsSrvc', function($scope, SubjectsSrvc){
+	var subjects_promise = SubjectsSrvc.get();
+	subjects_promise.then(function(subjects) {
+		$scope.subjects = subjects;
+	});
 }]);
 ;'use strict';
 
 var MenuSrvc = Application.Services.factory('MenuSrvc', ["$q", "$rootScope", function($q, $rootScope) { 
-		var items = [
-			{
-				title: "tesciuch",
-				controller: SubjectsCtrl,
-				tile_partial: ""
-			},
-			{
-				title: "schedule",
-				controller: ScheduleCtrl,
-				tile_partial: ""
-			},
-		];
-		return {
+	var items = [
+		{
+			partial: "miniatures/subjects",
+			slug: "subjects"
+		},
+		{
+			partial: "miniatures/schedule",
+			slug: "schedule"
+		},
+		{
+			partial: "miniatures/recent-notes",
+			slug: "recent-notes"
+		},
+	];
+	return {
 
-			/**
-			* Retrieves menu Items
-			* @return {Object} Array of menu items.
-			*/
-			get : function(){
-				return items;
-			},
+		/**
+		* Retrieves menu Items
+		* @return {Object} Array of menu items.
+		*/
+		get : function(){
+			return items;
+		},
 	};
 }]);
 ;'use strict';

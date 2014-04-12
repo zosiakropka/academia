@@ -1,0 +1,8 @@
+{% load webapp %}
+<div ng-controller="SubjectsCtrl">
+	<h2>Subjects</h2>
+	<ul>
+		<li ng-repeat="subject in subjects">{% {{}} "subject.name" %}- </li>
+	</ul>
+	subjects
+</div>
