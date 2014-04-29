@@ -27,7 +27,7 @@ class Pad(object):
     def validate(patch):
         return patch.replace("&nbsp;", " ")  # @todo validation && sanitization
 
-    def process(self, patch):
+    def append_patch(self, author, patch):
         patch = self.validate(patch)
         self.lock.acquire()
         try:
@@ -42,7 +42,7 @@ class Pad(object):
         try:
             if note_id in Pad.pads:
 #                 Pad.pads[note_id].on_sync_start()
-                Pad.pads[note_id].apply_diffs()
+                Pad.pads[note_id].apply_patches()
 #                 Pad.pads[note_id].on_sync_end()
             else:
                 Pad.pads[note_id] = Pad(note_id, None, None)
@@ -53,7 +53,7 @@ class Pad(object):
         else:
             raise Exception("Can't get pad")
 
-    def apply_diffs(self):
+    def apply_patches(self):
         self.lock.acquire()
         try:
             #self.on_sync_start()

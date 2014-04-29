@@ -21,9 +21,9 @@ class PadTCPConnection(dispatcher_with_send):
 
         self.buffer = ""
         self.pad_server = kwargs.pop('pad_server')
-        self.pad_id = None
         self.pad = None
         self.conn_id = None
+        self.user = None
 
         sock = kwargs['sock'] if 'sock' in kwargs else args[0]
         dispatcher_with_send.__init__(self, *args, **kwargs)
@@ -56,19 +56,18 @@ class PadTCPConnection(dispatcher_with_send):
         if data and "purpose" in data:
             logging.debug("%s has data onboard, purpose: %s" % (self.CHNL, data["purpose"]))
             purpose = data["purpose"]
-            if purpose == "join" and "message" in data:
-                self.pad_id = data.pop("message")
-                self.pad = Pad.get_pad(self.pad_id)
-            elif purpose == "patches" and "message" in data and self.pad_id:
+            if purpose == "join" and "login" in data and "message" in data:
+                self.pad = Pad.get_pad(data.pop("message"))
+                self.user = User.objects.get(username=data.pop("login"))
+            elif purpose == "patches" and "message" in data and self.ready:
                 try:
+                    # @todo tokens don't seem to work...
                     token = data.pop("token", None)
                     tokens.validate(
                         token,
-                        scope.access_obj(Note.objects.get(pk=self.pad_id), "edit"),
+                        scope.access_obj(self.pad.note, "edit"),
                     )
-                    data["message"] = self.pad.process(data["message"])
-
-                    print data["message"]
+                    data["message"] = self.pad.append_patch(self.user, data["message"])
 
                     self.pad_broadcast(data)
                 except Exception:
@@ -82,7 +81,7 @@ class PadTCPConnection(dispatcher_with_send):
         """
         Broadcast message within current pad.
         """
-        self.pad_server.pad_broadcast(encode(data), self.pad_id, self.conn_id)
+        self.pad_server.pad_broadcast(encode(data), self.pad.note.pk, self.conn_id)
 
     def send_record(self, record):
         dispatcher_with_send.send(self, "%s%s%s" % (record, DELIMITER, '\n'))

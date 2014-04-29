@@ -47,7 +47,7 @@ class PadTCPServer(asyncore.dispatcher):
 
     def pad_broadcast(self, record, pad_id, broadcaster_id):
         for conn_id, connection in self.connections.iteritems():
-            if conn_id != broadcaster_id and connection.pad_id == pad_id:
+            if conn_id != broadcaster_id and connection.pad.note.pk == pad_id:
                 connection.send_record(record)
 
     def start_server(self):
