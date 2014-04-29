@@ -7,6 +7,7 @@ from backbone.models import Note
 import Queue as queue
 from multiprocessing import Lock
 from diffmatchpatch.diff_match_patch import diff_match_patch
+from django.db import transaction
 
 
 class Pad(object):
@@ -53,7 +54,12 @@ class Pad(object):
         else:
             raise Exception("Can't get pad")
 
+    @transaction.atomic
     def apply_patches(self):
+        """
+        Iterates through patches stored in queue and applies those to note
+        content. During applying patches Pad object cannot be aquired.
+        """
         self.lock.acquire()
         try:
             #self.on_sync_start()
