@@ -1,5 +1,17 @@
 // ---------------------------------- Utils ----------------------------------
+
 (function() {
+	
+	jQuery.fn.extend({
+		niceText: function(text) {
+			if (text) {
+				return this.html(text.replace(/^ /g, '&nbsp;').replace(/ $/g, '&nbsp;').replace(/  /g,  ' &nbsp;').replace(/\n/g, "<br/>"));
+			} else {
+				return this.html().replace(/<br\/?>/g, "\n").replace(/<\/?span.*?>/g, "").replace("&nbsp;", " ");
+			}
+		}
+	});
+
 	if (!HTMLDivElement.prototype.setSelectionRange) {
 		HTMLDivElement.prototype.setSelectionRange = function(start, end) {
 			if (this.createTextRange) {
@@ -84,7 +96,7 @@ PadMessage.encode = function(data) {
 /**
  * @todo Shall be further used in auth
  */
-academia.pad.TOKEN
+academia.pad.TOKEN;
 academia.pad.MONITORING_PERIOD = 500;
 academia.pad.HIGHLIGHT_PERIOD = 1000;
 academia.pad.RECONNECT_PERIOD = 2000;
@@ -92,16 +104,22 @@ academia.pad.RECONNECT_PERIOD = 2000;
 
 // ---------------------------------- Logic ----------------------------------
 (function() {
-	padContentElement = $('#pad-content')[0];
+	padContentElement = $('#pad-content');
 	var dmp = new diff_match_patch();
-	var prev = padContentElement.innerText;
-	// for now it's better to process innerText instead of innerHtml
+	var prev = '';
 	var update_highlight = true;
 	/**
 	 * Patches fifo
 	 */
 	patches = [];
 	var lock = false;
+	
+	fetch_note = function(note_id) {
+		$.get("/api/note/get/", {note_id: note_id}).done(function(response) {
+			padContentElement.niceText(response[0].content);
+			prev = response[0].content;
+		});
+	};
 	/**
 	 * Get changes monitor with on_local_patches callback set.
 	 * This monitor watches for patches packages stored in patches fifo
@@ -124,13 +142,16 @@ academia.pad.RECONNECT_PERIOD = 2000;
 					}
 					update_highlight = true;
 				} else {
-					var curr = padContentElement.innerText;
-					// for now it's better to process text content
-					var patches_text = dmp.patch_toText(dmp.patch_make(prev, curr, dmp.diff_main(prev, curr)));
-					if (patches_text) {
-						prev = curr;
-						update_highlight = true;
-						on_local_patches(patches_text);
+					var curr = padContentElement.niceText();
+					try {
+						var patches_text = dmp.patch_toText(dmp.patch_make(prev, curr, dmp.diff_main(prev, curr)));
+						if (patches_text) {
+							prev = curr;
+							update_highlight = true;
+							on_local_patches(patches_text);
+						}
+					} catch (err) {
+						// console.error("Diff failed...");
 					}
 				}
 				lock = false;
@@ -159,18 +180,16 @@ academia.pad.RECONNECT_PERIOD = 2000;
 					}
 				}
 			}
-			var curr = padContentElement.innerText;
-			console.log(curr);
+			var curr = padContentElement.niceText();
 			var result = dmp.patch_apply(patches, curr);
 			prev = result[0];
-			console.log(prev);
-			padContentElement.innerText = prev;
+			padContentElement.niceText(prev);
 			if (move_cursor) {
 				try {
 					var position = cursor_offset;
 					var range = document.createRange();
-					range.setStart(padContentElement.childNodes[0], position);
-					range.setEnd(padContentElement.childNodes[0], position);
+					range.setStart(padContentElement[0].childNodes[0], position);
+					range.setEnd(padContentElement[0].childNodes[0], position);
 					range.collapse(false);
 					var sel = window.getSelection();
 					sel.removeAllRanges();
@@ -185,7 +204,7 @@ academia.pad.RECONNECT_PERIOD = 2000;
 	var reconnect_interval = false;
 	function reconnect(event) {
 		if (!socket || socket.readyState != WebSocket.OPEN) {
-			padContentElement.setAttribute("contenteditable", false);
+			padContentElement.attr("contenteditable", false);
 			setTimeout(connect, academia.pad.RECONNECT_PERIOD);
 		}
 	}
@@ -207,7 +226,8 @@ academia.pad.RECONNECT_PERIOD = 2000;
 			purpose : "join",
 			message : "" + academia.pad.ID
 		}));
-		padContentElement.setAttribute("contenteditable", true);
+		fetch_note(academia.pad.ID);
+		padContentElement.attr("contenteditable", true);
 	}
 	/**
 	 * On websocket message:
@@ -256,9 +276,9 @@ academia.pad.RECONNECT_PERIOD = 2000;
 	function highlight() {
 		if (update_highlight) {
 			$('#pad-content').each(function(i, e) {
-				e.innerHTML = e.innerHTML.replace(/<div>/g, "<br/>").replace(/<\/div>/g, "");
+				$(e).html($(e).html().replace(/<div>/g, "<br/>").replace(/<\/div>/g, ""));
 				e.classList.remove("hljs");
-				e.innerText = e.innerText;
+				$(e).niceText($(e).niceText());
 				hljs.highlightBlock(e);
 			});
 			update_highlight = false;
