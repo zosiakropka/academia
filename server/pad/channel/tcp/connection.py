@@ -9,7 +9,7 @@ from pad.channel.endec import encode, decode
 from access_tokens import tokens, scope
 from backbone.models import Note
 from pad.channel.tcp import DELIMITER, CHUNK_SIZE
-from pad import Pad
+from pad.models import Pad
 
 
 class PadTCPConnection(dispatcher_with_send):
@@ -58,7 +58,7 @@ class PadTCPConnection(dispatcher_with_send):
             purpose = data["purpose"]
             if purpose == "join" and "message" in data:
                 self.pad_id = data.pop("message")
-                self.pad = Pad(self.pad_id)
+                self.pad = Pad.get_pad(self.pad_id)
             elif purpose == "patches" and "message" in data and self.pad_id:
                 try:
                     token = data.pop("token", None)
@@ -67,6 +67,8 @@ class PadTCPConnection(dispatcher_with_send):
                         scope.access_obj(Note.objects.get(pk=self.pad_id), "edit"),
                     )
                     data["message"] = self.pad.process(data["message"])
+
+                    print data["message"]
 
                     self.pad_broadcast(data)
                 except Exception:
