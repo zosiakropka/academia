@@ -224,6 +224,7 @@ academia.pad.RECONNECT_PERIOD = 2000;
 	function onopen() {
 		this.send(PadMessage.encode({
 			purpose : "join",
+			login : academia.login,
 			message : "" + academia.pad.ID
 		}));
 		fetch_note(academia.pad.ID);
