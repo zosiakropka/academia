@@ -7,7 +7,7 @@
 			if (text) {
 				return this.html(text.replace(/^ /g, '&nbsp;').replace(/ $/g, '&nbsp;').replace(/  /g,  ' &nbsp;').replace(/\n/g, "<br/>"));
 			} else {
-				return this.html().replace(/<br\/?>/g, "\n").replace(/<\/?span.*?>/g, "").replace("&nbsp;", " ");
+				return this.html().replace(/<br\/?>/g, "\n").replace(/<\/?span.*?>/g, "").replace(/<.+?>/g, "").replace("&nbsp;", " ");
 			}
 		}
 	});
