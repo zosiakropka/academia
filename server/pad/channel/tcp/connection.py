@@ -10,6 +10,7 @@ from access_tokens import tokens, scope
 from backbone.models import Note
 from pad.channel.tcp import DELIMITER, CHUNK_SIZE
 from pad.models import Pad
+from django.contrib.auth.models import User
 
 
 class PadTCPConnection(dispatcher_with_send):
