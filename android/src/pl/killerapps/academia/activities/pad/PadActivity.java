@@ -99,6 +99,7 @@ public class PadActivity extends SafeActivity {
 
           PadMessage msg = new PadMessage();
           msg.set_string("purpose", "join");
+          msg.set_string("login", login);
           msg.set_string("message", "" + note_id);
           try {
             client.send(msg); // just testing sending msg

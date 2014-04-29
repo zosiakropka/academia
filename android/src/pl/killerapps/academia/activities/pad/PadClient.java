@@ -22,6 +22,7 @@ public abstract class PadClient implements Runnable {
   private Socket socket;
   private final String ip;
   private final int port;
+  protected final String login;
   private String buffer = "";
   static final String DELIMITER = "\u001E";
   private BufferedReader br;
@@ -30,9 +31,11 @@ public abstract class PadClient implements Runnable {
   boolean ready = true;
 
   public PadClient() throws PreferencesUninitializedException, FaultyConnectionDetailsException {
-    URI padUri = Preferences.get().academiaPadUri();
+    Preferences.Getter prefs = Preferences.get();
+    URI padUri = prefs.academiaPadUri();
     this.ip = padUri.getHost();
     this.port = padUri.getPort();
+    login = prefs.username();
   }
 
   private void init()
