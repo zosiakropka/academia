@@ -53,7 +53,7 @@ class PadTCPConnection(dispatcher_with_send):
 
     def handle_message(self, record):
         """
-        Try to decode messge record and process it adequately. Should be
+        Try to decode message record and process it adequately. Should be
         called by handle_read() when receiving single record is complete.
         """
         data = decode(record)
