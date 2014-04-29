@@ -97,7 +97,7 @@ PadMessage.encode = function(data) {
  * @todo Shall be further used in auth
  */
 academia.pad.TOKEN;
-academia.pad.MONITORING_PERIOD = 500;
+academia.pad.MONITORING_PERIOD = 200;
 academia.pad.HIGHLIGHT_PERIOD = 1000;
 academia.pad.RECONNECT_PERIOD = 2000;
 
