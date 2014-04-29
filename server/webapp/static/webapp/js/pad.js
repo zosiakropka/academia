@@ -11361,7 +11361,7 @@ academia.pad.RECONNECT_PERIOD = 2000;
 	 */
 	function onopen() {
 		this.send(PadMessage.encode({
-			purpose : "pad",
+			purpose : "join",
 			message : "" + academia.pad.ID
 		}));
 		padContentElement.setAttribute("contenteditable", true);

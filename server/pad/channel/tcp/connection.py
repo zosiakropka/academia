@@ -56,7 +56,7 @@ class PadTCPConnection(dispatcher_with_send):
         if data and "purpose" in data:
             logging.debug("%s has data onboard, purpose: %s" % (self.CHNL, data["purpose"]))
             purpose = data["purpose"]
-            if purpose == "pad" and "message" in data:
+            if purpose == "join" and "message" in data:
                 self.pad_id = data.pop("message")
                 self.pad = Pad(self.pad_id)
             elif purpose == "patches" and "message" in data and self.pad_id:
