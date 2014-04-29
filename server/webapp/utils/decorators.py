@@ -36,6 +36,7 @@ def abstractor(fun):
         result = fun(user, **kwargs)
         try:
             template, data = result
+            data['login'] = user.username
         except:
             return result
         return render(request, template, data)
