@@ -29,6 +29,10 @@ class PadTCPConnection(dispatcher_with_send):
         dispatcher_with_send.__init__(self, *args, **kwargs)
         sock.setblocking(0)
 
+    @property
+    def ready(self):
+        return self.user and self.pad
+
     def handle_read(self):
         """
         Low-level receiving messages. Calls handle_message() on each complete
