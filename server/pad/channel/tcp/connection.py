@@ -81,6 +81,10 @@ class PadTCPConnection(dispatcher_with_send):
                     }
                     self.send_record(response)
 
+    def handle_close(self):
+        self.pad.apply_patches()
+        self.close()
+
     def pad_broadcast(self, data):
         """
         Broadcast message within current pad.
