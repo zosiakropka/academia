@@ -5,9 +5,13 @@
 	jQuery.fn.extend({
 		niceText: function(text) {
 			if (text) {
-				return this.html(text.replace(/^ /g, '&nbsp;').replace(/ $/g, '&nbsp;').replace(/  /g,  ' &nbsp;').replace(/\n/g, "<br/>"));
+				if (text === true) {
+					this.niceText(this.niceText());
+				} else {
+					return this.html(text.replace(/^ /g, '&nbsp;').replace(/ $/g, '&nbsp;').replace(/  /g,  ' &nbsp;').replace(/\n/g, "<br/>"));
+				}
 			} else {
-				return this.html().replace(/<br\/?>/g, "\n").replace(/<\/?span.*?>/g, "").replace(/<.+?>/g, "").replace("&nbsp;", " ");
+				return this.html().replace(/<br\/?>/g, "\n").replace(/<\/?span.*?>/g, "").replace(/<div>/g, "").replace(/<\/div>/g, "<br/>").replace(/<.+?>/g, "").replace("&nbsp;", " ");
 			}
 		}
 	});
@@ -117,7 +121,7 @@ academia.pad.RECONNECT_PERIOD = 2000;
 	fetch_note = function(note_id) {
 		$.get("/api/note/get/", {note_id: note_id}).done(function(response) {
 			padContentElement.niceText(response[0].content);
-			prev = response[0].content;
+			curr = prev = response[0].content;
 		});
 	};
 	/**
@@ -264,6 +268,7 @@ academia.pad.RECONNECT_PERIOD = 2000;
 	 * @param {String} patches_text
 	 */
 	function on_local_patches(patches_text) {
+		console.log(patches_text);
 		message = PadMessage.encode({
 			purpose : "patches",
 			message : patches_text,
@@ -277,10 +282,9 @@ academia.pad.RECONNECT_PERIOD = 2000;
 	function highlight() {
 		if (update_highlight) {
 			$('#pad-content').each(function(i, e) {
-				$(e).html($(e).html().replace(/<div>/g, "<br/>").replace(/<\/div>/g, ""));
 				e.classList.remove("hljs");
-				$(e).niceText($(e).niceText());
 				hljs.highlightBlock(e);
+				$(e).niceText(true);
 			});
 			update_highlight = false;
 		}
@@ -292,7 +296,7 @@ academia.pad.RECONNECT_PERIOD = 2000;
 		languages : ["markdown"],
 		// tabReplace: '<span class="hljs-indent">    </span>'
 	});
-	var highlight_interval = setInterval(highlight, academia.pad.MONITORING_PERIOD);
+	var highlight_interval = setInterval(highlight, 1.3 * academia.pad.MONITORING_PERIOD);
 
 })();
 
