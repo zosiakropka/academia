@@ -6,13 +6,13 @@
 """
 
 from django.contrib import admin
-from backbone.models import Subject, Supervisor, Activity, Note
+from backbone.models import Subject, Supervisor, Activity, Note, NoteModification, Schedule
 from backbone.models.google_calendar import GoogleCalendar
-from backbone.models.schedule import Schedule
 
 admin.site.register(Activity)
 admin.site.register(Supervisor)
 admin.site.register(Subject)
 admin.site.register(Note)
+admin.site.register(NoteModification)
 admin.site.register(GoogleCalendar)
 admin.site.register(Schedule)

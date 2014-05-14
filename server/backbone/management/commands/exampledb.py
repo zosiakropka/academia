@@ -12,6 +12,9 @@ from random import choice
 from django.utils.text import slugify
 import random
 from backbone.models.schedule import Schedule
+from datetime import datetime, timedelta
+from random import randint
+from backbone.models.note_modification import NoteModification
 
 
 class Command(BaseCommand):
@@ -26,6 +29,7 @@ class Command(BaseCommand):
         subjects_count = 4
         activities_count = 3
         users_count = 3
+        modifications_count = 5
 
         subjects = get_nonsense_title(subjects_count)
 
@@ -64,6 +68,14 @@ class Command(BaseCommand):
                             note = Note(access=access, owner=user, activity=activity, title=note_title,
                                         content=note_content)
                             note.save()
+
+                            for j in range(0, modifications_count):
+                                modification_date = get_random_date(datetime.now() - timedelta(2 * 365))
+                                modification = NoteModification()
+                                modification.modifier = user
+                                modification.note = note
+                                modification.date = modification_date
+                                modification.save()
                 except:
                     pass
 
@@ -106,3 +118,8 @@ def get_nonsense_content(lines_count):
 
     text = '\n\n'.join(lines)
     return title + text
+
+
+def get_random_date(start, end=datetime.now()):
+    return start + timedelta(
+        seconds=randint(0, int((end - start).total_seconds())))

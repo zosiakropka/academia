@@ -25,7 +25,7 @@ class Note(models.Model):
     owner = models.ForeignKey(User, related_name="notes")
     activity = models.ForeignKey(Activity, related_name="notes")
 
-    date = models.DateField(auto_now_add=True, editable=False)
+    creation_date = models.DateTimeField(auto_now_add=True, editable=False)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=100, unique=True)
     content = models.TextField()
@@ -33,7 +33,7 @@ class Note(models.Model):
     class Meta:
         app_label = 'backbone'
 
-        ordering = ["date"]
+        ordering = ["-modifications__date"]
 
     def __unicode__(self):
         return self.title or self.content[:40] + (self.content[40:] and "..")

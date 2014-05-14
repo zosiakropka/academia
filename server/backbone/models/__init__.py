@@ -11,8 +11,10 @@ from backbone.models.subject import Subject
 from backbone.models.supervisor import Supervisor
 from backbone.models.activity import Activity
 from backbone.models.note import Note
-from backbone.models.google_calendar import GoogleCalendar
+from backbone.models.note_modification import NoteModification
+# from backbone.models.google_calendar import GoogleCalendar
 
 from backbone.models import admin
 
-__all__ = ['UserProfile', 'GoogleCalendar', 'Schedule', 'Subject', 'Supervisor', 'Activity', 'Note']
+# __all__ = ['UserProfile', 'GoogleCalendar', 'Schedule', 'Subject', 'Supervisor', 'Activity', 'Note', 'NoteModification']
+__all__ = ['UserProfile', 'Schedule', 'Subject', 'Supervisor', 'Activity', 'Note', 'NoteModification']

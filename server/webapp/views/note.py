@@ -41,8 +41,7 @@ def note_create(user, access_type, subject_abbr, activity_type):
 
     subject = Subject.objects.get(abbr=subject_abbr)
     activity = get_object_or_404(Activity, type=activity_type, subject=subject)
-    date = now()
-    note = Note(activity=activity, owner=user, date=date, access=access_type)
+    note = Note(activity=activity, owner=user, access=access_type)
     note.save()
     token = tokens.generate(
         scope.access_obj(note, "edit"),
