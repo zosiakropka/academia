@@ -14,12 +14,11 @@ admin.autodiscover()
 urlpatterns = patterns('')
 
 urlpatterns += patterns('',
-    url((r'^%s' % settings.URL_PREFIX), include(
+    url((r'^'), include(
         patterns('',
             url(r'^admin/', include(admin.site.urls)),
 
             url(r'^api/', include('api.urls')),
-
             url(r'^', include('webapp.urls')),
         )
     ))

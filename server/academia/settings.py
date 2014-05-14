@@ -33,8 +33,6 @@ DATABASES = config.DATABASES
 
 ALLOWED_HOSTS = config.ALLOWED_HOSTS
 
-URL_PREFIX = config.URL_PREFIX
-
 GOOGLE_API = config.GOOGLE_API
 GOOGLE_API["USER_AGENT"] = "Python/2.7"
 GOOGLE_API["CREDENTIALS_DIR"] = "assets/google-api-credentials/"
@@ -146,6 +144,6 @@ if not os.path.isdir(logs.LOGS_DIR):
     os.mkdir(logs.LOGS_DIR)
 
 ## Where to redirect unauthorized
-LOGIN_URL = "/%(URL_PREFIX)saccount/signin" % {'URL_PREFIX': URL_PREFIX}
+LOGIN_URL = "/account/signin"
 
 AUTH_PROFILE_MODULE = "webapp.UserProfile"
