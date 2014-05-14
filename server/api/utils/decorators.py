@@ -11,7 +11,18 @@ def abstractor(fun):
     @wraps(fun)
     def _wrapper(user, request, **kwargs):
         parameters = request.POST if request.method == 'POST' else request.GET
-        data = fun(user, **dict(parameters))
+        view_kwargs = dict(parameters)
+        if 'per_page' in view_kwargs:
+            per_page = view_kwargs.pop('per_page')
+            per_page = per_page[0]
+            if 'page' in view_kwargs:
+                page = view_kwargs.pop('page')
+                page = page[0]
+            else:
+                page = 1
+            view_kwargs['page'] = int(page)
+            view_kwargs['per_page'] = int(per_page)
+        data = fun(user, **view_kwargs)
         return HttpResponse(data, mimetype='application/json')
     return _wrapper
 

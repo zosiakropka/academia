@@ -29,7 +29,8 @@ class Command(BaseCommand):
 
         chars = string.ascii_uppercase + string.digits + string.ascii_lowercase + string.punctuation
         key = ''
-        for i in range(length):
+        while length:
             key += chars[ord(M2Crypto.m2.rand_bytes(1)) % len(chars)]
+            length -= 1
 
         print key

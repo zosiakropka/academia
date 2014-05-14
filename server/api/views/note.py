@@ -25,7 +25,9 @@ def note_create(user, admin=False, note_access=None, subject_abbr=None, activity
 @authenticate(user=True, admin=True)
 @abstractor
 def note_list(user, admin=False,
-              subject_name=None, subject_abbr=None, activity_type=None, activity_id=None, note_access=None):
+              subject_name=None, subject_abbr=None, activity_type=None,
+              activity_id=None, note_access=None, latest=False,
+              page=False, per_page=False):
 
     notes = None
 
@@ -50,8 +52,15 @@ def note_list(user, admin=False,
         if activity_type:
             notes = notes.filter(activity__subject__activity__type__in=activity_type)
 
+    if per_page:
+        start = (page - 1) * per_page
+        end = page * per_page
+        print start
+        print end
+        notes = notes[start:end]
+
     excludes = ('content', )
-    relations = {'owner': {'fields': {'username'}}, }
+    relations = {'owner': {'fields': {'username'}}, 'modifications': {'fields': {'date'}}, }
     return jsonize(notes, relations=relations, excludes=excludes)
 
 

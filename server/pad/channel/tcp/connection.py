@@ -7,7 +7,6 @@ from asyncore import dispatcher_with_send
 import logging
 from pad.channel.endec import encode, decode
 from access_tokens import tokens, scope
-from backbone.models import Note
 from pad.channel.tcp import DELIMITER, CHUNK_SIZE
 from pad.models import Pad
 from django.contrib.auth.models import User
@@ -30,7 +29,6 @@ class PadTCPConnection(dispatcher_with_send):
         dispatcher_with_send.__init__(self, *args, **kwargs)
         sock.setblocking(0)
 
-    @property
     def ready(self):
         return self.user and self.pad
 
@@ -64,7 +62,7 @@ class PadTCPConnection(dispatcher_with_send):
             if purpose == "join" and "login" in data and "message" in data:
                 self.pad = Pad.get_pad(data.pop("message"))
                 self.user = User.objects.get(username=data.pop("login"))
-            elif purpose == "patches" and "message" in data and self.ready:
+            elif purpose == "patches" and "message" in data and self.ready():
                 try:
                     # @todo tokens don't seem to work...
                     token = data.pop("token", None)
