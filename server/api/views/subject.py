@@ -5,14 +5,14 @@
 from backbone.models import Subject
 from utils.serializer import jsonize
 from api.utils.decorators import authenticate, abstractor
-from backbone.models.google_calendar import GoogleCalendar
+# from backbone.models.google_calendar import GoogleCalendar
 
 
 @authenticate(user=True, admin=True)
 @abstractor
 def subject_list(user, admin=False, subject_name=None, subject_abbr=None, activity_type=None):
 
-    GoogleCalendar.service
+#     GoogleCalendar.service
 
     subjects = Subject.objects.all()
 
