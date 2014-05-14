@@ -5,10 +5,10 @@
 @date Nov 27, 2013
 """
 
-from django.core.management.base import BaseCommand
+from django_initd.daemon_command import DaemonCommand
 
 
-class Command(BaseCommand):
+class Command(DaemonCommand):
     args = ''
     help = 'Runs TCP server to enable real time collaboration via TCP sockets'
 
