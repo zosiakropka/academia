@@ -4,5 +4,5 @@ var MenuCtrl = Application.Controllers.controller('MenuCtrl', ['$scope', "MenuSr
 
 	$scope.open = function(item) {
 		console.log(item);
-	}
+	};
 }]);

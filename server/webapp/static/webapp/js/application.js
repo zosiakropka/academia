@@ -22121,19 +22121,100 @@ angular.module('AcademiaApp', ['ngRoute', 'application.filters', 'application.se
 
 	$scope.open = function(item) {
 		console.log(item);
-	}
+	};
 }]);
-;var RecentNotesCtrl = Application.Controllers.controller('RecentNotesCtrl', ['$scope', function($scope){
+;var RecentNotesCtrl = Application.Controllers.controller('RecentNotesCtrl', ['$scope', 'ApplySrvc', 'NotesSrvc', function($scope, ApplySrvc, NotesSrvc){
+	var recent_notes_promise = NotesSrvc.recent(10);
+	recent_notes_promise.then(function(recent_notes) {
+		ApplySrvc.apply(function() {
+			$scope.recent_notes = recent_notes;
+			alert();
+		});
+	});
 }]);
 ;var ScheduleCtrl = Application.Controllers.controller('ScheduleCtrl', ['$scope', function($scope){
 }]);
 ;'use strict';
 
-var SubjectsCtrl = Application.Controllers.controller('SubjectsCtrl', ['$scope', 'SubjectsSrvc', function($scope, SubjectsSrvc){
-	var subjects_promise = SubjectsSrvc.get();
+var SubjectsCtrl = Application.Controllers.controller('SubjectsCtrl', ['$scope', 'ApplySrvc', 'SubjectsSrvc', function($scope, ApplySrvc, SubjectsSrvc){
+	var subjects_promise = SubjectsSrvc.list();
 	subjects_promise.then(function(subjects) {
-		$scope.subjects = subjects;
+		ApplySrvc.apply(function () {
+			$scope.subjects = subjects;
+			alert();
+		});
 	});
+}]);
+;'use strict';
+
+var ApiSrvc = Application.Services.factory('ApiSrvc', ["$q", "$rootScope", "$http", "$timeout", function($q, $rootScope, $http, $timeout) { 
+
+		function parse_params(params) {
+			var query = "?";
+			for (var key in params) {
+				query += (key + "=" + params[key] + "&");
+			}
+			return query;
+		}
+
+		function combine(resource, action, params) {
+			return "api/" + resource + "/" + action + "/" + parse_params(params);
+		}
+
+		function request(resource, action, params, method) {
+			var path = combine (resource, action, params);
+			var deferred = $q.defer();
+			$http[method](path).
+			  success(function(data, status, headers, config) {
+				deferred.resolve(data);
+			  }).
+			  error(function(data, status, headers, config) {				  
+			    console.error(data, status, headers, config);
+			    deferred.reject(data);
+			  });
+			return deferred.promise;
+		}
+
+		function get(resource, params) {
+			return request(resource, "get", params, 'get');
+		}
+		function list(resource, params) {
+			return request(resource, "list", params, 'get');
+		}
+		function create(resource, params) {
+			return request(resource, "create", params, 'post');
+		}
+		function remove(resource, params) {
+			return request(resource, "remove", params, 'post');
+		}
+		function update(resource, params) {
+			return request(resource, "update", params, 'post');
+		}
+
+		return {
+			get : get,
+			list : list,
+			create : create,
+			remove : remove,
+			update : update,
+	};
+}]);
+;'use strict';
+
+var ApplySrvc = Application.Services.factory('ApplySrvc', ["$rootScope", function($rootScope) { 
+
+		return {
+			apply: function(callback) {
+				var phase = $rootScope.$$phase;
+				if(phase == '$apply' || phase == '$digest') {
+					if(callback && (typeof(callback) === 'function')) {
+						callback();
+					}
+				} else {
+					$rootScope.$apply(callback);
+				}
+			}
+		};
 }]);
 ;'use strict';
 
@@ -22165,42 +22246,40 @@ var MenuSrvc = Application.Services.factory('MenuSrvc', ["$q", "$rootScope", fun
 }]);
 ;'use strict';
 
-var SubjectsSrvc = Application.Services.factory('SubjectsSrvc', ["$q", "$rootScope", "$http", function($q, $rootScope, $http) { 
+var NotesSrvc = Application.Services.factory('NotesSrvc', ["$q", "$rootScope", "ApiSrvc", function($q, $rootScope, ApiSrvc) { 
 		return {
 
 			/**
-			* Retrieves menu Items
-			* @param {string} id the name of the single menu item to get.
+			* Retrieves single Note
+			* @param {string} id Note identifier
 			* @return {Promise} Resolves to JSON array of menu items.
 			*/
 			get : function(id){
-
-				var items, deferred;
-
-				deferred = $q.defer();
-
-				$http.get("api/subject/list/").
-				  success(function(data, status, headers, config) {
-
-				    var result;
-
-				    if(id){
-					    angular.forEach(data, function(obj, index){
-						    if(obj.id === id){
-							    result = obj;
-						    }
-					    });
-				    } else {
-					    result = data;
-				    }
-					deferred.resolve(result);
-				  }).
-				  error(function(data, status, headers, config) {				  
-				    console.error(data, status, headers, config);
-				    deferred.reject(data);
-				  });
-
-				return deferred.promise;
+				return ApiSrvc.get("note", {note_id: id});
 			},
+
+			/**
+			* Retrieves single Note
+			* @param {string} id Note identifier
+			* @return {Promise} Resolves to JSON array of menu items.
+			*/
+			recent : function(count){
+				return ApiSrvc.list("note", {per_page: count});
+			},
+	};
+}]);
+;'use strict';
+
+var SubjectsSrvc = Application.Services.factory('SubjectsSrvc', ["$q", "$rootScope", "ApiSrvc", function($q, $rootScope, ApiSrvc) { 
+
+		return {
+
+			get : function(id){
+				return ApiSrvc.get("subject", {subject_id: id});
+			},
+			list : function(id){
+				return ApiSrvc.list("subject");
+			},
+
 	};
 }]);
