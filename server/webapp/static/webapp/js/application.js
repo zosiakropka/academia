@@ -22128,7 +22128,6 @@ angular.module('AcademiaApp', ['ngRoute', 'application.filters', 'application.se
 	recent_notes_promise.then(function(recent_notes) {
 		ApplySrvc.apply(function() {
 			$scope.recent_notes = recent_notes;
-			alert();
 		});
 	});
 }]);
@@ -22141,7 +22140,6 @@ var SubjectsCtrl = Application.Controllers.controller('SubjectsCtrl', ['$scope',
 	subjects_promise.then(function(subjects) {
 		ApplySrvc.apply(function () {
 			$scope.subjects = subjects;
-			alert();
 		});
 	});
 }]);

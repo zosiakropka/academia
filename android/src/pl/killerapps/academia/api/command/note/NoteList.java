@@ -37,7 +37,7 @@ public abstract class NoteList extends ApiCommandAsync<List<Note>> {
         Note note = new Note();
         note.id = note_json.getInt("pk");
         note.access = note_json.getString("access");
-        note.date = (new SimpleDateFormat("yyyy-mm-dd")).parse(note_json.getString("date"));
+        note.date = (new SimpleDateFormat("yyyy-mm-dd")).parse(note_json.getString("creation_date"));
         note.slug = note_json.getString("slug");
         note.title = note_json.getString("title");
         note.owner = note_json.getJSONObject("owner").getString("username");

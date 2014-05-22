@@ -1,6 +1,6 @@
 ul#elements {
   @include list-unformat;
-  li {
+  & > li {
     display: block;
     float: left;
     

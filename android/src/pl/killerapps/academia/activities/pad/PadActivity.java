@@ -38,6 +38,7 @@ public class PadActivity extends SafeActivity {
         msg.set_string("token", "todo:propertoken");
         msg.set_string("message", patches_text);
         try {
+          log.d("Sending patches");
           client.send(msg);
         } catch (IOException ex) {
           log.e("cant send patches");

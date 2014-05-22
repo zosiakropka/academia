@@ -189,12 +189,23 @@ html, body {
   ul#elements {
     margin: 0;
     list-style-type: none; }
-    ul#elements li {
+    ul#elements > li {
       display: block;
-      float: left; } }
+      float: left; }
+  .miniature {
+    overflow: auto; }
+
+  .subjects.miniature {
+    background-color: red; }
+
+  .recent-notes.miniature {
+    background-color: cyan; }
+
+  .schedule.miniature {
+    background-color: orange; } }
     @media screen and (min-width: 600px) {
-      ul#elements li {
+      ul#elements > li {
         width: 50%; } }
     @media screen and (min-width: 900px) {
-      ul#elements li {
+      ul#elements > li {
         width: 33.33%; } }
